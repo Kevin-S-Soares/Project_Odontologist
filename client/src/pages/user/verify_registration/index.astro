@@ -1,0 +1,58 @@
+---
+import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
+import Padding from "../../../layouts/padding.astro";
+import { Role, Status } from "../../../models/enums";
+
+if (jwtDetails.getRole() !== Role.NONE) {
+  return Astro.redirect("/");
+}
+
+let status;
+
+const expression = /\?hash=(\w+)&userId=(.+)&operation=(\d+)/;
+const match = Astro.url.search.match(expression);
+if (match === null || match.length !== 4) {
+  status = Status.ERROR;
+  return;
+}
+let input = {
+  hash: match[1],
+  userId: match[2],
+  operation: parseInt(match[3]),
+};
+const options = {
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify(input),
+  method: "POST",
+};
+const response = await fetch(
+  `${process.env.SERVER ?? ""}/api/v1/user/verify_registration`,
+  options,
+);
+status = response.status === 200 ? Status.SUCCESS : Status.ERROR;
+---
+
+<MainLayout title="Control Panel - Verify registration">
+  <Padding>
+    <section class="mt-2 flex justify-center" transition:animate="fade">
+      <div class="w-3/12 min-w-min rounded bg-gray-50 p-4 text-lg">
+        {
+          status === Status.SUCCESS ? (
+            <p class="text-center">Registration confirmed!</p>
+          ) : (
+            <Fragment />
+          )
+        }
+        {
+          status === Status.ERROR ? (
+            <p class="text-center text-rose-500">Invalid token.</p>
+          ) : (
+            <Fragment />
+          )
+        }
+      </div>
+    </section>
+  </Padding>
+</MainLayout>

@@ -1,0 +1,36 @@
+services:
+  client:
+    container_name: client
+    build: "./client"
+    ports:
+      - 80:4321
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 256M
+    environment:
+      - PUBLIC_KEY=$PUBLIC_KEY
+      - SERVER=$SERVER
+    links:
+      - server
+  server:
+    container_name: server
+    build: "./server"
+    ports:
+      - 5261:8080
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 256M
+    volumes:
+      - database:/tmp/
+    environment:
+      - PRIVATE_KEY=$PRIVATE_KEY
+      - CONNECTION_STRING=$CONNECTION_STRING
+      - CLIENT=$CLIENT
+      - SENDGRID_API_KEY=$SENDGRID_API_KEY
+volumes:
+  database:
+    external: true

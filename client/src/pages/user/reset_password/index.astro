@@ -1,0 +1,13 @@
+---
+import MainLayout from "../../../layouts/main.astro";
+import Padding from "../../../layouts/padding.astro";
+import Form from "./_form.svelte";
+---
+
+<MainLayout title="Control Panel - Reset password">
+  <Padding>
+    <section class="mt-2 flex justify-center" transition:animate="fade">
+      <Form client:idle />
+    </section>
+  </Padding>
+</MainLayout>

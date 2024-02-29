@@ -1,0 +1,18 @@
+---
+import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
+import Padding from "../../../layouts/padding.astro";
+import { Role } from "../../../models/enums";
+import Form from "./_form.svelte";
+
+if (jwtDetails.getRole() !== Role.NONE) {
+  return Astro.redirect("/");
+}
+---
+
+<MainLayout title="Control Panel - Sign in">
+  <Padding>
+    <section class="mt-2 flex justify-center" transition:animate="fade">
+      <Form client:load />
+    </section>
+  </Padding>
+</MainLayout>
