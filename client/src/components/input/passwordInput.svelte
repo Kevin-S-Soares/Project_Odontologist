@@ -100,7 +100,6 @@
         input.classList.add("outline");
       }
       invalidCallBack(true);
-      console.log(details);
       return;
     }
     details.show = value.match(pattern) === null;
