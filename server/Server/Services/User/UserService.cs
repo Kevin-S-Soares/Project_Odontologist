@@ -113,9 +113,9 @@ public class UserService(ApplicationContext context, IEmailService _emailService
             Data = [.. _context.Users.Select(search => new User 
             {
                 Id = search.Id,
-                Name = search.Name,
+                Name = "",
                 ProfilePictureUrl = search.ProfilePictureUrl,
-                Email = search.Email,
+                Email = "",
                 Password = "",
                 CreatedAt = search.CreatedAt,
                 VerifiedAt = search.VerifiedAt,
