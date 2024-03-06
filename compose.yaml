@@ -2,8 +2,7 @@ services:
   client:
     container_name: client
     build: "./client"
-    ports:
-      - 80:4321
+    network_mode: "host"
     deploy:
       resources:
         limits:
@@ -12,13 +11,14 @@ services:
     environment:
       - PUBLIC_KEY=$PUBLIC_KEY
       - SERVER=$SERVER
-    links:
-      - server
+      - SERVER_KEY_PATH=$SERVER_KEY_PATH
+      - SERVER_CERT_PATH=$SERVER_CERT_PATH
+    volumes:
+      - $PATH_TO_SSL:/app/ssl
   server:
     container_name: server
     build: "./server"
-    ports:
-      - 5261:8080
+    network_mode: "host"
     deploy:
       resources:
         limits:
