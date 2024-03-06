@@ -42,7 +42,7 @@
 
   <div
     id="dropdown"
-    class="absolute left-0 top-16 {isDropDownActive
+    class="absolute z-10 left-0 top-16 {isDropDownActive
       ? 'flex'
       : 'hidden'} w-96 flex-col rounded-md border bg-white py-1"
   >
