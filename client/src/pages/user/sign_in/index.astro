@@ -9,7 +9,10 @@ if (jwtDetails.getRole() !== Role.NONE) {
 }
 ---
 
-<MainLayout title="Control Panel - Sign in">
+<MainLayout
+  title="Control Panel - Sign in"
+  description="After the user is registered, the user will be able to sign in the app."
+>
   <Padding>
     <section class="mt-2 flex justify-center" transition:animate="fade">
       <Form client:load />

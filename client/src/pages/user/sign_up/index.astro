@@ -9,7 +9,10 @@ if (jwtDetails.getRole() !== Role.NONE) {
 }
 ---
 
-<MainLayout title="Control Panel - Sign up">
+<MainLayout
+  title="Control Panel - Sign up"
+  description="Here, the user will be able to register. After filling up the fields and pressing submit, the project is going to send an email to confirm the registration."
+>
   <Padding>
     <section class="mt-2 flex justify-center" transition:animate="fade">
       <Form client:load />

@@ -4,7 +4,10 @@ import Padding from "../../../layouts/padding.astro";
 import Form from "./_form.svelte";
 ---
 
-<MainLayout title="Control Panel - Reset password">
+<MainLayout
+  title="Control Panel - Reset password"
+  description="In this page, you are able to reset your password using an email. If the email is correct or not, it will always show that is trying to reach the user."
+>
   <Padding>
     <section class="mt-2 flex justify-center" transition:animate="fade">
       <Form client:idle />

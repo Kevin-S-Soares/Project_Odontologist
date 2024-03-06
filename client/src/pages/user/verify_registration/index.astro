@@ -34,7 +34,10 @@ const response = await fetch(
 status = response.status === 200 ? Status.SUCCESS : Status.ERROR;
 ---
 
-<MainLayout title="Control Panel - Verify registration">
+<MainLayout
+  title="Control Panel - Verify registration"
+  description="This page only appears when is clicked from the email's link that is sent in the registration page. It will only work once."
+>
   <Padding>
     <section class="mt-2 flex justify-center" transition:animate="fade">
       <div class="w-3/12 min-w-min rounded bg-gray-50 p-4 text-lg">
