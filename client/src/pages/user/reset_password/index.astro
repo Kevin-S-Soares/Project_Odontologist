@@ -10,7 +10,7 @@ import Form from "./_form.svelte";
 >
   <Padding>
     <section class="mt-2 flex justify-center" transition:animate="fade">
-      <Form client:idle />
+      <Form client:only="svelte" />
     </section>
   </Padding>
 </MainLayout>
