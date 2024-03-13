@@ -50,5 +50,5 @@ jobs:
           cd projects/Project_Odontologist
           git pull
           sudo docker compose down --remove-orphans
-          bash migrate.sh
+          bash migration.sh
           sudo docker compose up --build -d
