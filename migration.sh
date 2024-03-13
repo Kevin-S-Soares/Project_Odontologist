@@ -1,0 +1,1 @@
+cat ./server/Server/migration.sql | sudo sqlite3 /var/lib/docker/volumes/database/_data/data.db

@@ -33,3 +33,12 @@ VALUES ('20240216212541_Setup', '8.0.2');
 
 COMMIT;
 
+BEGIN TRANSACTION;
+
+ALTER TABLE "HashStorage" ADD "CreatedAt" TEXT NOT NULL DEFAULT '0001-01-01 00:00:00';
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20240313235053_ChangedHashStorage', '8.0.2');
+
+COMMIT;
+

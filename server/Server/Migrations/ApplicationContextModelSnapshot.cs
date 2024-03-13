@@ -23,6 +23,9 @@ namespace Server.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Hash")
                         .IsRequired()
                         .HasColumnType("TEXT");
