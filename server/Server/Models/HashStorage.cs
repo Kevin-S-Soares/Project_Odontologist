@@ -10,4 +10,5 @@ public class HashStorage
     public Guid UserId { get; set; }
     public User User { get; set; } = default!;
     public Operation Operation { get; set; }
+    public DateTime CreatedAt { get; set; }
 }

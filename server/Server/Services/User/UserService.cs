@@ -220,13 +220,26 @@ public class UserService(ApplicationContext context, IEmailService _emailService
     public async Task<ServiceResponse<bool>> ForgetPasswordAsync(string email)
     {
         var query = _context.Users.FirstOrDefault(search => search.Email == email);
-        //I can use this method every 15 minutes
+
         if(query is null)
         {
             return new()
             {
                 StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Invalid email"
+                ErrorMessage = "Invalid email."
+            };
+        }
+
+        var condition = _context.HashStorage.Any(search => 
+            search.UserId == query.Id && 
+            search.Operation == Operation.RESET_PASSWORD && 
+            DateTime.Now.Subtract(search.CreatedAt).Minutes < 15
+            );
+        if(condition is true){
+            return new()
+            {
+                StatusCode = StatusCodes.Status409Conflict,
+                ErrorMessage = "Wait 15 minutes to request a new password change."
             };
         }
         var hashStorage = new HashStorage{
