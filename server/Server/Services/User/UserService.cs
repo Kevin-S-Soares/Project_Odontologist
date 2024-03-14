@@ -230,11 +230,11 @@ public class UserService(ApplicationContext context, IEmailService _emailService
             };
         }
 
-        var condition = _context.HashStorage.Any(search => 
+        var operation = _context.HashStorage.FirstOrDefault(search => 
             search.UserId == query.Id && 
-            search.Operation == Operation.RESET_PASSWORD && 
-            DateTime.Now.Subtract(search.CreatedAt).Minutes < 15
+            search.Operation == Operation.RESET_PASSWORD
             );
+        var condition = operation is not null && DateTime.Now.Subtract(operation.CreatedAt).Minutes < 15;
         if(condition is true){
             return new()
             {
