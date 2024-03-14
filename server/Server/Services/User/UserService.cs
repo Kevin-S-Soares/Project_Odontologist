@@ -37,7 +37,8 @@ public class UserService(ApplicationContext context, IEmailService _emailService
         var storage = new HashStorage
         {
             Hash = GenerateNonRepetitiveHash(),
-            Operation = Operation.REGISTER_ACCOUNT
+            Operation = Operation.REGISTER_ACCOUNT,
+            CreatedAt = DateTime.Now
         };
 
         try
@@ -245,7 +246,8 @@ public class UserService(ApplicationContext context, IEmailService _emailService
         var hashStorage = new HashStorage{
             UserId = query.Id,
             Hash = GenerateNonRepetitiveHash(),
-            Operation = Operation.RESET_PASSWORD
+            Operation = Operation.RESET_PASSWORD,
+            CreatedAt = DateTime.Now
         };
         try
         {
