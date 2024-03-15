@@ -1,3 +1,11 @@
+# Table of contents
+### [About the project](#about-the-project)
+### [Installation]()
+
+---
+
+## About the project 
+
 If you are here and want to check complete projects:
 
 [Project Odontologist Legacy](https://github.com/Kevin-S-Soares/Project_Odontologist_Legacy) - made in React and C# web api.
@@ -21,3 +29,16 @@ Currently, the only thing you can do is register, sign-in, sign-out, forget pass
 Authentication is made using JWT asymmetric signature (RSA-SHA-4096).
 
 Passwords are stored using bcrypt.
+
+---
+
+## Installation
+
+#### ubuntu
+`git clone https://github.com/Kevin-S-Soares/Project_Odontologist`
+
+`cd Project_Odontologist`
+
+`bash wizard.sh`
+
+`bash migration.sh`
