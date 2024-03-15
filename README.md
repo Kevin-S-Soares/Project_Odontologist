@@ -1,6 +1,6 @@
 # Table of contents
-### [About the project](#about-the-project)
-### [Installation]()
+[About the project](#about-the-project)
+[Installation](#installation)
 
 ---
 
@@ -35,10 +35,10 @@ Passwords are stored using bcrypt.
 ## Installation
 
 #### ubuntu
-`git clone https://github.com/Kevin-S-Soares/Project_Odontologist`
 
-`cd Project_Odontologist`
-
-`bash wizard.sh`
-
-`bash migration.sh`
+```
+git clone https://github.com/Kevin-S-Soares/Project_Odontologist
+cd Project_Odontologist
+bash wizard.sh
+bash migration.sh
+```
