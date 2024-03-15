@@ -1,10 +1,11 @@
-# Table of contents
+### Table of contents
 [About the project](#about-the-project)
+
 [Installation](#installation)
 
 ---
 
-## About the project 
+### About the project
 
 If you are here and want to check complete projects:
 
@@ -32,7 +33,7 @@ Passwords are stored using bcrypt.
 
 ---
 
-## Installation
+### Installation
 
 #### ubuntu
 
