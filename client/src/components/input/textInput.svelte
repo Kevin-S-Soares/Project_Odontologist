@@ -68,7 +68,7 @@
 </script>
 
 <div class="mt-2 flex flex-col">
-  <label class="font-medium" for={id}>{label}</label>
+  <label class="font-medium dark:text-white" for={id}>{label}</label>
   <input
     class="mt-2 rounded-md border-2 p-2 focus:outline focus:outline-teal-500"
     {id}

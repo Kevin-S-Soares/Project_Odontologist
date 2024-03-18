@@ -72,7 +72,7 @@
     {/if}
   {/if}
   {#if status === Status.SUCCESS}
-    <p class="text-center text-xl">
+    <p class="text-center text-xl dark:text-white">
       Verify your email and follows its instructions.
     </p>
   {/if}

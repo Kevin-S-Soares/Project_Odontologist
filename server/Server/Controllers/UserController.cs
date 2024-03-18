@@ -32,4 +32,7 @@ public class UsersController(IUserService service) : ControllerBase
 
     [HttpPost, Route("/api/v1/user/reset_password")]
     public async Task<ActionResult> ResetPasswordAsync(ClientResetPassword request) => await _service.ResetPasswordAsync(request);
+
+    [HttpPost, Route("/api/v1/user/change_password"), Authorize]
+    public async Task<ActionResult> ChangePasswordAsync(string password) => await _service.ChangePasswordAsync(password);
 }

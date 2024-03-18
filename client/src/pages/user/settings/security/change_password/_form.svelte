@@ -1,9 +1,11 @@
 <script lang="ts">
-  import FormPanel from "../../../components/panel/formPanel.svelte";
-  import ConfirmPasswords from "../../../components/input/confirmPassword.svelte";
-  import SubmitButton from "../../../components/button/submitButton.svelte";
-  import { resetPassword } from "../../../models/APIAdapters/user/resetPassword";
-  import { Status } from "../../../models/enums";
+  import FormPanel from "../../../../../components/panel/formPanel.svelte";
+  import ConfirmPasswords from "../../../../../components/input/confirmPassword.svelte";
+  import SubmitButton from "../../../../../components/button/submitButton.svelte";
+  import { changePassword } from "../../../../../models/APIAdapters/user/changePassword.ts";
+  import { Status } from "../../../../../models/enums";
+
+  export let token: string;
 
   const form = {
     password: "",
@@ -17,27 +19,13 @@
   let isLoading = false;
   const clickSubmit = async (event: any) => {
     isLoading = true;
-    const expression = /\?hash=(\w+)&userId=(.+)&operation=(\d+)/;
-    const match = window.location.search.match(expression);
-    if (match === null || match.length !== 4) {
-      status = Status.ERROR;
-      return;
-    }
-
-    const request = {
-      password: form.password,
-      hash: match[1],
-      userId: match[2],
-      operation: parseInt(match[3]),
-    };
-
-    const response = await resetPassword(request);
+    const response = await changePassword(form.password, token);
     status = response ? Status.SUCCESS : Status.ERROR;
     isLoading = false;
   };
 </script>
 
-<FormPanel>
+<FormPanel bg_color="white">
   {#if status === Status.NONE}
     <ConfirmPasswords
       id="password"

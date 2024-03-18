@@ -3,6 +3,7 @@ import { Role } from "./enums";
 
 export class JWTDetails {
   private _token = "";
+  private _sub = "";
   private _isSignatureValid = false;
   private _isExpired = true;
   private _name = "";
@@ -20,6 +21,7 @@ export class JWTDetails {
     const [header64, payload64, signature64] = this._token.split(".");
     const payload = Buffer.from(payload64, "base64url").toString();
     const parsedPayload = JSON.parse(payload);
+    this._sub = parsedPayload["sub"];
     this._name = parsedPayload["name"];
     this._image = parsedPayload["pic"];
     this._verified = parsedPayload["verified"];
@@ -70,7 +72,11 @@ export class JWTDetails {
     return this._role;
   }
 
-  public isVerfied() {
+  public isVerified() {
     return this._verified === "";
+  }
+
+  public getId() {
+    return this._sub;
   }
 }

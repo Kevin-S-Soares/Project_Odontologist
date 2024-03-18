@@ -1,0 +1,31 @@
+---
+import MainLayout, { jwtDetails } from "../../../../layouts/main.astro";
+import Padding from "../../../../layouts/padding.astro";
+import Settings from "../../../../layouts/settings.astro";
+import NightModeButton from "./_nightmodebutton.svelte";
+
+if (!jwtDetails.isValid()) {
+  return Astro.redirect("/");
+}
+
+const theme = Astro.cookies.has("Theme")? "dark" : "";
+const isDarkTheme: boolean = theme === ""
+---
+
+<MainLayout
+  title={`${jwtDetails.getName()} - Appearance`}
+  description="Change the page's appearance."
+>
+  <Padding>
+    <section class="w-full">
+      <Settings>
+        <div class="mt-4 pl-10">
+          <div class="mt-2">
+            <h1 class="text-xl font-medium dark:text-white">Night mode</h1>
+            <NightModeButton isDarkTheme={isDarkTheme} client:load />
+          </div>
+        </div>
+      </Settings>
+    </section>
+  </Padding>
+</MainLayout>

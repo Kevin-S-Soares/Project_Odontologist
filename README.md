@@ -25,7 +25,7 @@ This project is incomplete. I'm using it to learn:
 
 This project is made using Astro with Svelte components and C# web api. Data is stored using SQLite. Everything is containerized and syncronized using Docker Compose. It is running in a t2.small instance from AWS EC2.
 
-Currently, the only thing you can do is register, sign-in, sign-out, forget password and reset password. 
+Currently, the only thing you can do is register, sign-in, sign-out, forget password, reset password, change password, change theme and delete account. 
 
 Authentication is made using JWT asymmetric signature (RSA-SHA-4096).
 

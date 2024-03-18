@@ -1,0 +1,30 @@
+<div class="flex w-full">
+  <div class="grid w-1/3 grid-rows-3">
+    <div class="flex items-center justify-end border-r py-10 pr-4 md:pr-10 dark:border-neutral-900">
+      <a
+        class="text-end text-lg font-medium hover:underline dark:text-white dark:decoration-white"
+        href="/user/settings/appearance"
+        data-astro-prefetch="hover">Appearance</a
+      >
+    </div>
+    <div
+      class="flex items-center justify-end border-r py-10 pr-4 text-end md:pr-10 dark:border-neutral-900"
+    >
+      <a
+        class="text-lg font-medium hover:underline dark:text-white dark:decoration-white"
+        href="/user/settings/security"
+        data-astro-prefetch="hover">Security Details</a
+      >
+    </div>
+    <div class="flex items-center justify-end border-r py-10 pr-4 md:pr-10 dark:border-neutral-900">
+      <a
+        class="text-end text-lg font-medium hover:underline dark:text-white dark:decoration-white"
+        href="/user/settings/account"
+        data-astro-prefetch="hover">Account Management</a
+      >
+    </div>
+  </div>
+  <div class="w-2/3" transition:animate="fade">
+    <slot />
+  </div>
+</div>

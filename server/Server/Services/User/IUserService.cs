@@ -11,4 +11,5 @@ public interface IUserService {
     public ServiceResponse<string> Authenticate(ClientAuthentication request);
     public Task<ServiceResponse<bool>> ForgetPasswordAsync(string email);
     public Task<ServiceResponse<bool>> ResetPasswordAsync(ClientResetPassword request);
+    public Task<ServiceResponse<bool>> ChangePasswordAsync(string request);
 }

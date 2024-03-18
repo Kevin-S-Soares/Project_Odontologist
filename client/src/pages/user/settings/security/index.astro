@@ -1,0 +1,30 @@
+---
+import MainLayout, { jwtDetails } from "../../../../layouts/main.astro";
+import Padding from "../../../../layouts/padding.astro";
+import Settings from "../../../../layouts/settings.astro";
+
+if (!jwtDetails.isValid()) {
+  return Astro.redirect("/");
+}
+---
+
+<MainLayout
+  title={`${jwtDetails.getName()} - Security Details`}
+  description="Change your security details."
+>
+  <Padding>
+    <section class="w-full">
+      <Settings>
+        <div class="mt-4 pl-10">
+          <a
+            class="mt-2 line-clamp-1 inline-block rounded-md border px-2 py-4 text-lg transition-all hover:bg-gray-100 dark:text-white dark:border-neutral-900 dark:hover:bg-neutral-700"
+            href="/user/settings/security/change_password"
+            data-astro-prefetch="hover"
+          >
+            Change password
+          </a>
+        </div>
+      </Settings>
+    </section>
+  </Padding>
+</MainLayout>

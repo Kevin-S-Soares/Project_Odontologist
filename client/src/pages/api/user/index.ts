@@ -16,3 +16,23 @@ export const POST: APIRoute = async ({ request }) => {
     status: body.status,
   });
 };
+
+export const DELETE: APIRoute = async ({ request }) => {
+  const requestBody = await request.json();
+  const options = {
+    headers: {
+      "content-type": "application/json",
+      authorization: `bearer ${requestBody["token"]}`,
+    },
+    method: "DELETE",
+  };
+  const id = requestBody["id"];
+  console.log(options);
+  const body = await fetch(
+    `${process.env.SERVER ?? ""}/api/v1/user/${id}`,
+    options,
+  );
+  return new Response(JSON.stringify(body.ok), {
+    status: body.status,
+  });
+};

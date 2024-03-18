@@ -1,7 +1,11 @@
+<script lang="ts">
+  export let color = "#1f2937"
+</script>
+
 <svg
-  fill="#1f2937"
   width="20px"
   height="20px"
+  fill="{color}"
   viewBox="-1 0 19 19"
   xmlns="http://www.w3.org/2000/svg"
   class="cf-icon-svg"

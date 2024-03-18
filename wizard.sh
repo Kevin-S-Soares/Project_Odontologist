@@ -66,9 +66,3 @@ echo "PRIVATE_KEY=\"$var\"" >> .env
 
 read -p '[CLIENT] what is the RSA-SHA-4096 public key? ' var
 echo "PUBLIC_KEY=\"$var\"" >> .env
-
-
-
-
-
-

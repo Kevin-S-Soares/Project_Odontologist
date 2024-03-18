@@ -4,15 +4,12 @@ using Server.Models;
 using System.Security.Cryptography;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace Server.Services;
 
-public class UserService(ApplicationContext context, IEmailService _emailService) : IUserService
-{
-    private readonly ApplicationContext _context = context;
-
+public class UserService(ApplicationContext _context, IEmailService _emailService, IAuthService _authService) : IUserService
+{   
     public async Task<ServiceResponse<User>> CreateAsync(ClientUser request)
     {
         var query = _context.Users.FirstOrDefault(search => search.Email == request.Email);
@@ -167,7 +164,7 @@ public class UserService(ApplicationContext context, IEmailService _emailService
             return new()
             {
                 StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Password or password is wrong."
+                ErrorMessage = "Email or password is wrong."
             };
         }
 
@@ -309,6 +306,40 @@ public class UserService(ApplicationContext context, IEmailService _emailService
         };
     }
 
+    public async Task<ServiceResponse<bool>> ChangePasswordAsync(string request)
+    {
+        var query = _context.Users.FirstOrDefault(search => search.Id == _authService.GetGuid());
+        if(query is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status409Conflict,
+                ErrorMessage = "Id does not exist."
+            };
+        }
+        query.Password = BCrypt.Net.BCrypt.HashPassword(request);
+        try
+        {
+            _context.Users.Update(query);
+            await _context.SaveChangesAsync();
+        }
+        catch(Exception e)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = $"Something went wrong while changing password: {e.Message}"
+            };
+        }
+
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Data = true
+        };
+
+    }
+
     private string GenerateNonRepetitiveHash()
     {
         while (true)
@@ -321,4 +352,6 @@ public class UserService(ApplicationContext context, IEmailService _emailService
             }
         }
     }
+
+
 }
