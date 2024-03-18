@@ -27,8 +27,8 @@ if (Astro.cookies.has("Authorization")) {
   jwtDetails.resetToken();
 }
 
-const theme = Astro.cookies.has("Theme")? "dark" : "";
-const isDarkTheme: boolean = theme === ""
+const theme = Astro.cookies.has("Theme") ? "dark" : "";
+const isDarkTheme: boolean = theme === "";
 ---
 
 <html lang="en">
@@ -41,7 +41,7 @@ const isDarkTheme: boolean = theme === ""
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body id="body" class={`${theme} dark:bg-neutral-800`} >
+  <body id="body" class={`${theme} dark:bg-neutral-800`}>
     <main>
       <nav class="h-16 w-full border-b px-4 dark:border-neutral-900">
         <div class="h-full">
@@ -60,7 +60,7 @@ const isDarkTheme: boolean = theme === ""
                   </div>
                   <div class="flex w-48 items-center justify-between text-lg">
                     <a
-                      class="line-clamp-1 rounded-md border p-2 transition-all hover:bg-gray-100 dark:text-white dark:border-neutral-900 dark:hover:bg-neutral-700"
+                      class="line-clamp-1 rounded-md border p-2 transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-700"
                       href="/user/sign_up"
                       data-astro-prefetch="hover"
                     >
@@ -68,7 +68,7 @@ const isDarkTheme: boolean = theme === ""
                     </a>
                     <span class="dark:text-white">|</span>
                     <a
-                      class="line-clamp-1 rounded-md border p-2 transition-all hover:bg-gray-100 dark:text-white dark:border-neutral-900 dark:hover:bg-neutral-700"
+                      class="line-clamp-1 rounded-md border p-2 transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-700"
                       href="/user/sign_in"
                       data-astro-prefetch="hover"
                     >
@@ -94,10 +94,16 @@ const isDarkTheme: boolean = theme === ""
                       Control Panel
                     </a>
                     <span class="ml-2 text-xl dark:text-white">|</span>
-                    <a class="ml-2 text-lg dark:text-white" href="/appointments/">
+                    <a
+                      class="ml-2 text-lg dark:text-white"
+                      href="/appointments/"
+                    >
                       Appointments
                     </a>
-                    <a class="ml-2 text-lg dark:text-white" href="/odontologists/">
+                    <a
+                      class="ml-2 text-lg dark:text-white"
+                      href="/odontologists/"
+                    >
                       Odontologists
                     </a>
                     <a class="ml-2 text-lg  dark:text-white" href="/users/">
@@ -112,8 +118,14 @@ const isDarkTheme: boolean = theme === ""
                         alt="user"
                       />
                     </div>
-                    <div class="ml-2 font-semibold  dark:text-white">{name}</div>
-                    <Dropdown isDarkTheme={isDarkTheme} role={role} client:load />
+                    <div class="ml-2 font-semibold  dark:text-white">
+                      {name}
+                    </div>
+                    <Dropdown
+                      isDarkTheme={isDarkTheme}
+                      role={role}
+                      client:load
+                    />
                   </div>
                 </div>
               </>
@@ -134,10 +146,16 @@ const isDarkTheme: boolean = theme === ""
                       Control Panel
                     </a>
                     <span class="ml-2 text-xl  dark:text-white">|</span>
-                    <a class="ml-2 text-lg dark:text-white" href="/appointments/">
+                    <a
+                      class="ml-2 text-lg dark:text-white"
+                      href="/appointments/"
+                    >
                       Appointments
                     </a>
-                    <a class="ml-2 text-lg dark:text-white" href="/odontologists/">
+                    <a
+                      class="ml-2 text-lg dark:text-white"
+                      href="/odontologists/"
+                    >
                       Dashboard
                     </a>
                   </div>
@@ -150,7 +168,11 @@ const isDarkTheme: boolean = theme === ""
                       />
                     </div>
                     <div class="ml-2 font-semibold dark:text-white">{name}</div>
-                    <Dropdown isDarkTheme={isDarkTheme} role={role} client:load />
+                    <Dropdown
+                      isDarkTheme={isDarkTheme}
+                      role={role}
+                      client:load
+                    />
                   </div>
                 </div>
               </>
@@ -171,10 +193,16 @@ const isDarkTheme: boolean = theme === ""
                       Control Panel
                     </a>
                     <span class="ml-2 text-xl dark:text-white">|</span>
-                    <a class="ml-2 text-lg dark:text-white" href="/appointments/">
+                    <a
+                      class="ml-2 text-lg dark:text-white"
+                      href="/appointments/"
+                    >
                       Appointments
                     </a>
-                    <a class="ml-2 text-lg dark:text-white" href="/odontologists/">
+                    <a
+                      class="ml-2 text-lg dark:text-white"
+                      href="/odontologists/"
+                    >
                       Odontologists
                     </a>
                   </div>
@@ -187,7 +215,11 @@ const isDarkTheme: boolean = theme === ""
                       />
                     </div>
                     <div class="ml-2 font-semibold dark:text-white">{name}</div>
-                    <Dropdown isDarkTheme={isDarkTheme} role={role} client:load />
+                    <Dropdown
+                      isDarkTheme={isDarkTheme}
+                      role={role}
+                      client:load
+                    />
                   </div>
                 </div>
               </>

@@ -28,7 +28,7 @@
 </script>
 
 <button
-  class="mt-2 line-clamp-1 inline-block rounded-md border px-2 py-4 text-lg transition-all hover:bg-rose-100 hover:text-rose-500 dark:text-white dark:border-neutral-900"
+  class="mt-2 line-clamp-1 inline-block rounded-md border px-2 py-4 text-lg transition-all hover:bg-rose-100 hover:text-rose-500 dark:border-neutral-900 dark:text-white"
   data-astro-prefetch="hover"
   on:click={showModal}
 >
@@ -45,11 +45,11 @@
     <div
       class="absolute left-1/2 grid grid-rows-3 p-4 {isModalVisible
         ? '-translate-y-1/2 opacity-100'
-        : '-translate-y-0 opacity-0'} top-96 h-[16rem] w-96 -translate-x-1/2 rounded-md bg-white transition-all duration-1000"
+        : '-translate-y-0 opacity-0'} top-96 h-[16rem] w-96 -translate-x-1/2 rounded-md bg-white transition-all duration-1000 dark:bg-neutral-700"
     >
       <div class="place-self-start justify-self-end">
         <button
-          class="text-4xl"
+          class="text-4xl dark:text-white"
           on:click={() => {
             isModalVisible = false;
             window.onclick = null;
@@ -57,17 +57,17 @@
         >
       </div>
       <div class="">
-        <p class="text-center text-lg">
+        <p class="text-center text-lg dark:text-white">
           Are you sure that you want to delete your account?
         </p>
       </div>
       <div class="flex items-center justify-around">
         <button
-          class="rounded-md bg-rose-500 p-2 font-bold text-white transition-all hover:bg-rose-600"
+          class="rounded-md border bg-rose-500 p-2 font-bold text-white transition-all hover:bg-rose-600 dark:border-neutral-900"
           on:click={submit}>Submit</button
         >
         <button
-          class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100"
+          class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-600"
           on:click={() => {
             isModalVisible = false;
             window.onclick = null;

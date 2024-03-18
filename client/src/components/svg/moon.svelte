@@ -1,9 +1,9 @@
 <script lang="ts">
-  export let color = "#1f2937"
+  export let color = "#1f2937";
 </script>
 
 <svg
-  fill="{color}"
+  fill={color}
   width="20px"
   height="20px"
   viewBox="0 0 24 24"

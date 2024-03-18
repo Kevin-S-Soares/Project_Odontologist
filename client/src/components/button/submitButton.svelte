@@ -21,7 +21,7 @@
 <button
   {id}
   {disabled}
-  class="dark:border dark:border-neutral-900 flex rounded-md border bg-gradient-to-b from-teal-500 to-emerald-500 p-2 font-semibold text-white transition-all hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40"
+  class="flex rounded-md border bg-gradient-to-b from-teal-500 to-emerald-500 p-2 font-semibold text-white transition-all hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border dark:border-neutral-900"
   on:click={clickSubmit}
   ><span>{message}</span><span
     class="{isLoading ? 'inline' : 'hidden'} ml-2 place-self-end self-center"

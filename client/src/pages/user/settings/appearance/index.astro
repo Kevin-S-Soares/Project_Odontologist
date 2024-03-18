@@ -8,8 +8,8 @@ if (!jwtDetails.isValid()) {
   return Astro.redirect("/");
 }
 
-const theme = Astro.cookies.has("Theme")? "dark" : "";
-const isDarkTheme: boolean = theme === ""
+const theme = Astro.cookies.has("Theme") ? "dark" : "";
+const isDarkTheme: boolean = theme === "";
 ---
 
 <MainLayout

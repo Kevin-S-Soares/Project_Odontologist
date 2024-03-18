@@ -58,6 +58,8 @@
     <p class="text-center text-lg text-rose-500">Something went wrong!</p>
   {/if}
   {#if status === Status.SUCCESS}
-    <p class="text-center text-lg dark:text-white">Password changed successfully.</p>
+    <p class="text-center text-lg dark:text-white">
+      Password changed successfully.
+    </p>
   {/if}
 </FormPanel>
