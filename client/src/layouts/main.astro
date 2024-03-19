@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets"
 import Dropdown from "./_dropdown.svelte";
 import { Role } from "../models/enums";
 import { ViewTransitions } from "astro:transitions";
@@ -112,8 +113,10 @@ const isDarkTheme: boolean = theme === "";
                   </div>
                   <div class="relative flex w-96 items-center justify-between rounded-md px-2">
                     <div class="">
-                      <img
-                        class="h-10 w-10 rounded-full border-2 border-green-500"
+                      <Image
+                        width={40}
+                        height={40}
+                        class="rounded-full border-2 border-green-500"
                         src={image}
                         alt="user"
                       />
@@ -161,8 +164,10 @@ const isDarkTheme: boolean = theme === "";
                   </div>
                   <div class="relative flex w-96 items-center justify-between rounded-md px-2">
                     <div class="">
-                      <img
-                        class="h-10 w-10 rounded-full border-2 border-green-500"
+                      <Image
+                        width={40}
+                        height={40}
+                        class="rounded-full border-2 border-green-500"
                         src={image}
                         alt="user"
                       />
@@ -208,10 +213,13 @@ const isDarkTheme: boolean = theme === "";
                   </div>
                   <div class="relative flex w-96 items-center justify-between rounded-md px-2">
                     <div class="">
-                      <img
-                        class="h-10 w-10 rounded-full border-2 border-green-500"
+                      <Image
+                        width={40}
+                        height={40}
+                        class="rounded-full border-2 border-green-500"
                         src={image}
                         alt="user"
+                        loading={"eager"}
                       />
                     </div>
                     <div class="ml-2 font-semibold dark:text-white">{name}</div>

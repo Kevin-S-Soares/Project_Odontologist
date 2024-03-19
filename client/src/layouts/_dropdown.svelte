@@ -36,7 +36,7 @@
     class="{isDropDownActive
       ? ''
       : 'rotate-90'} rounded-full bg-gray-200 p-1 transition-all dark:bg-neutral-600"
-    id="arrow"
+      aria-label={"Dropdown button"}
     on:click={switchDropDown}
   >
     <Gear color={isDarkTheme ? "#1f2937" : "#FFFFFF"} />

@@ -28,7 +28,7 @@
 </script>
 
 <button
-  class="mt-2 line-clamp-1 inline-block text-lg text-rose-600 transition-all hover:underline"
+  class="mt-2 line-clamp-1 inline-block text-lg text-rose-600 dark:text-rose-400 transition-all hover:underline"
   data-astro-prefetch="hover"
   on:click={showModal}
 >

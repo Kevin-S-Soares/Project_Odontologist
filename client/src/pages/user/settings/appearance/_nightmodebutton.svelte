@@ -30,6 +30,7 @@
       class="absolute top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-all dark:bg-neutral-800 {isLightTheme
         ? ' translate-x-0'
         : ' translate-x-10'} duration-200"
+        aria-label={isDarkTheme? "Switch to light mode": "Switch to dark mode"}
       on:click={changeTheme}
     >
       <span class="relative">
