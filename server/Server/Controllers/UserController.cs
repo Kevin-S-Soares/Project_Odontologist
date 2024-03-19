@@ -15,7 +15,7 @@ public class UsersController(IUserService service) : ControllerBase
         await _service.CreateAsync(user);
 
 
-    [HttpGet, Route("/api/v1/users")]
+    [HttpGet, Route("/api/v1/users"), Authorize]
     public ActionResult GetAll() => _service.GetAll();
 
     [HttpDelete, Route("/api/v1/user/{id}"), Authorize]
@@ -35,4 +35,7 @@ public class UsersController(IUserService service) : ControllerBase
 
     [HttpPost, Route("/api/v1/user/change_password"), Authorize]
     public async Task<ActionResult> ChangePasswordAsync(string password) => await _service.ChangePasswordAsync(password);
+
+    [HttpGet, Route("/api/v1/user/{guid}"), Authorize]
+    public ActionResult GetUserById(Guid guid) => _service.GetUserById(guid);
 }

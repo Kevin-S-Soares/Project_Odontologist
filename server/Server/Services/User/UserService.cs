@@ -340,6 +340,25 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     }
 
+    public ServiceResponse<User> GetUserById(Guid guid)
+    {
+        var query = _context.Users.FirstOrDefault(search => search.Id == guid);
+        if(query is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                ErrorMessage = "User not found."
+            };
+        }
+
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Data = query
+        };
+    }
+
     private string GenerateNonRepetitiveHash()
     {
         while (true)
@@ -352,6 +371,4 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             }
         }
     }
-
-
 }
