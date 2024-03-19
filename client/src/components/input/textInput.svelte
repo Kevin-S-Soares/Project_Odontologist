@@ -1,17 +1,22 @@
 <script lang="ts">
+  import { errorText } from "../text/errorText.ts";
+
   export let value: string;
   export let id: string;
   export let label: string;
   export let emptyMessage = `${label} cannot be empty.`;
   export let invalidCallBack: (arg: boolean) => any = (arg) => 0;
 
+  const successOutline = "outline-teal-600";
+  const errorOutline = "outline-rose-600";
+
   let show = false;
   const clickInput = () => {
     if (value === "") {
       show = false;
       const input = document.getElementById(id) as HTMLInputElement;
-      if (input.classList.contains("outline-rose-500")) {
-        input.classList.remove("outline-rose-500");
+      if (input.classList.contains(errorOutline)) {
+        input.classList.remove(errorOutline);
       }
     }
   };
@@ -24,8 +29,8 @@
       if (!input.classList.contains("outline")) {
         input.classList.add("outline");
       }
-      if (!input.classList.contains("outline-rose-500")) {
-        input.classList.add("outline-rose-500");
+      if (!input.classList.contains(errorOutline)) {
+        input.classList.add(errorOutline);
       }
     } else {
       show = false;
@@ -33,11 +38,11 @@
       if (!input.classList.contains("outline")) {
         input.classList.add("outline");
       }
-      if (input.classList.contains("outline-rose-500")) {
-        input.classList.remove("outline-rose-500");
+      if (input.classList.contains(errorOutline)) {
+        input.classList.remove(errorOutline);
       }
-      if (!input.classList.contains("outline-teal-500")) {
-        input.classList.add("outline-teal-500");
+      if (!input.classList.contains(successOutline)) {
+        input.classList.add(successOutline);
       }
     }
   };
@@ -46,13 +51,13 @@
     const input = document.getElementById(id) as HTMLInputElement;
     if (value === "") {
       if (
-        input.classList.contains("outline-teal-500") ||
-        input.classList.contains("outline-rose-500")
+        input.classList.contains(successOutline) ||
+        input.classList.contains(errorOutline)
       ) {
-        if (input.classList.contains("outline-teal-500")) {
-          input.classList.remove("outline-teal-500");
+        if (input.classList.contains(successOutline)) {
+          input.classList.remove(successOutline);
         } else {
-          input.classList.remove("outline-rose-500");
+          input.classList.remove(errorOutline);
         }
       }
       show = false;
@@ -70,7 +75,7 @@
 <div class="mt-2 flex flex-col">
   <label class="font-medium dark:text-white" for={id}>{label}</label>
   <input
-    class="mt-2 rounded-md border-2 p-2 focus:outline focus:outline-teal-500"
+    class="mt-2 rounded-md border-2 p-2 focus:outline focus:{successOutline}"
     {id}
     type="text"
     bind:value
@@ -78,5 +83,5 @@
     on:focusout={showErrorMessage}
     on:input={verifyValue}
   />
-  <p class="mt-2 text-rose-500 {show ? 'block' : 'hidden'}">{emptyMessage}</p>
+  <p class="mt-2 {errorText} {show ? 'block' : 'hidden'}">{emptyMessage}</p>
 </div>

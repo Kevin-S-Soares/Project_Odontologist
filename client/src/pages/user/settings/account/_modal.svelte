@@ -28,7 +28,7 @@
 </script>
 
 <button
-  class="mt-2 line-clamp-1 inline-block rounded-md border px-2 py-4 text-lg transition-all hover:bg-rose-100 hover:text-rose-500 dark:border-neutral-900 dark:text-white"
+  class="mt-2 line-clamp-1 inline-block text-lg text-rose-600 transition-all hover:underline"
   data-astro-prefetch="hover"
   on:click={showModal}
 >
@@ -63,7 +63,7 @@
       </div>
       <div class="flex items-center justify-around">
         <button
-          class="rounded-md border bg-rose-500 p-2 font-bold text-white transition-all hover:bg-rose-600 dark:border-neutral-900"
+          class="rounded-md border bg-rose-600 p-2 font-bold text-white transition-all hover:bg-rose-700 dark:border-neutral-900"
           on:click={submit}>Submit</button
         >
         <button

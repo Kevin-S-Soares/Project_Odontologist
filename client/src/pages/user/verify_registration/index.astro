@@ -1,4 +1,5 @@
 ---
+import { errorText } from "../../../components/text/errorText";
 import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
 import Padding from "../../../layouts/padding.astro";
 import { Role, Status } from "../../../models/enums";
@@ -50,7 +51,7 @@ status = response.status === 200 ? Status.SUCCESS : Status.ERROR;
         }
         {
           status === Status.ERROR ? (
-            <p class="text-center text-rose-500">Invalid token.</p>
+            <p class={`text-center ${errorText}`}>Invalid token.</p>
           ) : (
             <Fragment />
           )

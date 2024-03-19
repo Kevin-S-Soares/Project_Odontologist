@@ -1,6 +1,7 @@
 <script lang="ts">
   import Eye from "../svg/eye.svelte";
   import ClosedEye from "../svg/closedEye.svelte";
+  import { errorText } from "../text/errorText";
 
   export let id: string;
   export let idConfirm: string;
@@ -12,6 +13,9 @@
   export let confirmErrorMessage: string = "Passwords do not match.";
   export let emptyMessage: string = "Password cannot be empty.";
   export let invalidCallBack: (arg: boolean) => any = () => 0;
+
+  const successOutline = "outline-teal-600";
+  const errorOutline = "outline-rose-600";
 
   export let pattern: string = ".*";
 
@@ -33,28 +37,28 @@
     element: HTMLInputElement,
     arg: { show: boolean; color: string },
   ) => {
-    if (element.classList.contains("outline-teal-500")) {
-      element.classList.remove("outline-teal-500");
+    if (element.classList.contains(successOutline)) {
+      element.classList.remove(successOutline);
     }
-    if (!element.classList.contains("outline-rose-500")) {
-      element.classList.add("outline-rose-500");
+    if (!element.classList.contains(errorOutline)) {
+      element.classList.add(errorOutline);
     }
     arg.show = true;
-    arg.color = "#f43f5e";
+    arg.color = "#e11d48";
   };
 
   const setSuccess = (
     element: HTMLInputElement,
     arg: { show: boolean; color: string },
   ) => {
-    if (element.classList.contains("outline-rose-500")) {
-      element.classList.remove("outline-rose-500");
+    if (element.classList.contains(errorOutline)) {
+      element.classList.remove(errorOutline);
     }
-    if (!element.classList.contains("outline-teal-500")) {
-      element.classList.add("outline-teal-500");
+    if (!element.classList.contains(successOutline)) {
+      element.classList.add(successOutline);
     }
     arg.show = false;
-    arg.color = "#14b8a6";
+    arg.color = "#0d9488";
   };
 
   const changeType = (event: any) => {
@@ -85,13 +89,13 @@
     const input = document.getElementById(id) as HTMLInputElement;
     if (value === "") {
       if (
-        input.classList.contains("outline-teal-500") ||
-        input.classList.contains("outline-rose-500")
+        input.classList.contains(successOutline) ||
+        input.classList.contains(errorOutline)
       ) {
-        if (input.classList.contains("outline-teal-500")) {
-          input.classList.remove("outline-teal-500");
+        if (input.classList.contains(successOutline)) {
+          input.classList.remove(successOutline);
         } else {
-          input.classList.remove("outline-rose-500");
+          input.classList.remove(errorOutline);
         }
       }
       details.show = false;
@@ -118,13 +122,13 @@
     const input = document.getElementById(idConfirm) as HTMLInputElement;
     if (confirmValue === "") {
       if (
-        input.classList.contains("outline-teal-500") ||
-        input.classList.contains("outline-rose-500")
+        input.classList.contains(successOutline) ||
+        input.classList.contains(errorOutline)
       ) {
-        if (input.classList.contains("outline-teal-500")) {
-          input.classList.remove("outline-teal-500");
+        if (input.classList.contains(successOutline)) {
+          input.classList.remove(successOutline);
         } else {
-          input.classList.remove("outline-rose-500");
+          input.classList.remove(errorOutline);
         }
       }
       detailsConfirm.show = false;
@@ -208,8 +212,8 @@
     if (value === "") {
       details.show = false;
       const input = document.getElementById(id) as HTMLInputElement;
-      if (input.classList.contains("outline-rose-500")) {
-        input.classList.remove("outline-rose-500");
+      if (input.classList.contains(errorOutline)) {
+        input.classList.remove(errorOutline);
       }
       details.color = "#000000";
     }
@@ -218,8 +222,8 @@
     if (confirmValue === "") {
       detailsConfirm.show = false;
       const input = document.getElementById(idConfirm) as HTMLInputElement;
-      if (input.classList.contains("outline-rose-500")) {
-        input.classList.remove("outline-rose-500");
+      if (input.classList.contains(errorOutline)) {
+        input.classList.remove(errorOutline);
       }
       detailsConfirm.color = "#000000";
     }
@@ -251,7 +255,7 @@
     {/if}
   </button>
 
-  <p class="mt-2 text-rose-500 {details.show ? 'block' : 'hidden'}">
+  <p class="mt-2 {errorText} {details.show ? 'block' : 'hidden'}">
     {details.message}
   </p>
 </div>
@@ -281,7 +285,7 @@
     {/if}
   </button>
 
-  <p class="mt-2 text-rose-500 {detailsConfirm.show ? 'block' : 'hidden'}">
+  <p class="mt-2 {errorText} {detailsConfirm.show ? 'block' : 'hidden'}">
     {detailsConfirm.message}
   </p>
 </div>

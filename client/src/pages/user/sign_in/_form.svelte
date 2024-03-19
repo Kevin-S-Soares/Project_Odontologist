@@ -5,6 +5,7 @@
   import SubmitButton from "../../../components/button/submitButton.svelte";
   import { authenticate } from "../../../models/APIAdapters/user/authenticate";
   import { Status } from "../../../models/enums";
+  import { errorText } from "../../../components/text/errorText";
 
   const form = {
     email: "",
@@ -66,6 +67,6 @@
   </div>
 
   {#if status == Status.ERROR}
-    <p class="mt-4 text-xl text-rose-500">Email or password invalid!</p>
+    <p class="mt-4 text-xl {errorText}">Email or password invalid!</p>
   {/if}
 </FormPanel>

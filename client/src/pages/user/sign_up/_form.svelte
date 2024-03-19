@@ -6,6 +6,7 @@
   import SubmitButton from "../../../components/button/submitButton.svelte";
   import { register } from "../../../models/APIAdapters/user/register";
   import { Status } from "../../../models/enums";
+  import { errorText } from "../../../components/text/errorText";
 
   const form = {
     name: "",
@@ -68,7 +69,7 @@
       />
     </div>
     {#if status === Status.ERROR}
-      <p class="mt-2 text-xl text-rose-500">Something went wrong!</p>
+      <p class="mt-2 text-xl {errorText}">Something went wrong!</p>
     {/if}
   {/if}
   {#if status === Status.SUCCESS}

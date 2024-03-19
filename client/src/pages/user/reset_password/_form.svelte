@@ -4,6 +4,7 @@
   import SubmitButton from "../../../components/button/submitButton.svelte";
   import { resetPassword } from "../../../models/APIAdapters/user/resetPassword";
   import { Status } from "../../../models/enums";
+  import { errorText } from "../../../components/text/errorText";
 
   const form = {
     password: "",
@@ -55,7 +56,7 @@
     </div>
   {/if}
   {#if status === Status.ERROR}
-    <p class="text-center text-lg text-rose-500">Something went wrong!</p>
+    <p class="text-center text-lg {errorText}">Something went wrong!</p>
   {/if}
   {#if status === Status.SUCCESS}
     <p class="text-center text-lg dark:text-white">

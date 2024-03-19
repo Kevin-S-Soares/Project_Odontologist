@@ -34,9 +34,13 @@
     >
       <span class="relative">
         {#if isLightTheme}
-          <span class="absolute -translate-x-1/2 -translate-y-1/2"><Sun color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span>
+          <span class="absolute -translate-x-1/2 -translate-y-1/2"
+            ><Sun color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          >
         {:else}
-          <span class="absolute -translate-x-1/2 -translate-y-1/2"><Moon color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span>
+          <span class="absolute -translate-x-1/2 -translate-y-1/2"
+            ><Moon color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          >
         {/if}
       </span>
     </button>

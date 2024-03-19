@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { errorText } from "../text/errorText.ts";
   import Eye from "../svg/eye.svelte";
   import ClosedEye from "../svg/closedEye.svelte";
 
@@ -11,6 +12,9 @@
 
   export let pattern: string = ".*";
 
+  const successOutline = "outline-teal-600";
+  const errorOutline = "outline-rose-600";
+
   let details = {
     pressed: false,
     color: "#000000",
@@ -22,28 +26,28 @@
     element: HTMLInputElement,
     arg: { show: boolean; color: string },
   ) => {
-    if (element.classList.contains("outline-teal-500")) {
-      element.classList.remove("outline-teal-500");
+    if (element.classList.contains(successOutline)) {
+      element.classList.remove(successOutline);
     }
-    if (!element.classList.contains("outline-rose-500")) {
-      element.classList.add("outline-rose-500");
+    if (!element.classList.contains(errorOutline)) {
+      element.classList.add(errorOutline);
     }
     arg.show = true;
-    arg.color = "#f43f5e";
+    arg.color = "#e11d48";
   };
 
   const setSuccess = (
     element: HTMLInputElement,
     arg: { show: boolean; color: string },
   ) => {
-    if (element.classList.contains("outline-rose-500")) {
-      element.classList.remove("outline-rose-500");
+    if (element.classList.contains(errorOutline)) {
+      element.classList.remove(errorOutline);
     }
-    if (!element.classList.contains("outline-teal-500")) {
-      element.classList.add("outline-teal-500");
+    if (!element.classList.contains(successOutline)) {
+      element.classList.add(successOutline);
     }
     arg.show = false;
-    arg.color = "#14b8a6";
+    arg.color = "#0d9488";
   };
 
   const changeType = (event: any) => {
@@ -62,13 +66,13 @@
     const input = document.getElementById(id) as HTMLInputElement;
     if (value === "") {
       if (
-        input.classList.contains("outline-teal-500") ||
-        input.classList.contains("outline-rose-500")
+        input.classList.contains(successOutline) ||
+        input.classList.contains(errorOutline)
       ) {
-        if (input.classList.contains("outline-teal-500")) {
-          input.classList.remove("outline-teal-500");
+        if (input.classList.contains(successOutline)) {
+          input.classList.remove(successOutline);
         } else {
-          input.classList.remove("outline-rose-500");
+          input.classList.remove(errorOutline);
         }
       }
       details.show = false;
@@ -118,8 +122,8 @@
     if (value === "") {
       details.show = false;
       const input = document.getElementById(id) as HTMLInputElement;
-      if (input.classList.contains("outline-rose-500")) {
-        input.classList.remove("outline-rose-500");
+      if (input.classList.contains(errorOutline)) {
+        input.classList.remove(errorOutline);
       }
       details.color = "#000000";
     }
@@ -151,7 +155,7 @@
     {/if}
   </button>
 
-  <p class="mt-2 text-rose-500 {details.show ? 'block' : 'hidden'}">
+  <p class="mt-2 {errorText} {details.show ? 'block' : 'hidden'}">
     {details.message}
   </p>
 </div>
