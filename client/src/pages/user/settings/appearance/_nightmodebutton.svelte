@@ -32,11 +32,11 @@
         : ' translate-x-10'} duration-200"
       on:click={changeTheme}
     >
-      <span>
+      <span class="relative">
         {#if isLightTheme}
-          <Sun color={isDarkTheme ? "#1f2937" : "#FFFFFF"} />
+          <span class="absolute -translate-x-1/2 -translate-y-1/2"><Sun color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span>
         {:else}
-          <Moon color={isDarkTheme ? "#1f2937" : "#FFFFFF"} />
+          <span class="absolute -translate-x-1/2 -translate-y-1/2"><Moon color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span>
         {/if}
       </span>
     </button>
