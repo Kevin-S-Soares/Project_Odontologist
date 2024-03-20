@@ -4,7 +4,7 @@
   import Sun from "../../../../components/svg/sun.svelte";
   import Moon from "../../../../components/svg/moon.svelte";
 
-  let isLightTheme = isDarkTheme;
+  let isLightTheme = !isDarkTheme;
 
   const changeTheme = () => {
     isLightTheme = !isLightTheme;
@@ -30,17 +30,17 @@
       class="absolute top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white transition-all dark:bg-neutral-800 {isLightTheme
         ? ' translate-x-0'
         : ' translate-x-10'} duration-200"
-        aria-label={isDarkTheme? "Switch to light mode": "Switch to dark mode"}
+      aria-label={isDarkTheme ? "Switch to light mode" : "Switch to dark mode"}
       on:click={changeTheme}
     >
       <span class="relative">
         {#if isLightTheme}
           <span class="absolute -translate-x-1/2 -translate-y-1/2"
-            ><Sun color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+            ><Sun color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
           >
         {:else}
           <span class="absolute -translate-x-1/2 -translate-y-1/2"
-            ><Moon color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+            ><Moon color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
           >
         {/if}
       </span>

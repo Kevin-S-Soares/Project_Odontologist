@@ -1,5 +1,5 @@
 ---
-import { Image } from "astro:assets"
+import { Image } from "astro:assets";
 import Dropdown from "./_dropdown.svelte";
 import { Role } from "../models/enums";
 import { ViewTransitions } from "astro:transitions";
@@ -29,7 +29,7 @@ if (Astro.cookies.has("Authorization")) {
 }
 
 const theme = Astro.cookies.has("Theme") ? "dark" : "";
-const isDarkTheme: boolean = theme === "";
+const isDarkTheme: boolean = theme === "dark";
 ---
 
 <html lang="en">
@@ -83,7 +83,7 @@ const isDarkTheme: boolean = theme === "";
             )
           }
           {
-            role === Role.ADMIN ? (
+            role === Role.ADMIN || role === Role.VISITOR ? (
               <>
                 <div class="flex h-full items-center justify-center lg:justify-between">
                   <div class="hidden lg:block">

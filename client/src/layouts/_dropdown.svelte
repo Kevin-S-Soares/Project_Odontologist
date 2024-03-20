@@ -36,24 +36,24 @@
     class="{isDropDownActive
       ? ''
       : 'rotate-90'} rounded-full bg-gray-200 p-1 transition-all dark:bg-neutral-600"
-      aria-label={"Dropdown button"}
+    aria-label={"Dropdown button"}
     on:click={switchDropDown}
   >
-    <Gear color={isDarkTheme ? "#1f2937" : "#FFFFFF"} />
+    <Gear color={isDarkTheme ? "#FFFFFF" : "#1f2937"} />
   </button>
 
   <div
     id="dropdown"
-    class="absolute left-0 top-16 z-10 {isDropDownActive
+    class="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-[8.5rem] lg:top-[6rem]  z-10 {isDropDownActive
       ? 'flex'
       : 'hidden'} w-96 flex-col rounded-md border bg-white py-1 dark:border-neutral-900 dark:bg-neutral-800"
   >
-    {#if role === Role.ADMIN}
+    {#if role === Role.ADMIN || role === Role.VISITOR}
       <a
         class="grid grid-cols-2 hover:underline lg:hidden dark:decoration-white"
         href="/appointments/"
         ><span class="mr-12 place-self-end self-center"
-          ><Calendar color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          ><Calendar color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
         ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
           >Appointments</span
         ></a
@@ -62,16 +62,16 @@
         class="grid grid-cols-2 hover:underline lg:hidden dark:decoration-white"
         href="/odontologists/"
         ><span class="mr-12 place-self-end self-center"
-          ><Tooth color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          ><Tooth color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
         ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
           >Odontologists</span
         ></a
       >
       <a
         class="grid grid-cols-2 hover:underline lg:hidden dark:decoration-white"
-        href="/appointments/"
+        href="/users/"
         ><span class="mr-12 place-self-end self-center dark:text-white"
-          ><User color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          ><User color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
         ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
           >Users</span
         ></a
@@ -82,7 +82,7 @@
         class="grid grid-cols-2 hover:underline lg:hidden dark:decoration-white"
         href="/appointments/"
         ><span class="mr-12 place-self-end self-center"
-          ><Calendar color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          ><Calendar color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
         ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
           >Appointments</span
         ></a
@@ -91,7 +91,7 @@
         class="grid grid-cols-2 hover:underline lg:hidden dark:decoration-white"
         href="/odontologists/"
         ><span class="mr-12 place-self-end self-center"
-          ><Tooth color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          ><Tooth color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
         ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
           >Dashboard</span
         ></a
@@ -102,7 +102,7 @@
         class="grid grid-cols-2 hover:underline lg:hidden dark:decoration-white"
         href="/appointments/"
         ><span class="mr-12 place-self-end self-center"
-          ><Calendar color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          ><Calendar color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
         ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
           >Appointments</span
         ></a
@@ -111,7 +111,7 @@
         class="grid grid-cols-2 hover:underline lg:hidden dark:decoration-white"
         href="/odontologists/"
         ><span class="mr-12 place-self-end self-center"
-          ><Tooth color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+          ><Tooth color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
         ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
           >Odontologists</span
         ></a
@@ -122,7 +122,7 @@
       class="grid grid-cols-2 hover:underline dark:decoration-white"
       href="/user/settings/appearance"
       ><span class="mr-12 place-self-end self-center"
-        ><Tool color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+        ><Tool color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
       ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
         >Settings</span
       ></a
@@ -131,7 +131,7 @@
       on:click={logout}
       class="grid grid-cols-2 hover:underline dark:decoration-white"
       ><span class="mr-12 place-self-end self-center"
-        ><Exit color={isDarkTheme ? "#1f2937" : "#FFFFFF"} /></span
+        ><Exit color={isDarkTheme ? "#FFFFFF" : "#1f2937"} /></span
       ><span class="ml-4 place-self-start self-center text-lg dark:text-white"
         >Log out</span
       ></button

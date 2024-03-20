@@ -3,6 +3,7 @@ export enum Role {
   ADMIN,
   ODONTOLOGIST,
   ATTENDANT,
+  VISITOR,
 }
 
 export enum Status {

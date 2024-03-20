@@ -61,7 +61,7 @@
     />
     <a
       data-astro-prefetch="hover"
-      class="underline text-cyan-700 hover:text-cyan-800 dark:text-cyan-400 dark:hover:text-cyan-300"
+      class="text-cyan-700 underline hover:text-cyan-800 dark:text-cyan-400 dark:hover:text-cyan-300"
       href="/user/forget_password">Forgot password?</a
     >
   </div>
