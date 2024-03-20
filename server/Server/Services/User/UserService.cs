@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 namespace Server.Services;
 
 public class UserService(ApplicationContext _context, IEmailService _emailService, IAuthService _authService) : IUserService
-{   
+{
     public async Task<ServiceResponse<User>> CreateAsync(ClientUser request)
     {
         var query = _context.Users.FirstOrDefault(search => search.Email == request.Email);
@@ -28,7 +28,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             Email = request.Email,
             CreatedAt = DateTime.Now,
             Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = (Role) new Random().Next(1, 4)
+            Role = Role.VISITOR
         };
 
         var storage = new HashStorage
@@ -104,11 +104,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public ServiceResponse<IEnumerable<User>> GetAll()
     {
-
-        return new()
+        if (_authService.GetRole() == Role.VISITOR)
         {
-            StatusCode = StatusCodes.Status200OK,
-            Data = [.. _context.Users.Select(search => new User 
+            return new()
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Data = [.. _context.Users.Select(search => new User
             {
                 Id = search.Id,
                 Name = "",
@@ -119,6 +120,20 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                 VerifiedAt = search.VerifiedAt,
                 Role = search.Role
             })]
+            };
+        }
+        if (_authService.GetRole() == Role.ADMIN)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Data = [.. _context.Users]
+            };
+        }
+        return new()
+        {
+            StatusCode = StatusCodes.Status403Forbidden,
+            ErrorMessage = "Not authorized."
         };
     }
 
@@ -188,7 +203,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     private string CreateJWT(User user)
     {
-        string verified = user.VerifiedAt == null? "" : user.VerifiedAt.Value.ToString();
+        string verified = user.VerifiedAt == null ? "" : user.VerifiedAt.Value.ToString();
         var claims = new List<Claim>()
             {
                 new("sub", user.Id.ToString()),
@@ -203,7 +218,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
         */
         var rsa = RSA.Create();
-        rsa.ImportFromPem(Environment.GetEnvironmentVariable("PRIVATE_KEY")?? "");
+        rsa.ImportFromPem(Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? "");
         var key = new RsaSecurityKey(rsa);
         var credentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha512);
 
@@ -219,7 +234,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
     {
         var query = _context.Users.FirstOrDefault(search => search.Email == email);
 
-        if(query is null)
+        if (query is null)
         {
             return new()
             {
@@ -228,19 +243,21 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             };
         }
 
-        var operation = _context.HashStorage.FirstOrDefault(search => 
-            search.UserId == query.Id && 
+        var operation = _context.HashStorage.FirstOrDefault(search =>
+            search.UserId == query.Id &&
             search.Operation == Operation.RESET_PASSWORD
             );
         var condition = operation is not null && DateTime.Now.Subtract(operation.CreatedAt).Minutes < 15;
-        if(condition is true){
+        if (condition is true)
+        {
             return new()
             {
                 StatusCode = StatusCodes.Status409Conflict,
                 ErrorMessage = "Wait 15 minutes to request a new password change."
             };
         }
-        var hashStorage = new HashStorage{
+        var hashStorage = new HashStorage
+        {
             UserId = query.Id,
             Hash = GenerateNonRepetitiveHash(),
             Operation = Operation.RESET_PASSWORD,
@@ -309,7 +326,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
     public async Task<ServiceResponse<bool>> ChangePasswordAsync(string request)
     {
         var query = _context.Users.FirstOrDefault(search => search.Id == _authService.GetGuid());
-        if(query is null)
+        if (query is null)
         {
             return new()
             {
@@ -323,7 +340,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             _context.Users.Update(query);
             await _context.SaveChangesAsync();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return new()
             {
@@ -343,7 +360,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
     public ServiceResponse<User> GetUserById(Guid guid)
     {
         var query = _context.Users.FirstOrDefault(search => search.Id == guid);
-        if(query is null)
+        if (query is null)
         {
             return new()
             {
