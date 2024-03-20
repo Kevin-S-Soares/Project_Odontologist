@@ -1,0 +1,160 @@
+---
+import { jwtDetails } from "../../../layouts/main.astro";
+import Trash from "../../../components/svg/trash.svelte";
+import Pen from "../../../components/svg/pen.svelte";
+import { Role } from "../../../models/enums";
+import Layout from "../index.astro";
+import { Image } from "astro:assets";
+const { slug } = Astro.params;
+
+if (
+  !(jwtDetails.getRole() === Role.ADMIN || jwtDetails.getRole() == Role.VISITOR)
+) {
+  return Astro.redirect("/");
+}
+const authorization = Astro.cookies.get("Authorization")?.value ?? "";
+const options: RequestInit = {
+  headers: {
+    "content-type": "application/json",
+    authorization: authorization,
+  },
+  method: "GET",
+};
+
+const response = await fetch(
+  `${process.env.SERVER}/api/v1/user/${slug}`,
+  options,
+);
+const user = await response.json();
+const roles = new Map<number, string>();
+roles.set(0, "None")
+roles.set(1, "Admin")
+roles.set(2, "Odontologist")
+roles.set(3, "Attendant")
+roles.set(4, "Visitor")
+
+const theme = Astro.cookies.has("Theme") ? "dark" : "";
+const isDarkTheme: boolean = theme === "dark";
+---
+
+<Layout>
+  <div
+    class="grid grid-cols-2 line-clamp-1 grid-rows-12 gap-x-8 rounded-md border bg-gray-50 p-2 dark:border-neutral-900 dark:bg-neutral-700"
+  >
+    <div
+      class="col-start-1 col-end-3 row-start-1 row-end-6 place-self-center justify-self-center"
+    >
+      <Image
+        height={160}
+        width={160}
+        class="  rounded-full border border-neutral-900"
+        src={user.profilePictureUrl === ""
+          ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+          : user.profilePictureUrl}
+        alt={`user ${user.name}`}
+        loading={"eager"}
+      />
+    </div>
+    <div
+      class="  col-start-1 col-end-2 row-start-6 row-end-7 place-self-center justify-self-end"
+    >
+      <button
+        aria-label="edit user"
+        class="relative h-10 w-10 rounded-full border bg-amber-600 transition-all hover:bg-amber-700 dark:border-neutral-900 dark:bg-amber-400 dark:hover:bg-amber-500"
+        ><span class="absolute -translate-x-1/2 -translate-y-1/2"
+          ><Pen color={isDarkTheme ? "#404040" : "#e5e7eb"} /></span
+        ></button
+      >
+    </div>
+    <div
+      class="  col-start-2 col-end-3 row-start-6 row-end-7 place-self-center justify-self-start"
+    >
+      <button
+        aria-label="delete user"
+        class="relative h-10 w-10 rounded-full border bg-rose-600 transition-all hover:bg-rose-700 dark:border-neutral-900 dark:bg-rose-400 dark:hover:bg-rose-500"
+        ><span class="absolute -translate-x-1/2 -translate-y-1/2"
+          ><Trash color={isDarkTheme ? "#404040" : "#e5e7eb"} /></span
+        ></button
+      >
+    </div>
+    <div
+      class="  col-start-1 col-end-2 row-start-8 row-end-9 place-self-center justify-self-end"
+    >
+      <p class="  font-medium dark:text-white">Id</p>
+    </div>
+    <div
+      class="  col-start-1 col-end-2 row-start-9 row-end-10 place-self-center justify-self-end"
+    >
+      <p class="  font-medium dark:text-white">Name</p>
+    </div>
+    <div
+      class="  col-start-1 col-end-2 row-start-10 row-end-11 place-self-center justify-self-end"
+    >
+      <p class="  font-medium dark:text-white">Email</p>
+    </div>
+    <div
+      class="  col-start-1 col-end-2 row-start-11 row-end-12 place-self-center justify-self-end"
+    >
+      <p class="  font-medium dark:text-white">Created At</p>
+    </div>
+    <div
+      class="   col-start-1 col-end-2 row-start-12 row-end-13 place-self-center justify-self-end"
+    >
+      <p class="  font-medium dark:text-white">Role</p>
+    </div>
+
+    <div
+      class="  col-start-2 col-end-3 row-start-8 row-end-9 place-self-center justify-self-start"
+    >
+      <p class="dark:text-white line-clamp-3">{user.id}</p>
+    </div>
+    <div
+      class="col-start-2 col-end-3 row-start-9 row-end-10 place-self-center justify-self-start"
+    >
+      {
+        jwtDetails.getRole() === Role.ADMIN ? (
+          <p class="dark:text-white line-clamp-3">{user.name}</p>
+        ) : (
+          <Fragment />
+        )
+      }
+      {
+        jwtDetails.getRole() === Role.VISITOR ? (
+          <p class="`blur-sm dark:text-white line-clamp-3">************</p>
+        ) : (
+          <Fragment />
+        )
+      }
+    </div>
+    <div
+      class="max-w-full col-start-2 col-end-3 row-start-10 row-end-11 place-self-center justify-self-start"
+    >
+      {
+        jwtDetails.getRole() === Role.ADMIN ? (
+          <a class="dark:text-white underline line-clamp-3 truncate block" href={`mailto:${user.email}`}>
+            {user.email}
+          </a>
+        ) : (
+          <Fragment />
+        )
+      }
+      {
+        jwtDetails.getRole() === Role.VISITOR ? (
+          <p class="`underline blur-sm dark:text-white line-clamp-2">************</p>
+        ) : (
+          <Fragment />
+        )
+      }
+    </div>
+    <div
+      class="col-start-2 col-end-3 row-start-11 row-end-12 place-self-center justify-self-start"
+    >
+      <p class="dark:text-white line-clamp-3">{new Date(user.createdAt).toLocaleString()}</p>
+    </div>
+    <div
+      class="col-start-2 col-end-3 row-start-12 row-end-13 place-self-center justify-self-start"
+    >
+      <p class="dark:text-white line-clamp-3">{roles.get(user.role)}</p>
+    </div>
+  </div>
+</Layout>
