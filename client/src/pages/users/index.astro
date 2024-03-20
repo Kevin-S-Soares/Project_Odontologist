@@ -4,6 +4,10 @@ import Padding from "../../layouts/padding.astro";
 import { Image } from "astro:assets";
 import { Role } from "../../models/enums";
 
+if (!jwtDetails.isValid()) {
+  Astro.cookies.set("Authorization", "");
+  return Astro.redirect("/user/sign_in");
+}
 if (
   !(jwtDetails.getRole() === Role.ADMIN || jwtDetails.getRole() == Role.VISITOR)
 ) {
@@ -18,16 +22,18 @@ const options = {
   method: "GET",
 };
 const response = await fetch(`${process.env.SERVER}/api/v1/users`, options);
+console.log(options)
 const body = await response.json();
+
 ---
 
 <MainLayout title="Users - Index" description="Verify all registered users.">
   <Padding>
-    <section class="flex flex-col-reverse lg:flex-row px-2" transition:animate="fade">
-      <div
-        class="h-96 w-full overflow-y-auto lg:w-1/4"
-        transition:persist
-      >
+    <section
+      class="flex flex-col-reverse px-2 lg:flex-row"
+      transition:animate="fade"
+    >
+      <div class="h-96 w-full overflow-y-auto lg:w-1/4" transition:persist>
         {
           body.map((item: any) => (
             <a
@@ -48,7 +54,7 @@ const body = await response.json();
                   loading={"eager"}
                 />{" "}
               </span>
-              <span class="line-clamp-1 dark:text-white ml-2">
+              <span class="ml-2 line-clamp-1 dark:text-white">
                 {jwtDetails.getRole() === Role.ADMIN ? item.name : <Fragment />}
                 {jwtDetails.getRole() === Role.VISITOR ? item.id : <Fragment />}
               </span>
@@ -56,7 +62,7 @@ const body = await response.json();
           ))
         }
       </div>
-      <div class="w-full mt-2 lg:m-4 lg:w-3/4" transition:animate="fade">
+      <div class="mt-2 w-full lg:mx-2 lg:w-3/4" transition:animate="fade">
         <slot />
       </div>
     </section>

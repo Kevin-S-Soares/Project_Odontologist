@@ -7,6 +7,10 @@ import Layout from "../index.astro";
 import { Image } from "astro:assets";
 const { slug } = Astro.params;
 
+if (!jwtDetails.isValid()) {
+  Astro.cookies.set("Authorization", "", { path: "", maxAge: 0});
+  return Astro.redirect("/user/sign_in");
+}
 if (
   !(jwtDetails.getRole() === Role.ADMIN || jwtDetails.getRole() == Role.VISITOR)
 ) {
@@ -26,12 +30,13 @@ const response = await fetch(
   options,
 );
 const user = await response.json();
+console.log(user)
 const roles = new Map<number, string>();
-roles.set(0, "None")
-roles.set(1, "Admin")
-roles.set(2, "Odontologist")
-roles.set(3, "Attendant")
-roles.set(4, "Visitor")
+roles.set(0, "None");
+roles.set(1, "Admin");
+roles.set(2, "Odontologist");
+roles.set(3, "Attendant");
+roles.set(4, "Visitor");
 
 const theme = Astro.cookies.has("Theme") ? "dark" : "";
 const isDarkTheme: boolean = theme === "dark";
@@ -39,7 +44,7 @@ const isDarkTheme: boolean = theme === "dark";
 
 <Layout>
   <div
-    class="grid grid-cols-2 line-clamp-1 grid-rows-12 gap-x-8 rounded-md border bg-gray-50 p-2 dark:border-neutral-900 dark:bg-neutral-700"
+    class="line-clamp-1 grid grid-cols-2 grid-rows-12 gap-x-8 rounded-md border bg-gray-50 p-2 dark:border-neutral-900 dark:bg-neutral-700"
   >
     <div
       class="col-start-1 col-end-3 row-start-1 row-end-6 place-self-center justify-self-center"
@@ -47,7 +52,7 @@ const isDarkTheme: boolean = theme === "dark";
       <Image
         height={160}
         width={160}
-        class="  rounded-full border border-neutral-900"
+        class="rounded-full border border-neutral-900"
         src={user.profilePictureUrl === ""
           ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
           : user.profilePictureUrl}
@@ -56,7 +61,7 @@ const isDarkTheme: boolean = theme === "dark";
       />
     </div>
     <div
-      class="  col-start-1 col-end-2 row-start-6 row-end-7 place-self-center justify-self-end"
+      class="col-start-1 col-end-2 row-start-6 row-end-7 place-self-center justify-self-end"
     >
       <button
         aria-label="edit user"
@@ -67,7 +72,7 @@ const isDarkTheme: boolean = theme === "dark";
       >
     </div>
     <div
-      class="  col-start-2 col-end-3 row-start-6 row-end-7 place-self-center justify-self-start"
+      class="col-start-2 col-end-3 row-start-6 row-end-7 place-self-center justify-self-start"
     >
       <button
         aria-label="delete user"
@@ -78,60 +83,63 @@ const isDarkTheme: boolean = theme === "dark";
       >
     </div>
     <div
-      class="  col-start-1 col-end-2 row-start-8 row-end-9 place-self-center justify-self-end"
+      class="col-start-1 col-end-2 row-start-8 row-end-9 place-self-center justify-self-end"
     >
-      <p class="  font-medium dark:text-white">Id</p>
+      <p class="font-medium dark:text-white">Id</p>
     </div>
     <div
-      class="  col-start-1 col-end-2 row-start-9 row-end-10 place-self-center justify-self-end"
+      class="col-start-1 col-end-2 row-start-9 row-end-10 place-self-center justify-self-end"
     >
-      <p class="  font-medium dark:text-white">Name</p>
+      <p class="font-medium dark:text-white">Name</p>
     </div>
     <div
-      class="  col-start-1 col-end-2 row-start-10 row-end-11 place-self-center justify-self-end"
+      class="col-start-1 col-end-2 row-start-10 row-end-11 place-self-center justify-self-end"
     >
-      <p class="  font-medium dark:text-white">Email</p>
+      <p class="font-medium dark:text-white">Email</p>
     </div>
     <div
-      class="  col-start-1 col-end-2 row-start-11 row-end-12 place-self-center justify-self-end"
+      class="col-start-1 col-end-2 row-start-11 row-end-12 place-self-center justify-self-end"
     >
-      <p class="  font-medium dark:text-white">Created At</p>
+      <p class="font-medium dark:text-white">Created At</p>
     </div>
     <div
-      class="   col-start-1 col-end-2 row-start-12 row-end-13 place-self-center justify-self-end"
+      class="col-start-1 col-end-2 row-start-12 row-end-13 place-self-center justify-self-end"
     >
-      <p class="  font-medium dark:text-white">Role</p>
+      <p class="font-medium dark:text-white">Role</p>
     </div>
 
     <div
-      class="  col-start-2 col-end-3 row-start-8 row-end-9 place-self-center justify-self-start"
+      class="col-start-2 col-end-3 row-start-8 row-end-9 place-self-center justify-self-start"
     >
-      <p class="dark:text-white line-clamp-3">{user.id}</p>
+      <p class="line-clamp-3 dark:text-white">{user.id}</p>
     </div>
     <div
       class="col-start-2 col-end-3 row-start-9 row-end-10 place-self-center justify-self-start"
     >
       {
         jwtDetails.getRole() === Role.ADMIN ? (
-          <p class="dark:text-white line-clamp-3">{user.name}</p>
+          <p class="line-clamp-3 dark:text-white">{user.name}</p>
         ) : (
           <Fragment />
         )
       }
       {
         jwtDetails.getRole() === Role.VISITOR ? (
-          <p class="`blur-sm dark:text-white line-clamp-3">************</p>
+          <p class="`blur-sm line-clamp-3 dark:text-white">************</p>
         ) : (
           <Fragment />
         )
       }
     </div>
     <div
-      class="max-w-full col-start-2 col-end-3 row-start-10 row-end-11 place-self-center justify-self-start"
+      class="col-start-2 col-end-3 row-start-10 row-end-11 max-w-full place-self-center justify-self-start"
     >
       {
         jwtDetails.getRole() === Role.ADMIN ? (
-          <a class="dark:text-white underline line-clamp-3 truncate block" href={`mailto:${user.email}`}>
+          <a
+            class="line-clamp-3 block truncate underline dark:text-white"
+            href={`mailto:${user.email}`}
+          >
             {user.email}
           </a>
         ) : (
@@ -140,7 +148,9 @@ const isDarkTheme: boolean = theme === "dark";
       }
       {
         jwtDetails.getRole() === Role.VISITOR ? (
-          <p class="`underline blur-sm dark:text-white line-clamp-2">************</p>
+          <p class="`underline line-clamp-2 blur-sm dark:text-white">
+            ************
+          </p>
         ) : (
           <Fragment />
         )
@@ -149,12 +159,14 @@ const isDarkTheme: boolean = theme === "dark";
     <div
       class="col-start-2 col-end-3 row-start-11 row-end-12 place-self-center justify-self-start"
     >
-      <p class="dark:text-white line-clamp-3">{new Date(user.createdAt).toLocaleString()}</p>
+      <p class="line-clamp-3 dark:text-white">
+        {new Date(user.createdAt).toLocaleString()}
+      </p>
     </div>
     <div
       class="col-start-2 col-end-3 row-start-12 row-end-13 place-self-center justify-self-start"
     >
-      <p class="dark:text-white line-clamp-3">{roles.get(user.role)}</p>
+      <p class="line-clamp-3 dark:text-white">{roles.get(user.role)}</p>
     </div>
   </div>
 </Layout>

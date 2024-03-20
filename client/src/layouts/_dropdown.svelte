@@ -44,7 +44,7 @@
 
   <div
     id="dropdown"
-    class="absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-[8.5rem] lg:top-[6rem]  z-10 {isDropDownActive
+    class="absolute left-1/2 top-[8.5rem] z-10 -translate-x-1/2 -translate-y-1/2 lg:top-[6rem] {isDropDownActive
       ? 'flex'
       : 'hidden'} w-96 flex-col rounded-md border bg-white py-1 dark:border-neutral-900 dark:bg-neutral-800"
   >

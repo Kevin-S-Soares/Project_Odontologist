@@ -46,6 +46,7 @@ jobs:
         username: ${{ env.USER }}
         port: ${{ env.PORT }}
         key: ${{ env.KEY }}
+        command_timeout: 20m
         script: |
           cd projects/Project_Odontologist
           git pull
