@@ -10,9 +10,9 @@ namespace Server.Services;
 
 public class UserService(ApplicationContext _context, IEmailService _emailService, IAuthService _authService) : IUserService
 {
-    public async Task<ServiceResponse<User>> CreateAsync(ClientUser request)
+    public async Task<ServiceResponse<User>> CreateAsync(ClientRegisterUser request)
     {
-        var query = _context.Users.FirstOrDefault(search => search.Email == request.Email);
+        var query = _context.Users.FirstOrDefault(item => item.Email == request.Email);
         if (query is not null)
         {
             return new()
@@ -66,9 +66,9 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public async Task<ServiceResponse<bool>> VerifyRegistrationAsync(ClientHashOperation request)
     {
-        var query = _context.HashStorage.FirstOrDefault(search =>
-            search.Hash == request.Hash && search.UserId == request.UserId
-            && search.Operation == Operation.REGISTER_ACCOUNT
+        var query = _context.HashStorage.FirstOrDefault(item =>
+            item.Hash == request.Hash && item.UserId == request.UserId
+            && item.Operation == Operation.REGISTER_ACCOUNT
             && request.Operation == Operation.REGISTER_ACCOUNT);
         if (query is null)
         {
@@ -79,7 +79,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             };
         }
 
-        var user = _context.Users.First(search => search.Id == request.UserId);
+        var user = _context.Users.First(item => item.Id == request.UserId);
         user.VerifiedAt = DateTime.Now;
         try
         {
@@ -104,25 +104,34 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public ServiceResponse<IEnumerable<User>> GetAll()
     {
-        if (_authService.GetRole() == Role.VISITOR)
+        var requester = _authService.GetRequester();
+        if (requester is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                ErrorMessage = "User not found."
+            };
+        }
+        if (requester.Role == Role.VISITOR)
         {
             return new()
             {
                 StatusCode = StatusCodes.Status200OK,
-                Data = [.. _context.Users.Select(search => new User
+                Data = [.. _context.Users.Select(item => new User
             {
-                Id = search.Id,
+                Id = item.Id,
                 Name = "",
-                ProfilePictureUrl = search.ProfilePictureUrl,
+                ProfilePictureUrl = item.ProfilePictureUrl,
                 Email = "",
                 Password = "",
-                CreatedAt = search.CreatedAt,
-                VerifiedAt = search.VerifiedAt,
-                Role = search.Role
+                CreatedAt = item.CreatedAt,
+                VerifiedAt = item.VerifiedAt,
+                Role = item.Role
             })]
             };
         }
-        if (_authService.GetRole() == Role.ADMIN)
+        if (requester.Role == Role.ADMIN)
         {
             return new()
             {
@@ -139,7 +148,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public async Task<ServiceResponse<bool>> RemoveByIdAsync(Guid id)
     {
-        var query = _context.Users.FirstOrDefault(search => search.Id == id);
+        var query = _context.Users.FirstOrDefault(item => item.Id == id);
         if (query is null)
         {
             return new()
@@ -173,7 +182,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public ServiceResponse<string> Authenticate(ClientAuthentication request)
     {
-        var query = _context.Users.FirstOrDefault(search => search.Email == request.Email);
+        var query = _context.Users.FirstOrDefault(item => item.Email == request.Email);
         if (query is null)
         {
             return new()
@@ -201,38 +210,9 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         };
     }
 
-    private string CreateJWT(User user)
-    {
-        string verified = user.VerifiedAt == null ? "" : user.VerifiedAt.Value.ToString();
-        var claims = new List<Claim>()
-            {
-                new("sub", user.Id.ToString()),
-                new("name", user.Name),
-                new("pic", user.ProfilePictureUrl),
-                new("role", Convert.ToInt32(user.Role).ToString()),
-                new("verified", verified)
-            };
-        /*
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-            Environment.GetEnvironmentVariable("SECRET_KEY") ?? ""));
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-        */
-        var rsa = RSA.Create();
-        rsa.ImportFromPem(Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? "");
-        var key = new RsaSecurityKey(rsa);
-        var credentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha512);
-
-        var token = new JwtSecurityToken(
-            claims: claims,
-            expires: DateTime.UtcNow.AddDays(1),
-            signingCredentials: credentials);
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
-
     public async Task<ServiceResponse<bool>> ForgetPasswordAsync(string email)
     {
-        var query = _context.Users.FirstOrDefault(search => search.Email == email);
+        var query = _context.Users.FirstOrDefault(item => item.Email == email);
 
         if (query is null)
         {
@@ -243,9 +223,9 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             };
         }
 
-        var operation = _context.HashStorage.FirstOrDefault(search =>
-            search.UserId == query.Id &&
-            search.Operation == Operation.RESET_PASSWORD
+        var operation = _context.HashStorage.FirstOrDefault(item =>
+            item.UserId == query.Id &&
+            item.Operation == Operation.RESET_PASSWORD
             );
         var condition = operation is not null && DateTime.Now.Subtract(operation.CreatedAt).Minutes < 15;
         if (condition is true)
@@ -287,9 +267,9 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public async Task<ServiceResponse<bool>> ResetPasswordAsync(ClientResetPassword request)
     {
-        var query = _context.HashStorage.FirstOrDefault(search =>
-            search.Hash == request.Hash && search.UserId == request.UserId
-            && search.Operation == Operation.RESET_PASSWORD
+        var query = _context.HashStorage.FirstOrDefault(item =>
+            item.Hash == request.Hash && item.UserId == request.UserId
+            && item.Operation == Operation.RESET_PASSWORD
             && request.Operation == Operation.RESET_PASSWORD);
         if (query is null)
         {
@@ -300,7 +280,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             };
         }
 
-        var user = _context.Users.First(search => search.Id == request.UserId);
+        var user = _context.Users.First(item => item.Id == request.UserId);
         user.Password = BCrypt.Net.BCrypt.HashPassword(request.Password);
         try
         {
@@ -325,7 +305,16 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public async Task<ServiceResponse<bool>> ChangePasswordAsync(string request)
     {
-        var query = _context.Users.FirstOrDefault(search => search.Id == _authService.GetGuid());
+        var user = _authService.GetRequester();
+        if (user is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status409Conflict,
+                ErrorMessage = "Id does not exist."
+            };
+        }
+        var query = _context.Users.FirstOrDefault(item => item.Id == user.Id);
         if (query is null)
         {
             return new()
@@ -359,7 +348,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     public ServiceResponse<User> GetUserById(Guid guid)
     {
-        var query = _context.Users.FirstOrDefault(search => search.Id == guid);
+        var query = _context.Users.FirstOrDefault(item => item.Id == guid);
         if (query is null)
         {
             return new()
@@ -376,6 +365,132 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         };
     }
 
+
+    public ServiceResponse<User> GetCurrentUser()
+    {
+        var requester = _authService.GetRequester();
+        if (requester is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                ErrorMessage = "Requester does not exist."
+            };
+        }
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Data = requester
+        };
+    }
+
+    public ServiceResponse<IEnumerable<User>> GetOtherUsers()
+    {
+        var requester = _authService.GetRequester();
+        if (requester is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                ErrorMessage = "Requester does not exist."
+            };
+        }
+        if (requester.Role == Role.ADMIN)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Data = [.. _context.Users.Where(el => el.Id != requester.Id)]
+            };
+        }
+        if (requester.Role == Role.VISITOR)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status200OK,
+                Data = [ .. _context.Users.Where( item => item.Id != requester.Id ).Select( item => new User()
+                {
+                    Id = item.Id,
+                    Name = "",
+                    ProfilePictureUrl = item.ProfilePictureUrl,
+                    Email = "",
+                    Password = "",
+                    CreatedAt = item.CreatedAt,
+                    VerifiedAt = item.VerifiedAt,
+                    Role = item.Role
+                }) ]
+            };
+        }
+        return new()
+        {
+            StatusCode = StatusCodes.Status403Forbidden,
+            ErrorMessage = "Not authorized."
+        };
+    }
+
+    public async Task<ServiceResponse<bool>> UpdateUserAsync(ClientUpdateUser request)
+    {
+        var requester = _authService.GetRequester();
+        if (requester is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                ErrorMessage = "Requester does not exist."
+            };
+        }
+        var query = _context.Users.FirstOrDefault(item => item.Id == request.Id);
+        if (query is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status404NotFound,
+                ErrorMessage = "User does not exist."
+            };
+        }
+
+        if (requester.Role != Role.ADMIN && requester.Id != request.Id)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status403Forbidden,
+                ErrorMessage = "Not authorized."
+            };
+        }
+
+        if (request.Role == Role.ADMIN && requester.Role != Role.ADMIN)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status400BadRequest,
+                ErrorMessage = "Cannot change role to administrator without being administrator."
+            };
+        }
+
+        query.Name = request.Name;
+        query.ProfilePictureUrl = request.ProfilePictureUrl;
+        query.Role = request.Role;
+
+        try
+        {
+            _context.Users.Update(query);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = $"Something went wrong while updating user: {e.Message}"
+            };
+        }
+
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Data = true
+        };
+    }
     private string GenerateNonRepetitiveHash()
     {
         while (true)
@@ -387,5 +502,33 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                 return result;
             }
         }
+    }
+    private string CreateJWT(User user)
+    {
+        string verified = user.VerifiedAt == null ? "" : user.VerifiedAt.Value.ToString();
+        var claims = new List<Claim>()
+            {
+                new("sub", user.Id.ToString()),
+                new("name", user.Name),
+                new("pic", user.ProfilePictureUrl),
+                new("role", Convert.ToInt32(user.Role).ToString()),
+                new("verified", verified)
+            };
+        /*
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            Environment.GetEnvironmentVariable("SECRET_KEY") ?? ""));
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
+        */
+        var rsa = RSA.Create();
+        rsa.ImportFromPem(Environment.GetEnvironmentVariable("PRIVATE_KEY") ?? "");
+        var key = new RsaSecurityKey(rsa);
+        var credentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha512);
+
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddDays(1),
+            signingCredentials: credentials);
+
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
 }

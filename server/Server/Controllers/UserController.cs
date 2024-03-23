@@ -6,20 +6,13 @@ using Server.Services;
 namespace Server.Controllers;
 
 [ApiController]
-public class UsersController(IUserService service) : ControllerBase
+public class UserController(IUserService _service) : ControllerBase
 {
-    private readonly IUserService _service = service;
-
     [HttpPost, Route("/api/v1/user")]
-    public async Task<ActionResult> CreateAsync(ClientUser user) =>
-        await _service.CreateAsync(user);
+    public async Task<ActionResult> CreateAsync(ClientRegisterUser user) => await _service.CreateAsync(user);
 
-
-    [HttpGet, Route("/api/v1/users"), Authorize]
-    public ActionResult GetAll() => _service.GetAll();
-
-    [HttpDelete, Route("/api/v1/user/{id}"), Authorize]
-    public async Task<ActionResult> RemoveById(Guid id) => await _service.RemoveByIdAsync(id);
+    [HttpDelete, Route("/api/v1/user/{guid}"), Authorize]
+    public async Task<ActionResult> RemoveById(Guid guid) => await _service.RemoveByIdAsync(guid);
 
     [HttpPost, Route("/api/v1/user/authenticate")]
     public ActionResult Authenticate(ClientAuthentication request) => _service.Authenticate(request);
@@ -38,4 +31,7 @@ public class UsersController(IUserService service) : ControllerBase
 
     [HttpGet, Route("/api/v1/user/{guid}"), Authorize]
     public ActionResult GetUserById(Guid guid) => _service.GetUserById(guid);
+
+    [HttpGet, Route("api/v1/user/me"), Authorize]
+    public ActionResult GetCurrentUser() => _service.GetCurrentUser();
 }

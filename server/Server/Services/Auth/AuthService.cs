@@ -1,33 +1,18 @@
 using System.Security.Claims;
+using Server.Contexts;
 using Server.Models;
 
 namespace Server.Services;
 
-public class AuthService : IAuthService
+public class AuthService (ApplicationContext _context, IHttpContextAccessor _httpContextAccessor) : IAuthService
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
-
-    public AuthService(IHttpContextAccessor httpContextAccessor)
-    {
-        _httpContextAccessor = httpContextAccessor;
-    }
-
-    public Guid GetGuid()
+    public User? GetRequester()
     {
         Guid result = Guid.Empty;
         if (_httpContextAccessor.HttpContext is not null)
         {
             _ = Guid.TryParse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out result);
         }
-        return result;
-    }
-    public Role GetRole()
-    {
-        Role result = Role.NONE;
-        if (_httpContextAccessor.HttpContext is not null)
-        {
-            result = (Role) Convert.ToInt32(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role));
-        }
-        return result;
+        return _context.Users.FirstOrDefault(search => search.Id == result);
     }
 }
