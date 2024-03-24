@@ -562,7 +562,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             };
         }
 
-        await _emailService.ConfirmEmailAsync(user: requester, hashStorage);
+        await _emailService.ConfirmEmailAsync(user: requester, email, hashStorage);
         return new()
         {
             StatusCode = StatusCodes.Status200OK,
