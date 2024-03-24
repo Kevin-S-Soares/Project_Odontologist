@@ -34,4 +34,7 @@ public class UserController(IUserService _service) : ControllerBase
 
     [HttpGet, Route("api/v1/user/me"), Authorize]
     public ActionResult GetCurrentUser() => _service.GetCurrentUser();
+
+    [HttpPut, Route("api/v1/user"), Authorize]
+    public async Task<ActionResult> UpdateUserAsync(ClientUpdateUser request) => await _service.UpdateUserAsync(request);
 }
