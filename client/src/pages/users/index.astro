@@ -2,6 +2,7 @@
 import MainLayout, { jwtDetails } from "../../layouts/main.astro";
 import Padding from "../../layouts/padding.astro";
 import { Image } from "astro:assets";
+import Placeholder from "../../../public/placeholder.png";
 import { Role } from "../../models/enums";
 import MagnifierGlass from "../../components/svg/magnifierGlass.svelte";
 
@@ -22,7 +23,10 @@ const options = {
   },
   method: "GET",
 };
-const response = await fetch(`${process.env.SERVER}/api/v1/users`, options);
+const response = await fetch(
+  `${process.env.SERVER}/api/v1/users/others`,
+  options,
+);
 const body = await response.json();
 ---
 
@@ -33,16 +37,25 @@ const body = await response.json();
       transition:animate="fade"
     >
       <div class="mt-2 h-96 w-full overflow-y-auto lg:w-1/4" transition:persist>
-        <div class="relative">
-          <input
-            type="text"
-            class="h-10 w-full rounded-md border px-4 text-right placeholder:font-medium placeholder:text-black dark:border-neutral-900"
-            placeholder="Search for an user"
-          />
-          <div class="absolute left-2 top-2.5">
-            <span><MagnifierGlass /></span>
-          </div>
-        </div>
+        {
+          jwtDetails.getRole() === Role.ADMIN ? (
+            <div class="relative">
+              <input
+                type="text"
+                name="search"
+                class="h-10 w-full rounded-md border px-4 text-right placeholder:font-medium placeholder:text-black dark:border-neutral-900"
+                placeholder="Search for an user"
+              />
+              <div class="absolute left-2 top-2.5">
+                <span>
+                  <MagnifierGlass />
+                </span>
+              </div>
+            </div>
+          ) : (
+            <Fragment />
+          )
+        }
         {
           body.map((item: any) => (
             <a
@@ -54,11 +67,7 @@ const body = await response.json();
                   width={32}
                   height={32}
                   class="rounded-full border border-neutral-900"
-                  src={
-                    item.profilePictureUrl === ""
-                      ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-                      : item.profilePictureUrl
-                  }
+                  src={Placeholder}
                   alt={`user ${item.id}`}
                   loading={"eager"}
                 />{" "}

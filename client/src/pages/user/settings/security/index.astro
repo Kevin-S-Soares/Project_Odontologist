@@ -15,13 +15,20 @@ if (!jwtDetails.isValid()) {
   <Padding>
     <section class="w-full">
       <Settings>
-        <div class="mt-4 pl-10">
+        <div class="mt-4 flex flex-col pl-10">
           <a
             class="mt-2 line-clamp-1 inline-block rounded-md text-lg transition-all hover:underline dark:text-white"
             href="/user/settings/security/change_password"
             data-astro-prefetch="hover"
           >
             Change password
+          </a>
+          <a
+            class="mt-8 line-clamp-1 inline-block rounded-md text-lg transition-all hover:underline dark:text-white"
+            href="/user/settings/security/change_email"
+            data-astro-prefetch="hover"
+          >
+            Change email
           </a>
         </div>
       </Settings>

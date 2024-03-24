@@ -1,0 +1,45 @@
+---
+import { jwtDetails } from "../../../../layouts/main.astro";
+import Form from "./_form.svelte";
+import { Role } from "../../../../models/enums";
+import Layout from "../../index.astro";
+const { slug } = Astro.params;
+
+if (!jwtDetails.isValid()) {
+  Astro.cookies.set("Authorization", "", { path: "", maxAge: 0 });
+  return Astro.redirect("/user/sign_in");
+}
+if (
+  !(jwtDetails.getRole() === Role.ADMIN || jwtDetails.getRole() == Role.VISITOR)
+) {
+  return Astro.redirect("/");
+}
+const authorization = Astro.cookies.get("Authorization")?.value ?? "";
+const options: RequestInit = {
+  headers: {
+    "content-type": "application/json",
+    authorization: authorization,
+  },
+  method: "GET",
+};
+
+const response = await fetch(
+  `${process.env.SERVER}/api/v1/user/${slug}`,
+  options,
+);
+const user = await response.json();
+---
+
+<Layout>
+  <div
+    class="rounded-md border bg-gray-50 p-2 dark:border-neutral-900 dark:bg-neutral-700"
+  >
+    <Form
+      name={user.name}
+      role={user.role}
+      id={user.id}
+      token={jwtDetails.getToken()}
+      client:load
+    />
+  </div>
+</Layout>

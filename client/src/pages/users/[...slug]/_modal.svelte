@@ -1,7 +1,10 @@
 <script lang="ts">
-  import { remove } from "../../../../models/APIAdapters/user/remove";
+  import { remove } from "../../../models/APIAdapters/user/remove";
+  import Trash from "../../../components/svg/trash.svelte";
+
   export let id: string;
   export let token: string;
+  export let isDarkTheme: boolean;
 
   let isModalVisible = false;
   const showModal = () => {
@@ -17,22 +20,19 @@
     }
   };
   const submit = async () => {
-    const result = await remove(id, token);
-    if (result) {
-      document.cookie = "Authorization=; Max-age=0; Path=/;";
-      window.location.replace("/");
-    } else {
-      console.log("ops");
-    }
+    await remove(id, token);
+    window.location.replace("/users/");
   };
 </script>
 
 <button
-  class="mt-2 line-clamp-1 inline-block text-lg text-rose-600 transition-all hover:underline dark:text-rose-400"
+  aria-label="delete user"
+  class="relative h-10 w-10 rounded-full border bg-rose-600 transition-all hover:bg-rose-700 dark:border-neutral-900 dark:bg-rose-400 dark:hover:bg-rose-500"
   on:click={showModal}
+  ><span class="absolute -translate-x-1/2 -translate-y-1/2"
+    ><Trash color={isDarkTheme ? "#404040" : "#e5e7eb"} /></span
+  ></button
 >
-  Delete Account
-</button>
 <div
   id="modal"
   class="{isModalVisible
@@ -57,7 +57,7 @@
       </div>
       <div class="">
         <p class="text-center text-lg dark:text-white">
-          Are you sure that you want to delete your account?
+          Are you sure that you want to delete this account?
         </p>
       </div>
       <div class="flex items-center justify-around">

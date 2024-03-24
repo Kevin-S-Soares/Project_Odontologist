@@ -27,11 +27,33 @@ export const DELETE: APIRoute = async ({ request }) => {
     method: "DELETE",
   };
   const id = requestBody["id"];
-  console.log(options);
   const body = await fetch(
     `${process.env.SERVER ?? ""}/api/v1/user/${id}`,
     options,
   );
+  return new Response(JSON.stringify(body.ok), {
+    status: body.status,
+  });
+};
+
+export const PUT: APIRoute = async ({ request }) => {
+  const requestBody = await request.json();
+  const options = {
+    headers: {
+      "content-type": "application/json",
+      authorization: `bearer ${requestBody["token"]}`,
+    },
+    body: JSON.stringify({
+      id: requestBody["id"],
+      name: requestBody["name"],
+      role: requestBody["role"],
+      profilePictureUrl: "",
+    }),
+    method: "PUT",
+  };
+  console.log(requestBody["id"]);
+  const body = await fetch(`${process.env.SERVER ?? ""}/api/v1/user/`, options);
+  console.log(await body.text());
   return new Response(JSON.stringify(body.ok), {
     status: body.status,
   });

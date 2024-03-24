@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import Placerholder from "../../public/placeholder.png";
 import Dropdown from "./_dropdown.svelte";
 import { Role } from "../models/enums";
 import { ViewTransitions } from "astro:transitions";
@@ -9,7 +10,7 @@ const { title, description } = Astro.props;
 export let jwtDetails: JWTDetails = new JWTDetails();
 
 let name = "";
-let image = "";
+let image: string | ImageData = "";
 let role = Role.NONE;
 
 if (Astro.cookies.has("Authorization")) {
@@ -19,10 +20,7 @@ if (Astro.cookies.has("Authorization")) {
     image = jwtDetails.getImage();
     role = jwtDetails.getRole();
 
-    image =
-      image === ""
-        ? "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
-        : image;
+    image = image === "" ? "../../public/placeholder.png" : image;
   }
 } else {
   jwtDetails.resetToken();
@@ -117,8 +115,9 @@ const isDarkTheme: boolean = theme === "dark";
                         width={40}
                         height={40}
                         class="rounded-full border-2 border-green-500"
-                        src={image}
+                        src={Placerholder}
                         alt="user"
+                        loading={"eager"}
                       />
                     </div>
                     <div class="ml-2 font-semibold  dark:text-white">
@@ -168,8 +167,9 @@ const isDarkTheme: boolean = theme === "dark";
                         width={40}
                         height={40}
                         class="rounded-full border-2 border-green-500"
-                        src={image}
+                        src={Placerholder}
                         alt="user"
+                        loading={"eager"}
                       />
                     </div>
                     <div class="ml-2 font-semibold dark:text-white">{name}</div>
@@ -217,7 +217,7 @@ const isDarkTheme: boolean = theme === "dark";
                         width={40}
                         height={40}
                         class="rounded-full border-2 border-green-500"
-                        src={image}
+                        src={Placerholder}
                         alt="user"
                         loading={"eager"}
                       />

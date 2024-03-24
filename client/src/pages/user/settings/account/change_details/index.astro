@@ -1,0 +1,55 @@
+---
+import MainLayout, { jwtDetails } from "../../../../../layouts/main.astro";
+import Padding from "../../../../../layouts/padding.astro";
+import Settings from "../../../../../layouts/settings.astro";
+import { Role } from "../../../../../models/enums";
+import AdminForm from "./_adminForm.svelte";
+import Form from "./_form.svelte";
+
+if (!jwtDetails.isValid()) {
+  return Astro.redirect("/");
+}
+
+const authorization = Astro.cookies.get("Authorization")?.value ?? "";
+const options = {
+  headers: {
+    "content-type": "application/json",
+    authorization: authorization,
+  },
+};
+const response = await fetch(`${process.env.SERVER}/api/v1/user/me`, options);
+const user = await response.json();
+---
+
+<MainLayout
+  title={`${jwtDetails.getName()} - Account Management`}
+  description="Manage your account details."
+>
+  <Padding>
+    <section class="w-full">
+      <Settings>
+        <div class="mt-2 flex flex-col items-start">
+          {
+            jwtDetails.getRole() === Role.ADMIN ? (
+              <AdminForm
+                name={user.name}
+                role={user.role}
+                id={user.id}
+                token={jwtDetails.getToken()}
+                client:load
+              />
+            ) : (
+              <Form
+                name={user.name}
+                role={user.role}
+                id={user.id}
+                token={jwtDetails.getToken()}
+                client:load
+              />
+            )
+          }
+        </div>
+      </Settings>
+    </section>
+  </Padding>
+</MainLayout>
