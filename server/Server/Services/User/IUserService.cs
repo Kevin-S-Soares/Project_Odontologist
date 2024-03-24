@@ -8,7 +8,7 @@ public interface IUserService {
     public Task<ServiceResponse<bool>> VerifyRegistrationAsync(ClientHashOperation request);
     public ServiceResponse<IEnumerable<User>> GetAll();
     public Task<ServiceResponse<bool>> RemoveByIdAsync(Guid id);
-    public ServiceResponse<string> Authenticate(ClientAuthentication request);
+    public Task<ServiceResponse<string>> AuthenticateAsync(ClientAuthentication request);
     public Task<ServiceResponse<bool>> ForgetPasswordAsync(string email);
     public Task<ServiceResponse<bool>> ResetPasswordAsync(ClientResetPassword request);
     public Task<ServiceResponse<bool>> ChangePasswordAsync(string request);
@@ -16,4 +16,6 @@ public interface IUserService {
     public ServiceResponse<User> GetCurrentUser();
     public ServiceResponse<IEnumerable<User>> GetOtherUsers();
     public Task<ServiceResponse<bool>> UpdateUserAsync(ClientUpdateUser request);
+    public Task<ServiceResponse<bool>> ChangeEmailAsync(string request);
+    public Task<ServiceResponse<bool>> ConfirmEmailChangeAsync(ClientHashOperation request);
 }

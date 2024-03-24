@@ -42,3 +42,14 @@ VALUES ('20240313235053_ChangedHashStorage', '8.0.2');
 
 COMMIT;
 
+BEGIN TRANSACTION;
+
+ALTER TABLE "Users" ADD "LastLogin" TEXT NOT NULL DEFAULT '0001-01-01 00:00:00';
+
+ALTER TABLE "HashStorage" ADD "Details" TEXT NULL;
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20240324031352_UpdatedUsersAndHashOperation', '8.0.2');
+
+COMMIT;
+

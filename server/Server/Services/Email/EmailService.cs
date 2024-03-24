@@ -28,9 +28,16 @@ public class SendGridService : IEmailService
         return response.StatusCode == System.Net.HttpStatusCode.OK;
     }
 
-    public Task<bool> ConfirmEmailAsync(User user, HashStorage storage)
+    public async Task<bool> ConfirmEmailAsync(User user, HashStorage storage)
     {
-        throw new NotImplementedException();
+        var from = new EmailAddress("noreply@portfolio-project-odontologist.com", "Control Panel");
+        var subject = "Control Panel - Confirm email change";
+        var to = new EmailAddress(user.Email, user.Name);
+        var plainTextContent = $"Confirm your email change by pasting the following link. If you did not request any email change, please ignore this email. {_client}/user/confirm_change_email?hash={storage.Hash}&userId={storage.UserId}&operation={Convert.ToInt32(storage.Operation)}";
+        var htmlContent = $"<p>Confirm your email change by clicking the following link.</p><a href=\"{_client}/user/confirm_email_change?hash={storage.Hash}&userId={storage.UserId}&operation={Convert.ToInt32(storage.Operation)}\">Confirm your email</a><p>If you did not request any registration, please ignore this email.</p>";
+        var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        var response = await _emailClient.SendEmailAsync(msg);
+        return response.StatusCode == System.Net.HttpStatusCode.OK;
     }
 
     public async Task<bool> ForgetPasswordAsync(User user, HashStorage storage)

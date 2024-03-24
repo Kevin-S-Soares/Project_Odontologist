@@ -26,7 +26,9 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         {
             Name = request.Name,
             Email = request.Email,
+            NormalizedName = request.Name.ToUpper(),
             CreatedAt = DateTime.Now,
+            LastLogin = DateTime.Now,
             Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
             Role = Role.VISITOR
         };
@@ -122,9 +124,11 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             {
                 Id = item.Id,
                 Name = "",
+                NormalizedName = "",
                 ProfilePictureUrl = item.ProfilePictureUrl,
                 Email = "",
                 Password = "",
+                LastLogin = item.LastLogin,
                 CreatedAt = item.CreatedAt,
                 VerifiedAt = item.VerifiedAt,
                 Role = item.Role
@@ -180,7 +184,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         };
     }
 
-    public ServiceResponse<string> Authenticate(ClientAuthentication request)
+    public async Task<ServiceResponse<string>> AuthenticateAsync(ClientAuthentication request)
     {
         var query = _context.Users.FirstOrDefault(item => item.Email == request.Email);
         if (query is null)
@@ -202,6 +206,20 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             };
         }
 
+        query.LastLogin = DateTime.Now;
+        try
+        {
+            _context.Users.Update(query);
+            await _context.SaveChangesAsync();
+        }
+        catch(Exception e)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = $"Something went wrong while authenticating user: {e.Message}"
+            };
+        }
 
         return new()
         {
@@ -412,10 +430,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                 {
                     Id = item.Id,
                     Name = "",
+                    NormalizedName = "",
                     ProfilePictureUrl = item.ProfilePictureUrl,
                     Email = "",
                     Password = "",
                     CreatedAt = item.CreatedAt,
+                    LastLogin = item.LastLogin,
                     VerifiedAt = item.VerifiedAt,
                     Role = item.Role
                 }) ]
@@ -491,6 +511,108 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             Data = true
         };
     }
+
+    public async Task<ServiceResponse<bool>> ChangeEmailAsync(string email)
+    {
+        var requester = _authService.GetRequester();
+        if (requester is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status409Conflict,
+                ErrorMessage = "Requester does not exist."
+            };
+        }
+
+        var operation = _context.HashStorage.FirstOrDefault(item =>
+            item.UserId == requester.Id &&
+            item.Operation == Operation.CHANGE_EMAIL
+            );
+        var condition = operation is not null && DateTime.Now.Subtract(operation.CreatedAt).Minutes < 15;
+        if (condition is true)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status409Conflict,
+                ErrorMessage = "Wait 15 minutes to request a new email change."
+            };
+        }
+        var hashStorage = new HashStorage
+        {
+            UserId = requester.Id,
+            Hash = GenerateNonRepetitiveHash(),
+            Operation = Operation.CHANGE_EMAIL,
+            CreatedAt = DateTime.Now,
+            Details = email
+        };
+        try
+        {
+            await _context.AddAsync(hashStorage);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = $"Something went wrong while forgetting password: {e.Message}"
+            };
+        }
+
+        await _emailService.ConfirmEmailAsync(user: requester, hashStorage);
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Data = true
+        };
+    }
+
+    public async Task<ServiceResponse<bool>> ConfirmEmailChangeAsync(ClientHashOperation request)
+    {
+        var query = _context.HashStorage.FirstOrDefault(item =>
+            item.Hash == request.Hash && item.UserId == request.UserId
+            && item.Operation == Operation.CHANGE_EMAIL
+            && request.Operation == Operation.CHANGE_EMAIL);
+        if (query is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status409Conflict,
+                ErrorMessage = "Invalid hash, operation or user id."
+            };
+        }
+
+        var user = _context.Users.First(item => item.Id == request.UserId);
+        if(query.Details is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = "Something went wrong while confirming new email: Details are null."
+            };
+        }
+        user.Email = query.Details;
+        try
+        {
+            _context.Users.Update(user);
+            _context.HashStorage.Remove(query);
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception e)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = $"Something went wrong while verifying registration: {e.Message}"
+            };
+        }
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Data = true
+        };
+    }
+
     private string GenerateNonRepetitiveHash()
     {
         while (true)
@@ -503,6 +625,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             }
         }
     }
+
     private string CreateJWT(User user)
     {
         string verified = user.VerifiedAt == null ? "" : user.VerifiedAt.Value.ToString();

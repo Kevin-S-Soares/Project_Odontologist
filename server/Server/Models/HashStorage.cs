@@ -11,4 +11,5 @@ public class HashStorage
     public User User { get; set; } = default!;
     public Operation Operation { get; set; }
     public DateTime CreatedAt { get; set; }
+    public string? Details { get; set; }
 }

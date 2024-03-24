@@ -15,7 +15,7 @@ public class UserController(IUserService _service) : ControllerBase
     public async Task<ActionResult> RemoveById(Guid guid) => await _service.RemoveByIdAsync(guid);
 
     [HttpPost, Route("/api/v1/user/authenticate")]
-    public ActionResult Authenticate(ClientAuthentication request) => _service.Authenticate(request);
+    public async Task<ActionResult> AuthenticateAsync(ClientAuthentication request) => await _service.AuthenticateAsync(request);
 
     [HttpPost, Route("/api/v1/user/verify_registration")]
     public async Task<ActionResult> VerifyRegistration(ClientHashOperation request) => await _service.VerifyRegistrationAsync(request);
@@ -37,4 +37,10 @@ public class UserController(IUserService _service) : ControllerBase
 
     [HttpPut, Route("api/v1/user"), Authorize]
     public async Task<ActionResult> UpdateUserAsync(ClientUpdateUser request) => await _service.UpdateUserAsync(request);
+    
+    [HttpPost, Route("/api/v1/user/change_email")]
+    public async Task<ActionResult> ChangeEmailAsync(string email) => await _service.ChangeEmailAsync(email);
+
+    [HttpPost, Route("/api/v1/user/confirm_change_email")]
+    public async Task<ActionResult> ConfirmChangeEmailAsync(ClientHashOperation request) => await _service.ConfirmEmailChangeAsync(request);
 }
