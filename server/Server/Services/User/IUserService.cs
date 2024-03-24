@@ -6,7 +6,7 @@ namespace Server.Services;
 public interface IUserService {
     public Task<ServiceResponse<User>> CreateAsync(ClientRegisterUser request);
     public Task<ServiceResponse<bool>> VerifyRegistrationAsync(ClientHashOperation request);
-    public ServiceResponse<IEnumerable<User>> GetAll();
+    public ServiceResponse<IEnumerable<User>> GetAll(string? name);
     public Task<ServiceResponse<bool>> RemoveByIdAsync(Guid id);
     public Task<ServiceResponse<string>> AuthenticateAsync(ClientAuthentication request);
     public Task<ServiceResponse<bool>> ForgetPasswordAsync(string email);

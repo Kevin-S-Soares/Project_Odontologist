@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.RegularExpressions;
 
 namespace Server.Services;
 
@@ -104,7 +105,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         };
     }
 
-    public ServiceResponse<IEnumerable<User>> GetAll()
+    public ServiceResponse<IEnumerable<User>> GetAll(string? name)
     {
         var requester = _authService.GetRequester();
         if (requester is null)
@@ -137,10 +138,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         if (requester.Role == Role.ADMIN)
         {
+            var aux = name is null? ".*": name.ToUpper();
+            var match = (User user) => Regex.Match(user.NormalizedName, aux).Success;
             return new()
             {
                 StatusCode = StatusCodes.Status200OK,
-                Data = [.. _context.Users]
+                Data = [.. _context.Users.ToList().Where(item => match(item))]
             };
         }
         return new()
