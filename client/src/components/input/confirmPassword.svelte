@@ -234,7 +234,7 @@
   <label class="font-medium dark:text-white" for={id}>{label}</label>
 
   <input
-    class="mt-2 rounded-md border-2 p-2 focus:outline"
+    class="mt-2 h-12 rounded-md border-2 p-2 focus:outline"
     {id}
     type="password"
     bind:value
@@ -265,7 +265,7 @@
     >{confirmLabel}</label
   >
   <input
-    class="mt-2 rounded-md border-2 p-2 focus:outline"
+    class="mt-2 h-12 rounded-md border-2 p-2 focus:outline"
     id={idConfirm}
     type="password"
     bind:value={confirmValue}

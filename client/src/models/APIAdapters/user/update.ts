@@ -17,7 +17,6 @@ export const update = (user: UpdateUser, token: string): Promise<boolean> => {
         token: token,
       }),
     };
-    console.log(options.body);
     const response = await fetch("/api/user/", options);
     resolve(response.ok ? await response.json() : null);
   });

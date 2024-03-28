@@ -38,7 +38,7 @@ public class UserController(IUserService _service) : ControllerBase
     [HttpPut, Route("api/v1/user"), Authorize]
     public async Task<ActionResult> UpdateUserAsync(ClientUpdateUser request) => await _service.UpdateUserAsync(request);
     
-    [HttpPost, Route("/api/v1/user/change_email")]
+    [HttpPost, Route("/api/v1/user/change_email"), Authorize]
     public async Task<ActionResult> ChangeEmailAsync(string email) => await _service.ChangeEmailAsync(email);
 
     [HttpPost, Route("/api/v1/user/confirm_change_email")]

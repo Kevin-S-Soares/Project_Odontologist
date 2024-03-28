@@ -46,7 +46,7 @@
   {/if}
   {#if status === Status.SUCCESS}
     <p class="text-center text-lg dark:text-white">
-      Password changed successfully.
+      Please verify your email and follow its instructions.
     </p>
   {/if}
 </FormPanel>

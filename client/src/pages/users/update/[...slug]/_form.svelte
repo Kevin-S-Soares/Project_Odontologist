@@ -41,10 +41,10 @@
     <div class="mt-2 flex flex-col">
       <label for="role" class="font-medium dark:text-white">Role</label>
       <select
-        value={form.role}
+        bind:value={form.role}
         id="role"
         name="role"
-        class="mt-2 rounded-md border-2 bg-white p-2 dark:border-neutral-900"
+        class="mt-2 inline-block h-12 rounded-md border-2 bg-white p-2 dark:border-neutral-900"
       >
         <option value={Role.ADMIN}>Admin</option>
         <option value={Role.ODONTOLOGIST}>Odontologist</option>

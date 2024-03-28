@@ -9,9 +9,7 @@ if (!jwtDetails.isValid()) {
   Astro.cookies.set("Authorization", "", { path: "", maxAge: 0 });
   return Astro.redirect("/user/sign_in");
 }
-if (
-  !(jwtDetails.getRole() === Role.ADMIN || jwtDetails.getRole() == Role.VISITOR)
-) {
+if (!(jwtDetails.getRole() === Role.ADMIN)) {
   return Astro.redirect("/");
 }
 const authorization = Astro.cookies.get("Authorization")?.value ?? "";

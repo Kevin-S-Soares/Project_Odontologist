@@ -12,7 +12,9 @@ import Form from "./_form.svelte";
   <Padding>
     <section class="w-full">
       <Settings>
-        <Form token={jwtDetails.getToken()} client:load />
+        <div class="pl-6">
+          <Form token={jwtDetails.getToken()} client:load />
+        </div>
       </Settings>
     </section>
   </Padding>

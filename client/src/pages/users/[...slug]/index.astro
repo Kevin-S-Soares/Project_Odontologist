@@ -58,29 +58,34 @@ const isDarkTheme: boolean = theme === "dark";
         loading={"eager"}
       />
     </div>
-    <div
-      class="col-start-1 col-end-2 row-start-6 row-end-7 place-self-center justify-self-end"
-    >
-      <a
-        aria-label="edit user"
-        href={`/users/update/${user.id}`}
-        class="relative block h-10 w-10 rounded-full border bg-amber-600 transition-all hover:bg-amber-700 dark:border-neutral-900 dark:bg-amber-400 dark:hover:bg-amber-500"
-        ><span
-          class="absolute bottom-0 right-0 -translate-x-1/2 -translate-y-1/2"
-          ><Pen color={isDarkTheme ? "#404040" : "#e5e7eb"} /></span
-        ></a
-      >
-    </div>
-    <div
-      class="col-start-2 col-end-3 row-start-6 row-end-7 place-self-center justify-self-start"
-    >
-      <Modal
-        isDarkTheme={isDarkTheme}
-        id={user.id}
-        token={jwtDetails.getToken()}
-        client:load
-      />
-    </div>
+    {
+      jwtDetails.getRole() === Role.ADMIN ? (
+        <>
+          <div class="col-start-1 col-end-2 row-start-6 row-end-7 place-self-center justify-self-end">
+            <a
+              aria-label="edit user"
+              href={`/users/update/${user.id}`}
+              class="relative block h-10 w-10 rounded-full border bg-amber-600 transition-all hover:bg-amber-700 dark:border-neutral-900 dark:bg-amber-400 dark:hover:bg-amber-500"
+            >
+              <span class="absolute bottom-0 right-0 -translate-x-1/2 -translate-y-1/2">
+                <Pen color={isDarkTheme ? "#404040" : "#e5e7eb"} />
+              </span>
+            </a>
+          </div>
+          <div class="col-start-2 col-end-3 row-start-6 row-end-7 place-self-center justify-self-start">
+            <Modal
+              isDarkTheme={isDarkTheme}
+              id={user.id}
+              token={jwtDetails.getToken()}
+              client:load
+            />
+          </div>
+        </>
+      ) : (
+        <Fragment />
+      )
+    }
+
     <div
       class="col-start-1 col-end-2 row-start-8 row-end-9 place-self-center justify-self-end"
     >
@@ -124,7 +129,7 @@ const isDarkTheme: boolean = theme === "dark";
       }
       {
         jwtDetails.getRole() === Role.VISITOR ? (
-          <p class="`blur-sm line-clamp-3 dark:text-white">************</p>
+          <p class="line-clamp-3 blur-sm dark:text-white">************</p>
         ) : (
           <Fragment />
         )

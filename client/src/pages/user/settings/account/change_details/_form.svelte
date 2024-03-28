@@ -35,13 +35,13 @@
   };
 </script>
 
-{#if status === Status.WAITING}
-  <FormPanel bg_color="white">
+<FormPanel bg_color="white">
+  {#if status === Status.WAITING}
     <TextInput id="name" label="Name" bind:value={form.name} />
     <div class="mt-2 flex flex-col">
       <label for="role" class="font-medium dark:text-white">Role</label>
       <select
-        value={form.role}
+        bind:value={form.role}
         id="role"
         name="role"
         class="mt-2 rounded-md border-2 bg-white p-2 dark:border-neutral-900"
@@ -59,16 +59,16 @@
         disabled={form.invalidName || isLoading}
       />
     </div>
-  </FormPanel>
-{/if}
+  {/if}
 
-{#if status === Status.ERROR}
-  <div>
-    <p class={errorText}>Something went wrong while updating user.</p>
-  </div>
-{/if}
-{#if status === Status.SUCCESS}
-  <div class="mt-2 ml-2">
-    <p class="dark:text-white text-lg">Details updated.</p>
-  </div>
-{/if}
+  {#if status === Status.ERROR}
+    <div>
+      <p class={errorText}>Something went wrong while updating user.</p>
+    </div>
+  {/if}
+  {#if status === Status.SUCCESS}
+    <div class="pl-6">
+      <p class="text-lg dark:text-white">Details updated.</p>
+    </div>
+  {/if}
+</FormPanel>
