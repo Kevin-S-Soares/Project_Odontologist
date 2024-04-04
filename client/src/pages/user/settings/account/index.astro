@@ -2,22 +2,11 @@
 import MainLayout, { jwtDetails } from "../../../../layouts/main.astro";
 import Padding from "../../../../layouts/padding.astro";
 import Settings from "../../../../layouts/settings.astro";
-import { Role } from "../../../../models/enums";
 import Modal from "./_modal.svelte";
 
 if (!jwtDetails.isValid()) {
   return Astro.redirect("/");
 }
-
-const authorization = Astro.cookies.get("Authorization")?.value ?? "";
-const options = {
-  headers: {
-    "content-type": "application/json",
-    authorization: authorization,
-  },
-};
-const response = await fetch(`${process.env.SERVER}/api/v1/user/me`, options);
-const user = await response.json();
 ---
 
 <MainLayout
