@@ -44,7 +44,7 @@ const isDarkTheme: boolean = theme === "dark";
 
 <Layout>
   <div
-    class="line-clamp-1 grid grid-cols-2 grid-rows-12 gap-x-8 rounded-md border bg-gray-50 p-2 dark:border-neutral-900 dark:bg-neutral-700"
+    class="line-clamp-1 grid grid-cols-2 grid-rows-[repeat(13,minmax(0,1fr))] gap-x-8 rounded-md border bg-gray-50 p-2 dark:border-neutral-900 dark:bg-neutral-700"
   >
     <div
       class="col-start-1 col-end-3 row-start-1 row-end-6 place-self-center justify-self-center"
@@ -109,6 +109,11 @@ const isDarkTheme: boolean = theme === "dark";
     <div
       class="col-start-1 col-end-2 row-start-12 row-end-13 place-self-center justify-self-end"
     >
+      <p class="font-medium dark:text-white">Last Login</p>
+    </div>
+    <div
+      class="row-end-14 col-start-1 col-end-2 row-start-13 place-self-center justify-self-end"
+    >
       <p class="font-medium dark:text-white">Role</p>
     </div>
 
@@ -169,6 +174,13 @@ const isDarkTheme: boolean = theme === "dark";
     </div>
     <div
       class="col-start-2 col-end-3 row-start-12 row-end-13 place-self-center justify-self-start"
+    >
+      <p class="line-clamp-3 dark:text-white">
+        {new Date(user.lastLogin).toLocaleString()}
+      </p>
+    </div>
+    <div
+      class="row-end-14 col-start-2 col-end-3 row-start-13 place-self-center justify-self-start"
     >
       <p class="line-clamp-3 dark:text-white">{roles.get(user.role)}</p>
     </div>
