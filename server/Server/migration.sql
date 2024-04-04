@@ -53,3 +53,12 @@ VALUES ('20240324031352_UpdatedUsersAndHashOperation', '8.0.2');
 
 COMMIT;
 
+BEGIN TRANSACTION;
+
+ALTER TABLE "Users" ADD "NormalizedName" TEXT NOT NULL DEFAULT '';
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20240324033500_UpdatedUsersNormalizedName', '8.0.2');
+
+COMMIT;
+
