@@ -4,7 +4,7 @@ import Padding from "../../layouts/padding.astro";
 import { Image } from "astro:assets";
 import Placeholder from "../../../public/placeholder.png";
 import { Role } from "../../models/enums";
-import MagnifierGlass from "../../components/svg/magnifierGlass.svelte";
+
 import SearchBar from "./_searchBar.svelte";
 
 if (!jwtDetails.isValid()) {
@@ -41,12 +41,20 @@ const body = await response.json();
         body.length > 0 ? (
           <>
             {jwtDetails.getRole() === Role.ADMIN ? (
-              <SearchBar body={body} client:load />
+              <div
+                class="mt-2 h-96 w-full overflow-y-auto lg:w-1/4"
+                transition:persist
+              >
+                <SearchBar body={body} client:load />
+              </div>
             ) : (
               <Fragment />
             )}
             {jwtDetails.getRole() === Role.VISITOR ? (
-              <>
+              <div
+                class="mt-2 h-96 w-full overflow-y-auto lg:w-1/4"
+                transition:persist
+              >
                 {" "}
                 {body.map((item: any) => (
                   <a
@@ -77,7 +85,7 @@ const body = await response.json();
                     </span>
                   </a>
                 ))}
-              </>
+              </div>
             ) : (
               <Fragment />
             )}
