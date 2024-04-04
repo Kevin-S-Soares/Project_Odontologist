@@ -5,6 +5,7 @@ import { Image } from "astro:assets";
 import Placeholder from "../../../public/placeholder.png";
 import { Role } from "../../models/enums";
 import MagnifierGlass from "../../components/svg/magnifierGlass.svelte";
+import SearchBar from "./_searchBar.svelte";
 
 if (!jwtDetails.isValid()) {
   Astro.cookies.set("Authorization", "", { path: "", maxAge: 0 });
@@ -36,53 +37,60 @@ const body = await response.json();
       class="flex flex-col-reverse px-2 lg:flex-row"
       transition:animate="fade"
     >
-      <div class="mt-2 h-96 w-full overflow-y-auto lg:w-1/4" transition:persist>
-        {
-          jwtDetails.getRole() === Role.ADMIN ? (
-            <div class="relative">
-              <input
-                type="text"
-                name="search"
-                class="h-10 w-full rounded-md border px-4 text-right placeholder:font-medium placeholder:text-black dark:border-neutral-900"
-                placeholder="Search for an user"
-              />
-              <div class="absolute left-2 top-2.5">
-                <span>
-                  <MagnifierGlass />
-                </span>
-              </div>
+      {
+        body.length > 0 ? (
+          <>
+            {jwtDetails.getRole() === Role.ADMIN ? (
+              <SearchBar body={body} client:load />
+            ) : (
+              <Fragment />
+            )}
+            {jwtDetails.getRole() === Role.VISITOR ? (
+              <>
+                {" "}
+                {body.map((item: any) => (
+                  <a
+                    class="my-2 flex h-20 items-center justify-between rounded-md border bg-gray-100 px-4 py-2 dark:border-neutral-900 dark:bg-neutral-700 dark:text-white"
+                    href={`/users/${item.id}`}
+                  >
+                    <span class="">
+                      <Image
+                        width={32}
+                        height={32}
+                        class="rounded-full border border-neutral-900"
+                        src={Placeholder}
+                        alt={`user ${item.id}`}
+                        loading={"eager"}
+                      />{" "}
+                    </span>
+                    <span class="ml-2 line-clamp-1 dark:text-white">
+                      {jwtDetails.getRole() === Role.ADMIN ? (
+                        item.name
+                      ) : (
+                        <Fragment />
+                      )}
+                      {jwtDetails.getRole() === Role.VISITOR ? (
+                        item.id
+                      ) : (
+                        <Fragment />
+                      )}
+                    </span>
+                  </a>
+                ))}
+              </>
+            ) : (
+              <Fragment />
+            )}
+            <div class="mt-2 w-full lg:mx-2 lg:w-3/4" transition:animate="fade">
+              <slot />
             </div>
-          ) : (
-            <Fragment />
-          )
-        }
-        {
-          body.map((item: any) => (
-            <a
-              class="my-2 flex h-20 items-center justify-between rounded-md border bg-gray-100 px-4 py-2 dark:border-neutral-900 dark:bg-neutral-700 dark:text-white"
-              href={`/users/${item.id}`}
-            >
-              <span class="">
-                <Image
-                  width={32}
-                  height={32}
-                  class="rounded-full border border-neutral-900"
-                  src={Placeholder}
-                  alt={`user ${item.id}`}
-                  loading={"eager"}
-                />{" "}
-              </span>
-              <span class="ml-2 line-clamp-1 dark:text-white">
-                {jwtDetails.getRole() === Role.ADMIN ? item.name : <Fragment />}
-                {jwtDetails.getRole() === Role.VISITOR ? item.id : <Fragment />}
-              </span>
-            </a>
-          ))
-        }
-      </div>
-      <div class="mt-2 w-full lg:mx-2 lg:w-3/4" transition:animate="fade">
-        <slot />
-      </div>
+          </>
+        ) : (
+          <div class="mt-4 flex w-full items-center justify-center">
+            <p class="text-4xl dark:text-white">There are no other users.</p>
+          </div>
+        )
+      }
     </section>
   </Padding>
 </MainLayout>

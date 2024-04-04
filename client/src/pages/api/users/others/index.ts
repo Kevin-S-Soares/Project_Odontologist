@@ -12,7 +12,7 @@ export const GET: APIRoute = async ({ url, request }) => {
     },
   };
   const response = await fetch(
-    `${process.env.SERVER ?? ""}/api/v1/users?name=${name}`,
+    `${process.env.SERVER ?? ""}/api/v1/users/others?name=${name}`,
     options,
   );
   return new Response(JSON.stringify(await response.json()));

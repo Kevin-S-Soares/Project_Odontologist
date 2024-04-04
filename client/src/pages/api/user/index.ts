@@ -51,9 +51,7 @@ export const PUT: APIRoute = async ({ request }) => {
     }),
     method: "PUT",
   };
-  console.log(requestBody["id"]);
   const body = await fetch(`${process.env.SERVER ?? ""}/api/v1/user/`, options);
-  console.log(await body.text());
   return new Response(JSON.stringify(body.ok), {
     status: body.status,
   });
