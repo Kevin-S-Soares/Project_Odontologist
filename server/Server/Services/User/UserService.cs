@@ -143,7 +143,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             return new()
             {
                 StatusCode = StatusCodes.Status200OK,
-                Data = [.. _context.Users.ToList().Where(item => match(item))]
+                Data = [.. _context.Users.ToArray().Where(item => match(item))]
             };
         }
         return new()
@@ -405,7 +405,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         };
     }
 
-    public ServiceResponse<IEnumerable<User>> GetOtherUsers()
+    public ServiceResponse<IEnumerable<User>> GetOtherUsers(string? name)
     {
         var requester = _authService.GetRequester();
         if (requester is null)
@@ -418,10 +418,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         if (requester.Role == Role.ADMIN)
         {
+            var aux = string.IsNullOrWhiteSpace(name) ? ".*" : name.ToUpper();
+            var match = (User user) => Regex.Match(user.NormalizedName, aux).Success;
             return new()
             {
                 StatusCode = StatusCodes.Status200OK,
-                Data = [.. _context.Users.Where(el => el.Id != requester.Id)]
+                Data = [.. _context.Users.ToArray().Where(item => item.Id != requester.Id && match(item))]
             };
         }
         if (requester.Role == Role.VISITOR)

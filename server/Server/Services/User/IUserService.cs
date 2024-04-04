@@ -14,7 +14,7 @@ public interface IUserService {
     public Task<ServiceResponse<bool>> ChangePasswordAsync(string request);
     public ServiceResponse<User> GetUserById(Guid guid);
     public ServiceResponse<User> GetCurrentUser();
-    public ServiceResponse<IEnumerable<User>> GetOtherUsers();
+    public ServiceResponse<IEnumerable<User>> GetOtherUsers(string? name);
     public Task<ServiceResponse<bool>> UpdateUserAsync(ClientUpdateUser request);
     public Task<ServiceResponse<bool>> ChangeEmailAsync(string request);
     public Task<ServiceResponse<bool>> ConfirmEmailChangeAsync(ClientHashOperation request);
