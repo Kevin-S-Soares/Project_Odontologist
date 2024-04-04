@@ -138,7 +138,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         if (requester.Role == Role.ADMIN)
         {
-            var aux = name is null? ".*": name.ToUpper();
+            var aux = string.IsNullOrWhiteSpace(name) ? ".*" : name.ToUpper();
             var match = (User user) => Regex.Match(user.NormalizedName, aux).Success;
             return new()
             {
@@ -215,7 +215,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             _context.Users.Update(query);
             await _context.SaveChangesAsync();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             return new()
             {
@@ -491,6 +491,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
 
         query.Name = request.Name;
+        query.NormalizedName = request.Name.ToUpper();
         query.ProfilePictureUrl = request.ProfilePictureUrl;
         query.Role = request.Role;
 
@@ -586,7 +587,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
 
         var user = _context.Users.First(item => item.Id == request.UserId);
-        if(query.Details is null)
+        if (query.Details is null)
         {
             return new()
             {
