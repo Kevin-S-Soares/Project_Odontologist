@@ -9,13 +9,12 @@
 
   let isSearching = false;
   const search = () => {
-    console.log("hi");
     if (!isSearching) {
+      isSearching = true;
       setTimeout(async () => {
-        isSearching = true;
         body = await getAllOthers(form.search);
         isSearching = false;
-      }, 1000);
+      }, 500);
     }
   };
 </script>
