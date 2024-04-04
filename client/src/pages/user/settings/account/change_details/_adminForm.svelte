@@ -44,7 +44,7 @@
         bind:value={form.role}
         id="role"
         name="role"
-        class="mt-2 rounded-md border-2 bg-white p-2 dark:border-neutral-900"
+        class="mt-2 h-12 rounded-md border-2 bg-white p-2 dark:border-neutral-900"
       >
         <option value={Role.ADMIN}>Admin</option>
         <option value={Role.ODONTOLOGIST}>Odontologist</option>
