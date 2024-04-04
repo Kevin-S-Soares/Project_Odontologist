@@ -36,7 +36,7 @@
       }, 2000);
       return;
     }
-    document.cookie = `Authorization=bearer ${response}; SameSite=Strict; Path=/;`;
+    document.cookie = `Authorization=bearer ${response}; SameSite=Strict; Path=/; Max-Age=86400;`;
     document.location.replace("/");
   };
 </script>
