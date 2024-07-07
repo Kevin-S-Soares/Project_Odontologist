@@ -625,11 +625,35 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var guest = _context.Users.FirstOrDefault(item => item.Email == "guest@guest.com");
         if(guest is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = "Something went wrong while retrieving guest account!"
-            };
+                _context.Users.Add(new User()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Guest",
+                    NormalizedName = "GUEST",
+                    Email = "guest@guest.com",
+                    Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq",
+                    Role = Role.VISITOR,
+                    CreatedAt = DateTime.Now,
+                    LastLogin = DateTime.Now,
+                    VerifiedAt = DateTime.Now,
+                });
+                try 
+                {
+                    await _context.SaveChangesAsync();
+                }
+                catch(Exception e)
+                {
+                    return new()
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError,
+                        ErrorMessage = $"Something went wrong while resetting guest: {e.Message}"
+                    };
+                }
+                return new() 
+                {
+                    StatusCode = StatusCodes.Status200OK,
+                    Value = true
+                };
         }
 
         guest.Name = "Guest";
