@@ -11,8 +11,8 @@ using Server.Contexts;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240707014212_guest")]
-    partial class guest
+    [Migration("20240707203314_GuestAccount")]
+    partial class GuestAccount
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,16 +96,16 @@ namespace Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("a4f83cb5-2ea6-48c7-9241-77587ddcfddd"),
-                            CreatedAt = new DateTime(2024, 7, 6, 22, 42, 11, 551, DateTimeKind.Local).AddTicks(943),
+                            Id = new Guid("f1d73f4a-a246-4ee7-bbbb-31208eb9cc2e"),
+                            CreatedAt = new DateTime(2024, 7, 7, 17, 33, 14, 132, DateTimeKind.Local).AddTicks(783),
                             Email = "guest@guest.com",
-                            LastLogin = new DateTime(2024, 7, 6, 22, 42, 11, 551, DateTimeKind.Local).AddTicks(980),
+                            LastLogin = new DateTime(2024, 7, 7, 17, 33, 14, 132, DateTimeKind.Local).AddTicks(814),
                             Name = "Guest",
                             NormalizedName = "GUEST",
                             Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq",
                             ProfilePictureUrl = "",
                             Role = 4,
-                            VerifiedAt = new DateTime(2024, 7, 6, 22, 42, 11, 551, DateTimeKind.Local).AddTicks(981)
+                            VerifiedAt = new DateTime(2024, 7, 7, 17, 33, 14, 132, DateTimeKind.Local).AddTicks(816)
                         });
                 });
 

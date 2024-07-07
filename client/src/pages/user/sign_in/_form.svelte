@@ -66,7 +66,11 @@
     >
   </div>
 
-  <a href="/user/sign_in_as_guest" data-astro-prefetch="false" class="mt-4 flex justify-center items-center rounded-md border bg-gradient-to-b from-teal-500 to-emerald-500 p-2 font-semibold text-white transition-all hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border dark:border-neutral-900">
+  <a
+    href="/user/sign_in_as_guest"
+    data-astro-prefetch="false"
+    class="mt-4 flex items-center justify-center rounded-md border bg-gradient-to-b from-teal-500 to-emerald-500 p-2 font-semibold text-white transition-all hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border dark:border-neutral-900"
+  >
     <span>Try out our guest account!</span>
   </a>
 
@@ -74,5 +78,3 @@
     <p class="mt-4 text-xl {errorText}">Email or password invalid!</p>
   {/if}
 </FormPanel>
-
-

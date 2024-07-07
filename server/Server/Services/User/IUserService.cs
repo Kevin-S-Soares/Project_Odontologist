@@ -18,4 +18,5 @@ public interface IUserService {
     public Task<ServiceResponse<bool>> UpdateUserAsync(ClientUpdateUser request);
     public Task<ServiceResponse<bool>> ChangeEmailAsync(string request);
     public Task<ServiceResponse<bool>> ConfirmEmailChangeAsync(ClientHashOperation request);
+    public Task<ServiceResponse<bool>> ResetGuestAsync();
 }

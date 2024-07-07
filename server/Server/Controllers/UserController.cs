@@ -43,4 +43,7 @@ public class UserController(IUserService _service) : ControllerBase
 
     [HttpPost, Route("/api/v1/user/confirm_change_email")]
     public async Task<ActionResult> ConfirmChangeEmailAsync(ClientHashOperation request) => await _service.ConfirmEmailChangeAsync(request);
+
+    [HttpPost, Route("/api/v1/user/reset_guest")]
+    public async Task<ActionResult> ResetGuestAsync() => await _service.ResetGuestAsync();
 }

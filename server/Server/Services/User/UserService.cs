@@ -6,6 +6,7 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Server.Services;
 
@@ -616,6 +617,47 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         {
             StatusCode = StatusCodes.Status200OK,
             Data = true
+        };
+    }
+
+    public async Task<ServiceResponse<bool>> ResetGuestAsync()
+    {
+        var guest = _context.Users.FirstOrDefault(item => item.Email == "guest@guest.com");
+        if(guest is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = "Something went wrong while retrieving guest account!"
+            };
+        }
+
+        guest.Name = "Guest";
+        guest.NormalizedName = "GUEST";
+        guest.Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq";
+        guest.Role = Role.VISITOR;
+        guest.CreatedAt = DateTime.Now;
+        guest.LastLogin = DateTime.Now;
+        guest.VerifiedAt = DateTime.Now;
+
+        try 
+        {
+            _context.Users.Update(guest);
+            await _context.SaveChangesAsync();
+        }
+        catch(Exception e)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status500InternalServerError,
+                ErrorMessage = $"Something went wrong while resetting guest: {e.Message}"
+            };
+        }
+
+        return new() 
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Value = true
         };
     }
 

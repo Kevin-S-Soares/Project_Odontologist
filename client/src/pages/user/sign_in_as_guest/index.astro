@@ -1,6 +1,6 @@
 ---
 import { jwtDetails } from "../../../layouts/main.astro";
-import { Role, Status } from "../../../models/enums";
+import { Role } from "../../../models/enums";
 
 if (jwtDetails.getRole() !== Role.NONE) {
   return Astro.redirect("/");
@@ -18,20 +18,28 @@ const options = {
   body: JSON.stringify(user),
   method: "POST",
 };
+
+await fetch(`${process.env.SERVER ?? ""}/api/v1/user/reset_guest`, {
+  method: "POST",
+  headers: {
+    "content-type": "application/json"
+  }
+});
+
 const response = await fetch(
   `${process.env.SERVER ?? ""}/api/v1/user/authenticate`,
   options,
 );
 
-let cookie = `bearer ${await response.text()}`
+let cookie = `bearer ${await response.text()}`;
 
-if(response.ok){
-    Astro.cookies.set("Authorization", cookie, {
-        sameSite: "strict",
-        maxAge: 86400,
-        path: "/",
-        encode: (value: string) => value
-    });
-    return Astro.redirect("/");
+if (response.ok) {
+  Astro.cookies.set("Authorization", cookie, {
+    sameSite: "strict",
+    maxAge: 86400,
+    path: "/",
+    encode: (value: string) => value,
+  });
+  return Astro.redirect("/");
 }
 ---
