@@ -18,4 +18,9 @@ public class ApplicationContext : DbContext
             optionsBuilder.UseSqlite(connectionString);
         }
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Seed();
+    }
 }

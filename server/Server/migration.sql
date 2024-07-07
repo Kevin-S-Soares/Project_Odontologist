@@ -62,3 +62,15 @@ VALUES ('20240324033500_UpdatedUsersNormalizedName', '8.0.2');
 
 COMMIT;
 
+BEGIN TRANSACTION;
+
+INSERT INTO "Users" ("Id", "CreatedAt", "Email", "LastLogin", "Name", "NormalizedName", "Password", "ProfilePictureUrl", "Role", "VerifiedAt")
+VALUES ('A4F83CB5-2EA6-48C7-9241-77587DDCFDDD', '2024-07-06 22:42:11.5510943', 'guest@guest.com', '2024-07-06 22:42:11.551098', 'Guest', 'GUEST', '$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq', '', 4, '2024-07-06 22:42:11.5510981');
+SELECT changes();
+
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20240707014212_guest', '8.0.2');
+
+COMMIT;
+

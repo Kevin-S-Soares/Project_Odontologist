@@ -1,0 +1,37 @@
+---
+import { jwtDetails } from "../../../layouts/main.astro";
+import { Role, Status } from "../../../models/enums";
+
+if (jwtDetails.getRole() !== Role.NONE) {
+  return Astro.redirect("/");
+}
+
+let user = {
+  email: "guest@guest.com",
+  password: "guest",
+};
+
+const options = {
+  headers: {
+    "content-type": "application/json",
+  },
+  body: JSON.stringify(user),
+  method: "POST",
+};
+const response = await fetch(
+  `${process.env.SERVER ?? ""}/api/v1/user/authenticate`,
+  options,
+);
+
+let cookie = `bearer ${await response.text()}`
+
+if(response.ok){
+    Astro.cookies.set("Authorization", cookie, {
+        sameSite: "strict",
+        maxAge: 86400,
+        path: "/",
+        encode: (value: string) => value
+    });
+    return Astro.redirect("/");
+}
+---

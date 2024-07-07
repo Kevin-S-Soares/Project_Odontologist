@@ -21,7 +21,7 @@ let input = {
   userId: match[2],
   operation: parseInt(match[3]),
 };
-console.log(input);
+
 const options = {
   headers: {
     "content-type": "application/json",
@@ -33,7 +33,7 @@ const response = await fetch(
   `${process.env.SERVER ?? ""}/api/v1/user/confirm_change_email`,
   options,
 );
-console.log(response);
+
 status = response.status === 200 ? Status.SUCCESS : Status.ERROR;
 ---
 
