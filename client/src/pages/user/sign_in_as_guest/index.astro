@@ -22,8 +22,8 @@ const options = {
 await fetch(`${process.env.SERVER ?? ""}/api/v1/user/reset_guest`, {
   method: "POST",
   headers: {
-    "content-type": "application/json"
-  }
+    "content-type": "application/json",
+  },
 });
 
 const response = await fetch(
