@@ -36,7 +36,7 @@ export const DELETE: APIRoute = async ({ request }) => {
   });
 };
 
-export const PUT: APIRoute = async ({ request, redirect }) => {
+export const PUT: APIRoute = async ({ request }) => {
   const requestBody = await request.json();
   const options = {
     headers: {

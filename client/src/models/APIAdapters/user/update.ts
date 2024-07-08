@@ -7,7 +7,7 @@ export class UpdateUser {
 }
 
 export const update = (user: UpdateUser, token: string): Promise<string> => {
-  return new Promise<string>(async (resolve) => {
+  return new Promise<string>(async () => {
     const options = {
       method: "PUT",
       body: JSON.stringify({
