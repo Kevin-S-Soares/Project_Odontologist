@@ -6,7 +6,7 @@
   import { Status } from "../../../../../models/enums";
 
   export let token: string;
-  export let email: string
+  export let email: string;
 
   const form = {
     email: email,

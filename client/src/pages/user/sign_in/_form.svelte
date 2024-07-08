@@ -3,6 +3,7 @@
   import EmailInput from "../../../components/input/emailInput.svelte";
   import PasswordInput from "../../../components/input/passwordInput.svelte";
   import SubmitButton from "../../../components/button/submitButton.svelte";
+  import LoadingButton from "../../../components/button/loadingButton.svelte";
   import { authenticate } from "../../../models/APIAdapters/user/authenticate";
   import { Status } from "../../../models/enums";
   import { errorText } from "../../../components/text/errorText";
@@ -19,6 +20,14 @@
     setInvalidPassword: (arg: boolean) => {
       form.invalidPassword = arg;
     },
+  };
+
+  let clickedTryOut = false;
+  const tryOut = () => {
+    clickedTryOut = true;
+    setTimeout(() => {
+      window.location.replace("/user/sign_in_as_guest");
+    }, 100);
   };
 
   let status = Status.NONE;
@@ -66,13 +75,13 @@
     >
   </div>
 
-  <a
-    href="/user/sign_in_as_guest"
-    data-astro-prefetch="false"
-    class="mt-4 flex items-center justify-center rounded-md border bg-gradient-to-b from-teal-500 to-emerald-500 p-2 font-semibold text-white transition-all hover:bg-emerald-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border dark:border-neutral-900"
-  >
-    <span>Try out our guest account!</span>
-  </a>
+  <LoadingButton
+    message="Try out our guest account!"
+    id="try out"
+    isLoading={clickedTryOut}
+    disabled={clickedTryOut}
+    clickSubmit={tryOut}
+  />
 
   {#if status == Status.ERROR}
     <p class="mt-4 text-xl {errorText}">Email or password invalid!</p>

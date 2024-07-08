@@ -52,11 +52,7 @@ export const PUT: APIRoute = async ({ request, redirect }) => {
     method: "PUT",
   };
   const body = await fetch(`${process.env.SERVER ?? ""}/api/v1/user/`, options);
-  if(body.ok){
-    console.log("hi")
-    return redirect("/user/refresh_token", 307);
-  }
-  return new Response("something went wrong while updating user", {
-    status: 400
+  return new Response(JSON.stringify(body.ok), {
+    status: body.status,
   });
 };

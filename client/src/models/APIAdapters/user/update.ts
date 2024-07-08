@@ -18,8 +18,8 @@ export const update = (user: UpdateUser, token: string): Promise<string> => {
       }),
     };
     const response = await fetch("/api/user/", options);
-    if(response.ok){
-      window.location.replace("/user/refresh_token")
+    if (response.ok) {
+      window.location.replace("/user/refresh_token");
     }
   });
 };
