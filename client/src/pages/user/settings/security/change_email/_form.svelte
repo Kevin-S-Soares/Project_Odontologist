@@ -6,9 +6,10 @@
   import { Status } from "../../../../../models/enums";
 
   export let token: string;
+  export let email: string
 
   const form = {
-    email: "",
+    email: email,
     invalidEmail: true,
     setInvalidEmail: (arg: boolean) => {
       form.invalidEmail = arg;

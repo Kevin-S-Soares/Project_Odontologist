@@ -3,6 +3,17 @@ import MainLayout, { jwtDetails } from "../../../../../layouts/main.astro";
 import Padding from "../../../../../layouts/padding.astro";
 import Settings from "../../../../../layouts/settings.astro";
 import Form from "./_form.svelte";
+
+const authorization = Astro.cookies.get("Authorization")?.value ?? "";
+const options = {
+  headers: {
+    "content-type": "application/json",
+    authorization: authorization,
+  },
+};
+
+const response = await fetch(`${process.env.SERVER}/api/v1/user/me`, options);
+const user = await response.json();
 ---
 
 <MainLayout
@@ -13,7 +24,7 @@ import Form from "./_form.svelte";
     <section class="w-full">
       <Settings>
         <div class="pl-6">
-          <Form token={jwtDetails.getToken()} client:load />
+          <Form token={jwtDetails.getToken()} email={user.email} client:load />
         </div>
       </Settings>
     </section>
