@@ -6,8 +6,8 @@ export class UpdateUser {
   role = Role.NONE;
 }
 
-export const update = (user: UpdateUser, token: string): Promise<boolean> => {
-  return new Promise<boolean>(async (resolve) => {
+export const update = (user: UpdateUser, token: string): Promise<string> => {
+  return new Promise<string>(async (resolve) => {
     const options = {
       method: "PUT",
       body: JSON.stringify({
@@ -18,6 +18,8 @@ export const update = (user: UpdateUser, token: string): Promise<boolean> => {
       }),
     };
     const response = await fetch("/api/user/", options);
-    resolve(response.ok ? await response.json() : null);
+    if(response.ok){
+      window.location.replace("/user/refresh_token")
+    }
   });
 };

@@ -15,4 +15,14 @@ public class AuthService (ApplicationContext _context, IHttpContextAccessor _htt
         }
         return _context.Users.FirstOrDefault(search => search.Id == result);
     }
+
+    public DateTime? GetExpirationDate()
+    {
+        DateTime? result = null;
+        if (_httpContextAccessor.HttpContext is not null)
+        {
+            result = DateTimeOffset.FromUnixTimeSeconds(long.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue("exp")?? "")).Date;
+        }
+        return result;
+    }
 }

@@ -46,4 +46,7 @@ public class UserController(IUserService _service) : ControllerBase
 
     [HttpPost, Route("/api/v1/user/reset_guest")]
     public async Task<ActionResult> ResetGuestAsync() => await _service.ResetGuestAsync();
+
+    [HttpPost, Route("/api/v1/user/refresh_token")]
+    public ActionResult RefreshToken() => _service.RefreshToken();
 }

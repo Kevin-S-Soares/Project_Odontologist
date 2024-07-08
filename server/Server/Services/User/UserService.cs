@@ -685,6 +685,42 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         };
     }
 
+    public ServiceResponse<string> RefreshToken()
+    {
+        var expirationDate = _authService.GetExpirationDate();
+        if(expirationDate is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status400BadRequest,
+                ErrorMessage = "Corrupted token!"
+            };
+        }
+        if(DateTime.Now > expirationDate)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status409Conflict,
+                ErrorMessage = "Token expired!"
+            };
+        }
+        var user = _authService.GetRequester();
+        if(user is null)
+        {
+            return new()
+            {
+                StatusCode = StatusCodes.Status400BadRequest,
+                ErrorMessage = "Corrupted token!"
+            };
+        }
+        var token = CreateJWT(user);
+        return new()
+        {
+            StatusCode = StatusCodes.Status200OK,
+            Value = token
+        };
+    }
+
     private string GenerateNonRepetitiveHash()
     {
         while (true)

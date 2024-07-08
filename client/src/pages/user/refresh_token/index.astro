@@ -1,0 +1,21 @@
+---
+const response = await fetch(`${process.env.SERVER ?? ""}/api/v1/user/refresh_token`, {
+  method: "POST",
+  headers: {
+    "content-type": "application/json",
+    "authorization": Astro.cookies.get("Authorization")?.value?? ""
+  },
+});
+
+let cookie = `bearer ${await response.text()}`;
+
+if (response.ok) {
+  Astro.cookies.set("Authorization", cookie, {
+    sameSite: "strict",
+    maxAge: 86400,
+    path: "/",
+    encode: (value: string) => value,
+  });
+  return Astro.redirect("/");
+}
+---
