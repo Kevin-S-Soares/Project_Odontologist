@@ -48,7 +48,7 @@ jobs:
         key: ${{ env.KEY }}
         command_timeout: 20m
         script: |
-          cd projects/Project_Odontologist
+          cd project/Project_Odontologist
           git pull
           sudo docker compose down --remove-orphans
           bash migration.sh
