@@ -55,5 +55,4 @@ jobs:
           sudo docker compose build server
           sudo docker compose build client
           sudo docker compose up -d
-          echo 'https://portfolio-project-odontologist.com/'
           exit
