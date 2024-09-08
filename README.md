@@ -21,11 +21,11 @@ This project is incomplete. I'm using it to learn:
  - Security
  - Cost efficiency
  - SSO and federated authentication
- - Internatiolization
+ - Internationalization
  - And many other things
 
 
-This project is made using Astro with Svelte components and C# web api. Data is stored using SQLite. Everything is containerized and syncronized using Docker Compose. It is running in a t2.small instance from AWS EC2.
+This project is made using Astro with Svelte components and C# web api. Data is stored using SQLite. Everything is containerized and syncronized using Docker Compose. It is running in a t3.small instance from AWS EC2.
 
 Currently, the only thing you can do is register, sign-in, sign-out, forget password, reset password, change password, change email, change account settings, change theme and delete account. 
 
