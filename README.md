@@ -3,6 +3,8 @@
 
 [Installation](#installation)
 
+[Run](#Run)
+
 ---
 
 ### About the project
@@ -34,14 +36,15 @@ Passwords are stored using bcrypt.
 ---
 
 ### Installation
-
+#### Requirement
+ - SendGrid Api Key
 #### ubuntu
-####
+
 ```
 git clone https://github.com/Kevin-S-Soares/Project_Odontologist && cd Project_Odontologist
 bash wizard.sh
 ```
-
+---
 ### Run
 ```
 sudo docker compose up -d
