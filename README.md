@@ -36,10 +36,14 @@ Passwords are stored using bcrypt.
 ### Installation
 
 #### ubuntu
-
+####
 ```
-git clone https://github.com/Kevin-S-Soares/Project_Odontologist
-cd Project_Odontologist
+git clone https://github.com/Kevin-S-Soares/Project_Odontologist && cd Project_Odontologist
 bash wizard.sh
-bash migration.sh
 ```
+
+### Run
+```
+sudo docker compose up -d
+```
+

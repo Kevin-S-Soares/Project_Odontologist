@@ -3,23 +3,26 @@
 echo "updating and upgrading"
 sudo apt update -y && sudo apt upgrade -y
 
-var="which sqlite3"
-if [ $A != "/usr/bin/sqlite3" ]
-then
+var=$(which sqlite3)
+if [ $var != "/usr/bin/sqlite3" ] ; then
     echo "installing sqlite3"
     sudo apt install sqlite3 -y
 fi
 
-var="which curl"
-if [ $A != "/usr/bin/curl" ]
-then
+var=$(which curl)
+if [ $var != "/usr/bin/curl" ] ; then
     echo "installing curl"
     sudo apt install curl -y
 fi
 
-var=`sudo which docker`
-if [ $A != "/usr/bin/docker" ]
-then
+var=$(which openssl)
+if [ $var != "/usr/bin/openssl" ] ; then
+    echo "installing openssl"
+    sudo apt install openssl -y
+fi
+
+var=$(sudo which docker)
+if [ $var != "/usr/bin/docker" ] ; then
     echo "installing docker"
     sudo apt-get update -y
     sudo apt-get install ca-certificates curl gnupg -y
@@ -36,33 +39,54 @@ then
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 fi
 
-read -p '[SERVER][CONTAINER] where is the database located? ' var
-echo "CONNECTION_STRING=\"Data Source=$var\"" > .env
+echo "CONNECTION_STRING=\"Data Source=/tmp/data.db\"" > .env
 
-read -p '[SERVER] are you using a Send Grid API Key (y/n)? ' var
-if [ $var = "y" ]
-then    
-    read -p '[SERVER] please enter your API Key: ' var
-    echo "SENDGRID_API_KEY=\"$var\"" >> .env
+read -p 'Please enter your API Key (press enter to skip): ' var
+echo "SENDGRID_API_KEY=\"$var\"" >> .env
+
+echo "SERVER=\"http://localhost:8080\"" >> .env
+
+while [ 1 ] ; do
+    read -p 'Is there a domain (y/n): ' isDomain
+    if [ "$isDomain" == "y" ] || [ "$isDomain" == "n" ] ; then
+        break
+    fi
+done
+
+if [ "$isDomain" == "y" ]
+then
+    read -p 'what is the domain: ' domain
+    echo "CLIENT=\"$domain\"" >> .env
+    var="which certbot"
+    if [ "$var" != "/usr/bin/certbot" ] ; then
+        echo "installing /usr/bin/certbot"
+        sudo snap install --classic certbot
+    fi
+    sudo certbot certonly --standalone -d $domain
+    mkdir ssl
+    key_path=$(sudo certbot certificates | grep 'privkey' | cut -b 23-)
+    cert_path=$(sudo certbot certificates | grep 'fullchain' | cut -b 23-)
+    sudo cp $key_path ./ssl
+    sudo cp $cert_path ./ssl
+    current_path=$(pwd)
+    echo "PATH_TO_SSL=\"$current_path/ssl\"" >> .env
+    echo "SERVER_KEY_PATH=\"/app/ssl/privkey.pem\"" >> .env
+    echo "SERVER_CERT_PATH=\"/app/ssl/fullchain.pem\"" >> .env
 else
-    echo '[SERVER] Email service is disabled. You must configure your own email service.'
-    echo "SENDGRID_API_KEY=\"\"" >> .env
+    echo "CLIENT=\"http://localhost:443\"" >> .env
+    echo "PATH_TO_SSL=\"\"" >> .env
+    echo "SERVER_KEY_PATH=\"\"" >> .env
+    echo "SERVER_CERT_PATH=\"\"" >> .env
 fi
 
-read -p '[SERVER] what is the domain or client? ' var
-echo "CLIENT=\"$var\"" >> .env
+openssl genrsa -out private.pem 4096
+openssl rsa -in private.pem -pubout -out public.pem
 
-read -p '[CLIENT] what is the path to ssl certificate directory? ' var
-echo "PATH_TO_SSL=\"$var\"" >> .env
+public_key=$(cat public.pem)
+echo "PUBLIC_KEY=\"$public_key\"" >> .env
 
-read -p '[CLIENT] what is the path to ssl certificate key? ' var
-echo "SERVER_KEY_PATH=\"$var\"" >> .env
+private_key=$(cat private.pem)
+echo "PRIVATE_KEY=\"$private_key\"" >> .env
 
-read -p '[CLIENT] what is the path to ssl certificate? ' var
-echo "SERVER_CERT_PATH=\"$var\"" >> .env
-
-read -p '[SERVER] what is the RSA-SHA-4096 private key? ' var
-echo "PRIVATE_KEY=\"$var\"" >> .env
-
-read -p '[CLIENT] what is the RSA-SHA-4096 public key? ' var
-echo "PUBLIC_KEY=\"$var\"" >> .env
+sudo docker volume create database
+sudo bash migration.sh
