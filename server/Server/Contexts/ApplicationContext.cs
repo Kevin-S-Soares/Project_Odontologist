@@ -9,6 +9,12 @@ public class ApplicationContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
     public virtual DbSet<HashStorage> HashStorage { get; set; }
+    public virtual DbSet<Odontologist> Odontologists { get; set; }
+    public virtual DbSet<Appointment> Appointments { get; set; }
+    public virtual DbSet<BreakTime> BreakTimes { get; set; }
+    public virtual DbSet<Schedule> Schedules { get; set; }
+    public virtual DbSet<DetailedTime> DetailedTimes { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

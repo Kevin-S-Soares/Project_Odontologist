@@ -65,12 +65,92 @@ COMMIT;
 BEGIN TRANSACTION;
 
 INSERT INTO "Users" ("Id", "CreatedAt", "Email", "LastLogin", "Name", "NormalizedName", "Password", "ProfilePictureUrl", "Role", "VerifiedAt")
-VALUES ('A4F83CB5-2EA6-48C7-9241-77587DDCFDDD', '2024-07-06 22:42:11.5510943', 'guest@guest.com', '2024-07-06 22:42:11.551098', 'Guest', 'GUEST', '$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq', '', 4, '2024-07-06 22:42:11.5510981');
+VALUES ('F1D73F4A-A246-4EE7-BBBB-31208EB9CC2E', '2024-07-07 17:33:14.1320783', 'guest@guest.com', '2024-07-07 17:33:14.1320814', 'Guest', 'GUEST', '$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq', '', 4, '2024-07-07 17:33:14.1320816');
 SELECT changes();
 
 
 INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
-VALUES ('20240707014212_guest', '8.0.2');
+VALUES ('20240707203314_GuestAccount', '8.0.2');
+
+COMMIT;
+
+BEGIN TRANSACTION;
+
+DELETE FROM "Users"
+WHERE "Id" = 'F1D73F4A-A246-4EE7-BBBB-31208EB9CC2E';
+SELECT changes();
+
+
+ALTER TABLE "Users" ADD "ContextId" INTEGER NULL;
+
+CREATE TABLE "Odontologists" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Odontologists" PRIMARY KEY AUTOINCREMENT,
+    "Name" TEXT NOT NULL,
+    "Phone" TEXT NOT NULL,
+    "Email" TEXT NOT NULL
+);
+
+CREATE TABLE "Schedules" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Schedules" PRIMARY KEY AUTOINCREMENT,
+    "OdontologistId" INTEGER NOT NULL,
+    "Name" TEXT NOT NULL,
+    "StartDay" INTEGER NOT NULL,
+    "StartTime" TEXT NOT NULL,
+    "EndDay" INTEGER NOT NULL,
+    "EndTime" TEXT NOT NULL,
+    CONSTRAINT "FK_Schedules_Odontologists_OdontologistId" FOREIGN KEY ("OdontologistId") REFERENCES "Odontologists" ("Id") ON DELETE CASCADE
+);
+
+CREATE TABLE "Appointments" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_Appointments" PRIMARY KEY AUTOINCREMENT,
+    "ScheduleId" INTEGER NOT NULL,
+    "PatientName" TEXT NOT NULL,
+    "Description" TEXT NOT NULL,
+    CONSTRAINT "FK_Appointments_Schedules_ScheduleId" FOREIGN KEY ("ScheduleId") REFERENCES "Schedules" ("Id") ON DELETE CASCADE
+);
+
+CREATE TABLE "BreakTimes" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_BreakTimes" PRIMARY KEY AUTOINCREMENT,
+    "ScheduleId" INTEGER NOT NULL,
+    "Name" TEXT NOT NULL,
+    "StartDay" INTEGER NOT NULL,
+    "StartTime" TEXT NOT NULL,
+    "EndDay" INTEGER NOT NULL,
+    "EndTime" TEXT NOT NULL,
+    CONSTRAINT "FK_BreakTimes_Schedules_ScheduleId" FOREIGN KEY ("ScheduleId") REFERENCES "Schedules" ("Id") ON DELETE CASCADE
+);
+
+CREATE TABLE "DetailedTimes" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_DetailedTimes" PRIMARY KEY AUTOINCREMENT,
+    "AppointmentId" INTEGER NOT NULL,
+    "StartDay" INTEGER NOT NULL,
+    "StartDayOfWeek" INTEGER NOT NULL,
+    "StartMonth" INTEGER NOT NULL,
+    "StartYear" INTEGER NOT NULL,
+    "StartTime" TEXT NOT NULL,
+    "EndDay" INTEGER NOT NULL,
+    "EndDayOfWeek" INTEGER NOT NULL,
+    "EndMonth" INTEGER NOT NULL,
+    "EndYear" INTEGER NOT NULL,
+    "EndTime" TEXT NOT NULL,
+    CONSTRAINT "FK_DetailedTimes_Appointments_AppointmentId" FOREIGN KEY ("AppointmentId") REFERENCES "Appointments" ("Id") ON DELETE CASCADE
+);
+
+INSERT INTO "Users" ("Id", "ContextId", "CreatedAt", "Email", "LastLogin", "Name", "NormalizedName", "Password", "ProfilePictureUrl", "Role", "VerifiedAt")
+VALUES ('7E92CA74-FDC1-4913-854B-204E5E7CF3B5', NULL, '2024-11-28 08:55:19.2775593', 'guest@guest.com', '2024-11-28 08:55:19.2775625', 'Guest', 'GUEST', '$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq', '', 4, '2024-11-28 08:55:19.2775627');
+SELECT changes();
+
+
+CREATE INDEX "IX_Appointments_ScheduleId" ON "Appointments" ("ScheduleId");
+
+CREATE INDEX "IX_BreakTimes_ScheduleId" ON "BreakTimes" ("ScheduleId");
+
+CREATE UNIQUE INDEX "IX_DetailedTimes_AppointmentId" ON "DetailedTimes" ("AppointmentId");
+
+CREATE INDEX "IX_Schedules_OdontologistId" ON "Schedules" ("OdontologistId");
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20241128115519_NewModels', '8.0.2');
 
 COMMIT;
 

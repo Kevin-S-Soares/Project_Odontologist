@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Server.Contexts;
 using Server.Services;
+using Server.Services.AppointmentService;
+using Server.Services.BreakTimeService;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,6 +33,10 @@ builder.Services.AddDbContext<ApplicationContext>(context => context.UseSqlite()
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, SendGridService>();
+builder.Services.AddScoped<IOdontologistService, OdontologistService>();
+builder.Services.AddScoped<IScheduleService, ScheduleService>();
+builder.Services.AddScoped<IBreakTimeService, BreakTimeService>();
+builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {

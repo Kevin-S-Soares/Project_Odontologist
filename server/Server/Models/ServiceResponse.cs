@@ -5,6 +5,8 @@ namespace Server.Services
     public class ServiceResponse<T> : ObjectResult
     {
         public ServiceResponse() : base(new()) { }
+         public ServiceResponse(T data, int statusCode) : base(data) { }
+        public ServiceResponse(string errorMessage, int statusCode) : base(errorMessage) { }
 
 
         private T? _data;

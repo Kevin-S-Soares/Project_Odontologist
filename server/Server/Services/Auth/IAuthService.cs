@@ -6,4 +6,8 @@ public interface IAuthService
 {
     public User? GetRequester();
     public DateTime? GetExpirationDate();
+    public long GetContextID();
+    public bool IsAdmin();
+    public bool IsOdontologist();
+    public bool IsAttendant();
 }

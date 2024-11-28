@@ -12,5 +12,6 @@ public class User
     public DateTime LastLogin { get; set; }
     public DateTime? VerifiedAt { get; set; } = null;
     public Role Role { get; set; }
+    public long? ContextId { get; set; }
 }
 
