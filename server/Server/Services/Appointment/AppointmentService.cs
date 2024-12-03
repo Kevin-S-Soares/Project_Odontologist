@@ -20,7 +20,7 @@ namespace Server.Services.AppointmentService
         public async Task<ServiceResponse<Appointment>> CreateAsync(Appointment appointment)
         {
             if (_authService.IsAdmin() || _authService.IsAttendant()
-                || (_authService.IsOdontologist() && IsOwner(appointment)))
+                || (_authService.IsOdontologist() && IsOwner(appointment)) || _authService.IsGuest())
             {
                 var validator = _validator.Add(appointment);
                 if (validator.IsValid is false)
@@ -52,7 +52,7 @@ namespace Server.Services.AppointmentService
                     statusCode: StatusCodes.Status404NotFound);
             }
             if (_authService.IsAdmin() || _authService.IsAttendant()
-                || (_authService.IsOdontologist() && IsOwner(query)))
+                || (_authService.IsOdontologist() && IsOwner(query)) || _authService.IsGuest())
             {
                 _context.Appointments.Remove(query);
                 try
@@ -71,7 +71,7 @@ namespace Server.Services.AppointmentService
 
         public ServiceResponse<IEnumerable<Appointment>> FindAll()
         {
-            if (_authService.IsAdmin() || _authService.IsAttendant())
+            if (_authService.IsAdmin() || _authService.IsAttendant() || _authService.IsGuest())
             {
                 var result = _context.Appointments;
                 return new(data: result, statusCode: StatusCodes.Status200OK);
@@ -96,7 +96,7 @@ namespace Server.Services.AppointmentService
                     statusCode: StatusCodes.Status404NotFound);
             }
             if (_authService.IsAdmin() || _authService.IsAttendant()
-                || (_authService.IsOdontologist() && IsOwner(query)))
+                || (_authService.IsOdontologist() && IsOwner(query)) || _authService.IsGuest())
             {
                 return new(data: query, statusCode: StatusCodes.Status200OK);
             }
@@ -107,7 +107,7 @@ namespace Server.Services.AppointmentService
         public async Task<ServiceResponse<Appointment>> UpdateAsync(Appointment appointment)
         {
             if (_authService.IsAdmin() || _authService.IsAttendant()
-                || (_authService.IsOdontologist() && IsOwner(appointment)))
+                || (_authService.IsOdontologist() && IsOwner(appointment)) || _authService.IsGuest())
             {
                 bool condition = _context.Appointments.Any(x => x.Id == appointment.Id);
                 if (condition is false)
@@ -134,11 +134,6 @@ namespace Server.Services.AppointmentService
             }
             return new(errorMessage: "Not authorized",
                 statusCode: StatusCodes.Status403Forbidden);
-        }
-
-        private bool IsAuthorizedToUpdate()
-        {
-            return _authService.IsAdmin() || _authService.IsAttendant() || _authService.IsOdontologist();
         }
 
         private bool IsOwner(Appointment appointment)

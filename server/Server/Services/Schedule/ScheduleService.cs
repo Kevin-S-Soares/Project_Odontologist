@@ -19,7 +19,7 @@ namespace Server.Services
 
         public async Task<ServiceResponse<Schedule>> CreateAsync(Schedule schedule)
         {
-            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(schedule)))
+            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(schedule)) || _authService.IsGuest())
             {
                 var validator = _scheduleValidator.Add(schedule);
                 if (validator.IsValid is false)
@@ -51,7 +51,7 @@ namespace Server.Services
                 return new(errorMessage: "Schedule does not exist",
                     statusCode: StatusCodes.Status404NotFound);
             }
-            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(query)))
+            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(query)) || _authService.IsGuest())
             {
                 _context.Schedules.Remove(query);
                 try
@@ -71,7 +71,7 @@ namespace Server.Services
 
         public ServiceResponse<IEnumerable<Schedule>> FindAll()
         {
-            if (_authService.IsAdmin() || _authService.IsAttendant())
+            if (_authService.IsAdmin() || _authService.IsAttendant() || _authService.IsGuest())
             {
                 var result = _context.Schedules;
                 return new(data: result, statusCode: StatusCodes.Status200OK);
@@ -95,7 +95,7 @@ namespace Server.Services
                     statusCode: StatusCodes.Status404NotFound);
             }
             if (_authService.IsAdmin() || _authService.IsAttendant()
-                || (_authService.IsOdontologist() && IsOwner(query)))
+                || (_authService.IsOdontologist() && IsOwner(query)) || _authService.IsGuest())
             {
                 return new(data: query, statusCode: StatusCodes.Status200OK);
 

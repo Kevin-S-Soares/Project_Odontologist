@@ -17,7 +17,7 @@ namespace Server.Services
 
         public async Task<ServiceResponse<Odontologist>> CreateAsync(Odontologist odontologist)
         {
-            if (_authService.IsAdmin())
+            if (_authService.IsAdmin() || _authService.IsGuest() )
             {
                 try
                 {
@@ -56,7 +56,7 @@ namespace Server.Services
                     StatusCode = StatusCodes.Status404NotFound
                 };
             }
-            if (_authService.IsAdmin())
+            if (_authService.IsAdmin() || _authService.IsGuest() )
             {
                 _context.Odontologists.Remove(query);
                 try
@@ -86,7 +86,7 @@ namespace Server.Services
 
         public ServiceResponse<IEnumerable<Odontologist>> FindAll()
         {
-            if (_authService.IsAdmin() || _authService.IsAttendant())
+            if (_authService.IsAdmin() || _authService.IsAttendant() || _authService.IsGuest())
             {
                 var result = _context.Odontologists;
                 return new()
@@ -123,7 +123,7 @@ namespace Server.Services
                 };
             }
             if (_authService.IsAdmin() || _authService.IsAttendant()
-                || (_authService.IsOdontologist() && IsOwner(query)))
+                || (_authService.IsOdontologist() && IsOwner(query)) || _authService.IsGuest())
             {
                 return new()
                 {
@@ -140,7 +140,7 @@ namespace Server.Services
 
         public async Task<ServiceResponse<Odontologist>> UpdateAsync(Odontologist odontologist)
         {
-            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(odontologist)))
+            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(odontologist)) || _authService.IsGuest())
             {
                 bool condition = _context.Odontologists.Any(x => x.Id == odontologist.Id);
                 if (condition is false)

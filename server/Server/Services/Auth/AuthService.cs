@@ -49,4 +49,10 @@ public class AuthService (ApplicationContext _context, IHttpContextAccessor _htt
         User? user = GetRequester();
         return user is not null && user.ContextId is not null? user.ContextId.Value: -1L ;
     }
+
+    public bool IsGuest()
+    {
+        User? user = GetRequester();
+        return user is not null && user.Role == Role.GUEST;
+    }
 }

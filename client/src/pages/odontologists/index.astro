@@ -1,0 +1,116 @@
+---
+import MainLayout, { jwtDetails } from "../../layouts/main.astro";
+import Padding from "../../layouts/padding.astro";
+import { Odontologist } from "../../models/odontologist";
+
+const authorization = Astro.cookies.get("Authorization")?.value ?? "";
+const options = {
+  headers: {
+    "content-type": "application/json",
+    authorization: authorization,
+  },
+  method: "GET",
+};
+const response = await fetch(
+  `${process.env.SERVER}/api/odontologists`,
+  options,
+);
+
+const odontologists: Odontologist[] = await response.json();
+---
+
+<MainLayout>
+  <Padding>
+    <a
+      class="mt-4 block w-1/6 cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500"
+      href="/odontologists/add">Add odontologist</a
+    >
+
+    {
+      odontologists.length > 0 ? (
+        <div class="mt-4 grid w-full grid-cols-[repeat(6,_1frpx)] grid-rows-auto rounded-md border">
+          <div class="col-start-1 col-end-2 row-start-1 row-end-2">
+            <p class="text-center font-medium">Name</p>
+          </div>
+          <div class="col-start-2 col-end-3 row-start-1 row-end-2">
+            <p class="text-center font-medium">Phone</p>
+          </div>
+          <div class="col-start-3 col-end-4 row-start-1 row-end-2">
+            <p class="text-center font-medium">Email</p>
+          </div>
+          <div class="col-start-4 col-end-5 row-start-1 row-end-2">
+            <p class="text-center font-medium">Schedules</p>
+          </div>
+          <div class="col-start-5 col-end-7 row-start-1 row-end-2">
+            <p class="text-center font-medium">Actions</p>
+          </div>
+
+          {odontologists.map((item, index) => {
+            let rows = "";
+            if (index === 0) {
+              rows = "row-start-2 row-end-3 ";
+            }
+            if (index === 1) {
+              rows = "row-start-3 row-end-4 ";
+            }
+            if (index === 2) {
+              rows = "row-start-4 row-end-5 ";
+            }
+            if (index === 3) {
+              rows = "row-start-5 row-end-6 ";
+            }
+            if (index === 4) {
+              rows = "row-start-6 row-end-7 ";
+            }
+            return (
+              <>
+                <div class={rows + "col-start-1 col-end-2"}>
+                  <p class="block text-center">{item.name}</p>
+                </div>
+                <div class={rows + "col-start-2 col-end-3"}>
+                  <p class="block text-center">{item.phone}</p>
+                </div>
+                <div class={rows + "col-start-3 col-end-4 justify-self-center"}>
+                  <a
+                    href={`mailto:${item.email}`}
+                    class="cursor-pointer text-center underline"
+                  >
+                    {item.email}
+                  </a>
+                </div>
+                <div class={rows + "col-start-4 col-end-5 justify-self-center"}>
+                  <a
+                    href={`/schedules/${item.id}`}
+                    class="cursor-pointer text-center hover:underline"
+                  >
+                    details
+                  </a>
+                </div>
+                <div class={rows + "col-start-5 col-end-6 justify-self-center"}>
+                  <a
+                    href={`/odontologists/edit/${item.id}`}
+                    class="cursor-pointer text-center hover:underline"
+                  >
+                    edit
+                  </a>
+                </div>
+                <div
+                  class={
+                    rows +
+                    "col-start-6 col-end-7 justify-self-center hover:underline"
+                  }
+                >
+                  <a class="cursor-pointer text-center">delete</a>
+                </div>
+              </>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="mt-4">
+          <p class="text-center text-3xl">No odontologists registered.</p>
+        </div>
+      )
+    }
+  </Padding>
+</MainLayout>

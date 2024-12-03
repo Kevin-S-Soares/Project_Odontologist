@@ -19,7 +19,7 @@ namespace Server.Services.BreakTimeService
 
         public async Task<ServiceResponse<BreakTime>> CreateAsync(BreakTime breakTime)
         {
-            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(breakTime)))
+            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(breakTime)) || _authService.IsGuest())
             {
                 var validator = _validator.Add(breakTime);
                 if (validator.IsValid is false)
@@ -51,7 +51,7 @@ namespace Server.Services.BreakTimeService
                 return new(errorMessage: "BreakTime does not exist",
                     statusCode: StatusCodes.Status404NotFound);
             }
-            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(query)))
+            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(query)) || _authService.IsGuest())
             {
                 _context.BreakTimes.Remove(query);
                 try
@@ -71,7 +71,7 @@ namespace Server.Services.BreakTimeService
 
         public ServiceResponse<IEnumerable<BreakTime>> FindAll(long? scheduleId, string? name, DayOfWeek? startDay, TimeSpan? startTime, DayOfWeek? endDay, TimeSpan? endTime)
         {
-            if (_authService.IsAdmin() || _authService.IsAttendant())
+            if (_authService.IsAdmin() || _authService.IsAttendant() || _authService.IsGuest())
             {
                 var breakTimes = _context.BreakTimes;
                 var result = ApplyFilters(breakTimes, scheduleId, name, startDay, startTime, endDay, endTime);
@@ -99,7 +99,7 @@ namespace Server.Services.BreakTimeService
                     statusCode: StatusCodes.Status404NotFound);
             }
             if (_authService.IsAdmin() || _authService.IsAttendant()
-                || (_authService.IsOdontologist() && IsOwner(query)))
+                || (_authService.IsOdontologist() && IsOwner(query)) || _authService.IsGuest())
             {
                 return new(data: query, statusCode: StatusCodes.Status200OK);
             }
@@ -109,7 +109,7 @@ namespace Server.Services.BreakTimeService
 
         public async Task<ServiceResponse<BreakTime>> UpdateAsync(BreakTime breakTime)
         {
-            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(breakTime)))
+            if (_authService.IsAdmin() || (_authService.IsOdontologist() && IsOwner(breakTime)) || _authService.IsGuest())
             {
                 bool condition = _context.BreakTimes.Any(x => x.Id == breakTime.Id);
                 if (condition is false)
