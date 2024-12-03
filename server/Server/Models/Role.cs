@@ -6,6 +6,5 @@ public enum Role
     ADMIN,
     ODONTOLOGIST,
     ATTENDANT,
-    VISITOR,
-    GUEST
+    GUEST,
 }

@@ -15,7 +15,7 @@ namespace Server.Contexts
                     NormalizedName = "GUEST",
                     Email = "guest@guest.com",
                     Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq", // guest
-                    Role = Role.VISITOR,
+                    Role = Role.GUEST,
                     CreatedAt = DateTime.Now,
                     LastLogin = DateTime.Now,
                     VerifiedAt = DateTime.Now,

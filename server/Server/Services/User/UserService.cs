@@ -31,7 +31,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             CreatedAt = DateTime.Now,
             LastLogin = DateTime.Now,
             Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
-            Role = Role.VISITOR
+            Role = Role.GUEST
         };
 
         var storage = new HashStorage
@@ -116,7 +116,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                 ErrorMessage = "User not found."
             };
         }
-        if (requester.Role == Role.VISITOR)
+        if (requester.Role == Role.GUEST)
         {
             return new()
             {
@@ -426,7 +426,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                 Data = [.. _context.Users.ToArray().Where(item => item.Id != requester.Id && match(item))]
             };
         }
-        if (requester.Role == Role.VISITOR)
+        if (requester.Role == Role.GUEST)
         {
             return new()
             {
@@ -631,7 +631,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                     NormalizedName = "GUEST",
                     Email = "guest@guest.com",
                     Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq",
-                    Role = Role.VISITOR,
+                    Role = Role.GUEST,
                     CreatedAt = DateTime.Now,
                     LastLogin = DateTime.Now,
                     VerifiedAt = DateTime.Now,
@@ -658,7 +658,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         guest.Name = "Guest";
         guest.NormalizedName = "GUEST";
         guest.Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq";
-        guest.Role = Role.VISITOR;
+        guest.Role = Role.GUEST;
         guest.CreatedAt = DateTime.Now;
         guest.LastLogin = DateTime.Now;
         guest.VerifiedAt = DateTime.Now;
