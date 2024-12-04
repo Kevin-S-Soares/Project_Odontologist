@@ -3,11 +3,11 @@
   import { Status } from "../../../models/enums";
   import { edit } from "../../../models/APIAdapters/odontologist/edit"
 
-
-  const odontologist: Odontologist = new Odontologist();
+  export let odontologist: Odontologist
+  export let token: string;
   let status: Status = Status.NONE;
   const sendForm = async () => {
-    await edit(odontologist);
+    await edit(odontologist, token);
     status = Status.SUCCESS;
     setTimeout(() => {
       window.location.replace("/odontologists/")
@@ -42,7 +42,7 @@
   
   <div>
     <button class="mt-4 py-3 px-3 text-white font-bold bg-teal-400 rounded-md hover:bg-teal-500 transition-all"
-      on:click={sendForm}>Add odontologist</button
+      on:click={sendForm}>Edit odontologist</button
     >
   </div>
   

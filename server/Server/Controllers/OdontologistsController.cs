@@ -5,7 +5,7 @@ using Server.Services;
 
 namespace Server.Controllers
 {
-    [ApiController, Route("api/v1/[controller]"), Authorize]
+    [ApiController, Route("api/v1/odontologists"), Authorize]
     public class OdontologistsController(IOdontologistService service) : ControllerBase
     {
         private readonly IOdontologistService _service = service;

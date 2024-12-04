@@ -1,0 +1,29 @@
+---
+import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
+import Padding from "../../../layouts/padding.astro";
+import Form from "./_form.svelte";
+
+const authorization = Astro.cookies.get("Authorization")?.value ?? "";
+const options = {
+  headers: {
+    "content-type": "application/json",
+    authorization: authorization,
+  },
+  method: "GET",
+};
+const { slug } = Astro.params;
+const response = await fetch(
+  `${process.env.SERVER}/api/v1/odontologist/${slug}`,
+  options,
+);
+
+const odontologist = await response.json();
+---
+
+<MainLayout>
+  <Padding>
+    <div class="mt-4">
+      <Form odontologist={odontologist} token={jwtDetails.getToken()} client:load />
+    </div>
+  </Padding>
+</MainLayout>

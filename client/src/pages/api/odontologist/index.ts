@@ -31,12 +31,14 @@ export const PUT: APIRoute = async ({ request }) => {
         authorization: `bearer ${requestBody["token"]}`
       },
       body: JSON.stringify({
+        id: requestBody["id"],
         name: requestBody["name"],
         phone: requestBody["phone"],
         email: requestBody["email"]
       }),
       method: "PUT",
     };
+    console.log(options);
     const body = await fetch(
       `${process.env.SERVER ?? ""}/api/v1/odontologist`,
       options,
@@ -53,15 +55,12 @@ export const PUT: APIRoute = async ({ request }) => {
         "content-type": "application/json" ,
         authorization: `bearer ${requestBody["token"]}`
       },
-      body: JSON.stringify({
-        name: requestBody["name"],
-        phone: requestBody["phone"],
-        email: requestBody["email"]
-      }),
       method: "DELETE",
     };
+    const id = requestBody["id"];
+    console.log(requestBody["token"])
     const body = await fetch(
-      `${process.env.SERVER ?? ""}/api/v1/odontologist`,
+      `${process.env.SERVER ?? ""}/api/v1/odontologist?id=${id}`,
       options,
     );
     return new Response(body.ok ? JSON.stringify(await body.text()) : "", {

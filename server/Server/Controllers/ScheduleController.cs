@@ -5,7 +5,7 @@ using Server.Services;
 
 namespace Server.Controllers
 {
-    [ApiController, Route("api/v1/[controller]"), Authorize]
+    [ApiController, Route("api/v1/schedule"), Authorize]
     public class ScheduleController(IScheduleService service) : ControllerBase
     {
         private readonly IScheduleService _service = service;
