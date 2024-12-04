@@ -81,7 +81,7 @@
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="StartTime"> End time: </label>
+    <label class="font-medium" for="EndTime"> End time: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="EndTime"

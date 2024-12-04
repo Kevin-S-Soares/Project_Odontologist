@@ -1,6 +1,7 @@
 ---
 import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
 import Padding from "../../../layouts/padding.astro";
+import type { Appointment } from "../../../models/appointment";
 import type { Odontologist } from "../../../models/odontologist";
 import type { Schedule } from "../../../models/schedule";
 import Form from "./_form.svelte";
@@ -13,6 +14,20 @@ const options = {
   },
   method: "GET",
 };
+
+const { slug } = Astro.params;
+const response = await fetch(
+  `${process.env.SERVER}/api/v1/appointment/${slug}`,
+  options,
+);
+
+const appointment: Appointment = await response.json();
+
+const responseSchedule = await fetch(
+  `${process.env.SERVER}/api/v1/schedule/${appointment.scheduleId}`,
+  options,
+);
+appointment.schedule = await responseSchedule.json();
 
 const responseOdontologist = await fetch(
   `${process.env.SERVER}/api/v1/odontologists`,
@@ -31,12 +46,7 @@ const odontologists: Odontologist[] = await responseOdontologist.json();
 <MainLayout>
   <Padding>
     <div class="mt-4">
-      <Form
-        odontologists={odontologists}
-        schedules={schedules}
-        token={jwtDetails.getToken()}
-        client:load
-      />
+      <Form schedules={schedules} odontologists={odontologists} appointment={appointment} token={jwtDetails.getToken()} client:load />
     </div>
   </Padding>
 </MainLayout>

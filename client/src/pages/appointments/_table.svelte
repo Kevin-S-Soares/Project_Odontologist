@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { BreakTime } from "../../models/break_time";
-  import { DateHandler } from "../../models/date_handler";
-  import { remove } from "../../models/APIAdapters/break_time/remove";
-  export let breakTimes: BreakTime[];
+  import { Appointment } from "../../models/appointment";
+  import { remove } from "../../models/APIAdapters/appointment/remove";
+  export let appointments: Appointment[];
   export let token: string;
-  export let scheduleId: string;
 
   const getRow = (arg: number) => {
     let rows = "";
@@ -40,19 +38,19 @@
   };
 
   const submit = async () => {
-    await remove(breakTimeToDelete.id, token);
-    window.location.replace(`/break_times?scheduleId=${scheduleId}`);
+    await remove(appointmentToDelete.id, token);
+    window.location.replace(`/appointments`);
   };
   let isModalVisible = false;
-  let breakTimeToDelete = new BreakTime();
+  let appointmentToDelete = new Appointment();
 </script>
 
 <a
   class="mt-4 block w-1/6 cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500"
-  href="/break_times/add?scheduleId={scheduleId}">Add break time</a
+  href="/appointments/add">Add appointment</a
 >
 
-{#if breakTimes.length > 0}
+{#if appointments.length > 0}
   <div
     id="modal"
     style="background-color: rgba(0,0,0,0.4)"
@@ -73,7 +71,7 @@
         >
         <div>
           <p class="text-center text-lg dark:text-white">
-            Are you sure that you want to delete {breakTimeToDelete.name}
+            Are you sure that you want to delete {appointmentToDelete.patientName}'s appointment
           </p>
         </div>
         <div class="flex items-center justify-around">
@@ -94,38 +92,48 @@
     </div>
   </div>
   <div
-    class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(5,_1fr)] rounded-md border"
+    class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
   >
     <div class="col-start-1 col-end-2 row-start-1 row-end-2">
-      <p class="text-center font-medium">Name</p>
-    </div>
-    <div class="col-start-2 col-end-3 row-start-1 row-end-2">
       <p class="text-center font-medium">Start</p>
     </div>
-    <div class="col-start-3 col-end-4 row-start-1 row-end-2">
+    <div class="col-start-2 col-end-3 row-start-1 row-end-2">
       <p class="text-center font-medium">End</p>
     </div>
-    <div class="col-start-4 col-end-6 row-start-1 row-end-2">
+    <div class="col-start-3 col-end-4 row-start-1 row-end-2">
+      <p class="text-center font-medium">Patient name</p>
+    </div>
+    <div class="col-start-4 col-end-5 row-start-1 row-end-2">
+      <p class="text-center font-medium">Description</p>
+    </div>
+    <div class="col-start-5 col-end-7 row-start-1 row-end-2">
       <p class="text-center font-medium">Actions</p>
     </div>
 
-    {#each breakTimes as item, index}
+    {#each appointments as item, index}
       <div class={getRow(index) + "col-start-1 col-end-2"}>
-        <p class="block text-center">{item.name}</p>
+        <p class="block text-center">{new Date(item.start).toLocaleString()}</p>
       </div>
       <div class={getRow(index) + "col-start-2 col-end-3"}>
         <p class="block text-center">
-          {DateHandler.getDayOfTheWeek(item.startDay) + " - " + item.startTime}
+          {new Date(item.end).toLocaleString()}
         </p>
       </div>
       <div class={getRow(index) + "col-start-3 col-end-4"}>
-        <p class="cursor-pointer text-center">
-          {DateHandler.getDayOfTheWeek(item.endDay) + " - " + item.endTime}
+        <p class="block text-center">
+          {item.patientName}
         </p>
       </div>
-      <div class={getRow(index) + "col-start-4 col-end-5 justify-self-center"}>
+      <div class={getRow(index) + "col-start-4 col-end-5"}>
+        <p
+          class="block text-center"
+        >
+          {item.description}
+      </p>
+      </div>
+      <div class={getRow(index) + "col-start-5 col-end-6 justify-self-center"}>
         <a
-          href={`/break_times/edit/${item.id}`}
+          href={`/appointments/edit/${item.id}`}
           class="cursor-pointer text-center hover:underline"
         >
           edit
@@ -133,11 +141,11 @@
       </div>
       <div
         class={getRow(index) +
-          "col-start-5 col-end-6 justify-self-center hover:underline"}
+          "col-start-6 col-end-7 justify-self-center hover:underline"}
       >
         <button
           on:click={() => {
-            breakTimeToDelete = item;
+            appointmentToDelete = item;
             showModal();
           }}
           class="cursor-pointer text-center">delete</button
@@ -147,6 +155,6 @@
   </div>
 {:else}
   <div class="mt-4">
-    <p class="text-center text-3xl">No break times registered.</p>
+    <p class="text-center text-3xl">No appointments registered.</p>
   </div>
 {/if}
