@@ -10,23 +10,28 @@
     await edit(schedule, token);
     status = Status.SUCCESS;
     setTimeout(() => {
-      window.location.replace(`/schedules?odontologistId=${schedule.odontologistId}`);
+      window.location.replace(
+        `/schedules?odontologistId=${schedule.odontologistId}`,
+      );
     }, 2000);
   };
-  let name = schedule.odontologist === undefined? "": schedule.odontologist.name
+  let name =
+    schedule.odontologist === undefined ? "" : schedule.odontologist.name;
 </script>
 
 {#if status === Status.NONE}
-<div class="flex w-1/4 flex-col">
-  <label class="font-medium" for="OdontologistName"> Odontologist Name: </label>
-  <input
-    class="mt-2 rounded border-2 border-black bg-gray-200"
-    name="OdontologistName"
-    type="text"
-    disabled={true}
-    bind:value={name}
-  />
-</div>
+  <div class="flex w-1/4 flex-col">
+    <label class="font-medium" for="OdontologistName">
+      Odontologist Name:
+    </label>
+    <input
+      class="mt-2 rounded border-2 border-black bg-gray-200"
+      name="OdontologistName"
+      type="text"
+      disabled={true}
+      bind:value={name}
+    />
+  </div>
   <div class="mt-4 flex w-1/4 flex-col">
     <label class="font-medium" for="Name"> Name: </label>
     <input
@@ -43,13 +48,13 @@
       name="StartDay"
       bind:value={schedule.startDay}
     >
-    <option value={0}>Sunday</option>
-    <option value={1}>Monday</option>
-    <option value={2}>Tuesday</option>
-    <option value={3}>Wednesday</option>
-    <option value={4}>Thursday</option>
-    <option value={5}>Friday</option>
-    <option value={6}>Saturday</option>
+      <option value={0}>Sunday</option>
+      <option value={1}>Monday</option>
+      <option value={2}>Tuesday</option>
+      <option value={3}>Wednesday</option>
+      <option value={4}>Thursday</option>
+      <option value={5}>Friday</option>
+      <option value={6}>Saturday</option>
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
@@ -69,13 +74,13 @@
       name="EndDay"
       bind:value={schedule.endDay}
     >
-    <option value={0}>Sunday</option>
-    <option value={1}>Monday</option>
-    <option value={2}>Tuesday</option>
-    <option value={3}>Wednesday</option>
-    <option value={4}>Thursday</option>
-    <option value={5}>Friday</option>
-    <option value={6}>Saturday</option>
+      <option value={0}>Sunday</option>
+      <option value={1}>Monday</option>
+      <option value={2}>Tuesday</option>
+      <option value={3}>Wednesday</option>
+      <option value={4}>Thursday</option>
+      <option value={5}>Friday</option>
+      <option value={6}>Saturday</option>
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">

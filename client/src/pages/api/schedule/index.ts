@@ -43,7 +43,7 @@ export const PUT: APIRoute = async ({ request }) => {
       endTime: requestBody["endTime"],
     }),
     method: "PUT",
-  }; 
+  };
   const body = await fetch(
     `${process.env.SERVER ?? ""}/api/v1/schedule`,
     options,

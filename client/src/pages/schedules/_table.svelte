@@ -1,10 +1,10 @@
 <script lang="ts">
   import { Schedule } from "../../models/schedule";
   import { DateHandler } from "../../models/date_handler";
-  import { remove } from "../../models/APIAdapters/schedule/remove"
+  import { remove } from "../../models/APIAdapters/schedule/remove";
   export let schedules: Schedule[];
   export let token: string;
-  export let odontologistId: string
+  export let odontologistId: string;
 
   const getRow = (arg: number) => {
     let rows = "";
@@ -53,46 +53,46 @@
 >
 
 {#if schedules.length > 0}
-<div
-id="modal"
-style="background-color: rgba(0,0,0,0.4)"
-class="{isModalVisible
-  ? 'block'
-  : 'hidden'} fixed left-0 top-0 z-10 h-full w-full bg-gray-300"
->
-<div class="relative">
   <div
-    class="absolute left-1/2 top-1/2 grid h-[16rem] w-96 -translate-x-1/2 translate-y-1/2 grid-rows-3 rounded-md bg-white p-4"
+    id="modal"
+    style="background-color: rgba(0,0,0,0.4)"
+    class="{isModalVisible
+      ? 'block'
+      : 'hidden'} fixed left-0 top-0 z-10 h-full w-full bg-gray-300"
   >
-    <button
-      class="place-self-start justify-self-end text-4xl dark:text-white"
-      on:click={() => {
-        isModalVisible = false;
-        window.onclick = null;
-      }}>&#215;</button
-    >
-    <div>
-      <p class="text-center text-lg dark:text-white">
-        Are you sure that you want to delete {scheduleToDelete.name}
-      </p>
-    </div>
-    <div class="flex items-center justify-around">
-      <button
-        on:click={submit}
-        class="rounded-md border bg-rose-600 p-2 font-bold text-white transition-all hover:bg-rose-700 dark:border-neutral-900"
-        >Submit</button
+    <div class="relative">
+      <div
+        class="absolute left-1/2 top-1/2 grid h-[16rem] w-96 -translate-x-1/2 translate-y-1/2 grid-rows-3 rounded-md bg-white p-4"
       >
-      <button
-        class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-600"
-        on:click={() => {
-          isModalVisible = false;
-          window.onclick = null;
-        }}>Cancel</button
-      >
+        <button
+          class="place-self-start justify-self-end text-4xl dark:text-white"
+          on:click={() => {
+            isModalVisible = false;
+            window.onclick = null;
+          }}>&#215;</button
+        >
+        <div>
+          <p class="text-center text-lg dark:text-white">
+            Are you sure that you want to delete {scheduleToDelete.name}
+          </p>
+        </div>
+        <div class="flex items-center justify-around">
+          <button
+            on:click={submit}
+            class="rounded-md border bg-rose-600 p-2 font-bold text-white transition-all hover:bg-rose-700 dark:border-neutral-900"
+            >Submit</button
+          >
+          <button
+            class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-600"
+            on:click={() => {
+              isModalVisible = false;
+              window.onclick = null;
+            }}>Cancel</button
+          >
+        </div>
+      </div>
     </div>
   </div>
-</div>
-</div>
   <div
     class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
   >
@@ -146,13 +146,13 @@ class="{isModalVisible
         class={getRow(index) +
           "col-start-6 col-end-7 justify-self-center hover:underline"}
       >
-      <button
-      on:click={() => {
-        scheduleToDelete = item;
-        showModal();
-      }}
-      class="cursor-pointer text-center">delete</button
-    >
+        <button
+          on:click={() => {
+            scheduleToDelete = item;
+            showModal();
+          }}
+          class="cursor-pointer text-center">delete</button
+        >
       </div>
     {/each}
   </div>

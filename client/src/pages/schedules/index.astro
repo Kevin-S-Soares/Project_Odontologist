@@ -4,7 +4,6 @@ import Table from "./_table.svelte";
 import Padding from "../../layouts/padding.astro";
 import { Schedule } from "../../models/schedule";
 
-
 const authorization = Astro.cookies.get("Authorization")?.value ?? "";
 const options = {
   headers: {
@@ -14,17 +13,19 @@ const options = {
   method: "GET",
 };
 
-const response = await fetch(
-  `${process.env.SERVER}/api/v1/schedules`,
-  options,
-);
+const response = await fetch(`${process.env.SERVER}/api/v1/schedules`, options);
 
 const schedules: Schedule[] = await response.json();
-const odontologistId = Astro.url.searchParams.get("odontologistId")?? ""
+const odontologistId = Astro.url.searchParams.get("odontologistId") ?? "";
 ---
 
 <MainLayout>
   <Padding>
-    <Table schedules={schedules} token={jwtDetails.getToken()} odontologistId={odontologistId} client:load />
+    <Table
+      schedules={schedules}
+      token={jwtDetails.getToken()}
+      odontologistId={odontologistId}
+      client:load
+    />
   </Padding>
 </MainLayout>

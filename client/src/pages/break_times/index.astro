@@ -4,7 +4,6 @@ import Table from "./_table.svelte";
 import Padding from "../../layouts/padding.astro";
 import { BreakTime } from "../../models/break_time";
 
-
 const authorization = Astro.cookies.get("Authorization")?.value ?? "";
 const options = {
   headers: {
@@ -20,11 +19,16 @@ const response = await fetch(
 );
 
 const breakTimes: BreakTime[] = await response.json();
-const scheduleId = Astro.url.searchParams.get("scheduleId")?? ""
+const scheduleId = Astro.url.searchParams.get("scheduleId") ?? "";
 ---
 
 <MainLayout>
   <Padding>
-    <Table breakTimes={breakTimes} token={jwtDetails.getToken()} scheduleId={scheduleId} client:load />
+    <Table
+      breakTimes={breakTimes}
+      token={jwtDetails.getToken()}
+      scheduleId={scheduleId}
+      client:load
+    />
   </Padding>
 </MainLayout>

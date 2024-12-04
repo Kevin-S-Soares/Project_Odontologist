@@ -3,13 +3,19 @@ import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
 import Padding from "../../../layouts/padding.astro";
 import Form from "./_form.svelte";
 
-const odontologistId = parseInt(Astro.url.searchParams.get("odontologistId")?? "-1")
+const odontologistId = parseInt(
+  Astro.url.searchParams.get("odontologistId") ?? "-1",
+);
 ---
 
 <MainLayout>
   <Padding>
     <div class="mt-4">
-      <Form token={jwtDetails.getToken()} odontologistId={odontologistId} client:load />
+      <Form
+        token={jwtDetails.getToken()}
+        odontologistId={odontologistId}
+        client:load
+      />
     </div>
   </Padding>
 </MainLayout>

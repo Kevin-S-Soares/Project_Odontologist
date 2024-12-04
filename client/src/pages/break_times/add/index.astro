@@ -3,7 +3,7 @@ import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
 import Padding from "../../../layouts/padding.astro";
 import Form from "./_form.svelte";
 
-const scheduleId = parseInt(Astro.url.searchParams.get("scheduleId")?? "-1")
+const scheduleId = parseInt(Astro.url.searchParams.get("scheduleId") ?? "-1");
 ---
 
 <MainLayout>

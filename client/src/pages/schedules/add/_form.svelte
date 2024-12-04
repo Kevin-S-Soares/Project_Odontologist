@@ -35,13 +35,13 @@
       name="StartDay"
       bind:value={schedule.startDay}
     >
-    <option value={0}>Sunday</option>
-    <option value={1}>Monday</option>
-    <option value={2}>Tuesday</option>
-    <option value={3}>Wednesday</option>
-    <option value={4}>Thursday</option>
-    <option value={5}>Friday</option>
-    <option value={6}>Saturday</option>
+      <option value={0}>Sunday</option>
+      <option value={1}>Monday</option>
+      <option value={2}>Tuesday</option>
+      <option value={3}>Wednesday</option>
+      <option value={4}>Thursday</option>
+      <option value={5}>Friday</option>
+      <option value={6}>Saturday</option>
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
@@ -61,13 +61,13 @@
       name="EndDay"
       bind:value={schedule.endDay}
     >
-    <option value={0}>Sunday</option>
-    <option value={1}>Monday</option>
-    <option value={2}>Tuesday</option>
-    <option value={3}>Wednesday</option>
-    <option value={4}>Thursday</option>
-    <option value={5}>Friday</option>
-    <option value={6}>Saturday</option>
+      <option value={0}>Sunday</option>
+      <option value={1}>Monday</option>
+      <option value={2}>Tuesday</option>
+      <option value={3}>Wednesday</option>
+      <option value={4}>Thursday</option>
+      <option value={5}>Friday</option>
+      <option value={6}>Saturday</option>
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
