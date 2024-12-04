@@ -5,7 +5,7 @@ using Server.Services;
 
 namespace Server.Controllers
 {
-    [ApiController, Route("api/[controller]"), Authorize]
+    [ApiController, Route("api/v1/[controller]"), Authorize]
     public class AppointmentController(IAppointmentService service) : ControllerBase
     {
         private readonly IAppointmentService _service = service;

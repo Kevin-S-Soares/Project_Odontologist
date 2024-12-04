@@ -5,7 +5,7 @@ using Server.Services;
 
 namespace Server.Controllers
 {
-    [ApiController, Route("api/[controller]"), Authorize]
+    [ApiController, Route("api/v1/[controller]"), Authorize]
     public class BreakTimeController(IBreakTimeService service) : ControllerBase
     {
         private readonly IBreakTimeService _service = service;

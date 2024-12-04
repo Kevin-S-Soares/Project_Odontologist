@@ -7,7 +7,7 @@ import Form from "./_form.svelte";
 <MainLayout>
   <Padding>
     <div class="mt-4">
-      <Form client:load />
+      <Form token={jwtDetails.getToken()} client:load />
     </div>
   </Padding>
 </MainLayout>

@@ -3,8 +3,10 @@ import type { APIRoute } from "astro";
 export const POST: APIRoute = async ({ request }) => {
   const requestBody = await request.json();
   const options = {
-    headers: { "content-type": "application/json" },
-    authorization: `bearer ${requestBody["token"]}`,
+    headers: { 
+      "content-type": "application/json" ,
+      authorization: `bearer ${requestBody["token"]}`
+    },
     body: JSON.stringify({
       name: requestBody["name"],
       phone: requestBody["phone"],
@@ -24,8 +26,10 @@ export const POST: APIRoute = async ({ request }) => {
 export const PUT: APIRoute = async ({ request }) => {
     const requestBody = await request.json();
     const options = {
-      headers: { "content-type": "application/json" },
-      authorization: `bearer ${requestBody["token"]}`,
+      headers: { 
+        "content-type": "application/json" ,
+        authorization: `bearer ${requestBody["token"]}`
+      },
       body: JSON.stringify({
         name: requestBody["name"],
         phone: requestBody["phone"],
@@ -45,8 +49,10 @@ export const PUT: APIRoute = async ({ request }) => {
   export const DELETE: APIRoute = async ({ request }) => {
     const requestBody = await request.json();
     const options = {
-      headers: { "content-type": "application/json" },
-      authorization: `bearer ${requestBody["token"]}`,
+      headers: { 
+        "content-type": "application/json" ,
+        authorization: `bearer ${requestBody["token"]}`
+      },
       body: JSON.stringify({
         name: requestBody["name"],
         phone: requestBody["phone"],

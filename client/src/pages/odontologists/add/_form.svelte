@@ -2,12 +2,14 @@
   import { Odontologist } from "../../../models/odontologist";
   import { Status } from "../../../models/enums";
   import { add } from "../../../models/APIAdapters/odontologist/add"
+  
+  export let token: string;
 
 
   const odontologist: Odontologist = new Odontologist();
   let status: Status = Status.NONE;
   const sendForm = async () => {
-    await add(odontologist);
+    await add(odontologist, token);
     status = Status.SUCCESS;
     setTimeout(() => {
       window.location.replace("/odontologists/")
