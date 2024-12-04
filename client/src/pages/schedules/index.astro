@@ -1,8 +1,9 @@
 ---
 import MainLayout, { jwtDetails } from "../../layouts/main.astro";
-import Padding from "../../layouts/padding.astro";
 import Table from "./_table.svelte";
-import { Odontologist } from "../../models/odontologist";
+import Padding from "../../layouts/padding.astro";
+import { Schedule } from "../../models/schedule";
+
 
 const authorization = Astro.cookies.get("Authorization")?.value ?? "";
 const options = {
@@ -12,20 +13,18 @@ const options = {
   },
   method: "GET",
 };
+
 const response = await fetch(
-  `${process.env.SERVER}/api/v1/odontologists`,
+  `${process.env.SERVER}/api/v1/schedules`,
   options,
 );
 
-const odontologists: Odontologist[] = await response.json();
+const schedules: Schedule[] = await response.json();
+const odontologistId = Astro.url.searchParams.get("odontologistId")?? ""
 ---
 
 <MainLayout>
   <Padding>
-    <Table
-      odontologists={odontologists}
-      token={jwtDetails.getToken()}
-      client:load
-    />
+    <Table schedules={schedules} token={jwtDetails.getToken()} odontologistId={odontologistId} client:load />
   </Padding>
 </MainLayout>

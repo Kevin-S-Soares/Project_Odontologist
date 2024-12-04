@@ -9,13 +9,17 @@ export const POST: APIRoute = async ({ request }) => {
     },
     body: JSON.stringify({
       name: requestBody["name"],
-      phone: requestBody["phone"],
-      email: requestBody["email"],
+      odontologistId: requestBody["odontologistId"],
+      startDay: requestBody["startDay"],
+      startTime: requestBody["startTime"],
+      endDay: requestBody["endDay"],
+      endTime: requestBody["endTime"],
     }),
     method: "POST",
   };
+  console.log(options.body)
   const body = await fetch(
-    `${process.env.SERVER ?? ""}/api/v1/odontologist`,
+    `${process.env.SERVER ?? ""}/api/v1/schedule`,
     options,
   );
   return new Response(body.ok ? JSON.stringify(await body.text()) : "", {
@@ -33,13 +37,17 @@ export const PUT: APIRoute = async ({ request }) => {
     body: JSON.stringify({
       id: requestBody["id"],
       name: requestBody["name"],
-      phone: requestBody["phone"],
-      email: requestBody["email"],
+      odontologistId: requestBody["odontologistId"],
+      startDay: requestBody["startDay"],
+      startTime: requestBody["startTime"],
+      endDay: requestBody["endDay"],
+      endTime: requestBody["endTime"],
     }),
     method: "PUT",
-  };
+  }; 
+  console.log(options.body);
   const body = await fetch(
-    `${process.env.SERVER ?? ""}/api/v1/odontologist`,
+    `${process.env.SERVER ?? ""}/api/v1/schedule`,
     options,
   );
   return new Response(body.ok ? JSON.stringify(await body.text()) : "", {
@@ -58,7 +66,7 @@ export const DELETE: APIRoute = async ({ request }) => {
   };
   const id = requestBody["id"];
   const body = await fetch(
-    `${process.env.SERVER ?? ""}/api/v1/odontologist?id=${id}`,
+    `${process.env.SERVER ?? ""}/api/v1/schedule?id=${id}`,
     options,
   );
   return new Response(body.ok ? JSON.stringify(await body.text()) : "", {

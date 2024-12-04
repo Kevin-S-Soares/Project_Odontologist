@@ -4,7 +4,7 @@ export const remove = (id: number, token: string): Promise<boolean | null> => {
       method: "DELETE",
       body: JSON.stringify({ id: id, token: token }),
     };
-    const response = await fetch("/api/odontologist/", options);
+    const response = await fetch("/api/schedule/", options);
     resolve(response.ok ? await response.json() : null);
   });
 };

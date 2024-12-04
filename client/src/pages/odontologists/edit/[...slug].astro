@@ -23,7 +23,11 @@ const odontologist = await response.json();
 <MainLayout>
   <Padding>
     <div class="mt-4">
-      <Form odontologist={odontologist} token={jwtDetails.getToken()} client:load />
+      <Form
+        odontologist={odontologist}
+        token={jwtDetails.getToken()}
+        client:load
+      />
     </div>
   </Padding>
 </MainLayout>

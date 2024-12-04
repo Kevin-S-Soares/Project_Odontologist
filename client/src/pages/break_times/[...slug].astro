@@ -1,19 +1,19 @@
 ---
 import MainLayout, { jwtDetails } from "../../layouts/main.astro";
-import { DateHandler } from "../../models/date_handler"
+import { DateHandler } from "../../models/date_handler";
 import Padding from "../../layouts/padding.astro";
 import { BreakTime } from "../../models/break_time";
 
 const breakTimes: BreakTime[] = [
   {
     id: 0,
-    scheduleId :0,
-    name : "test",
-    startDay : 1,
-    startTime : "09:00",
-    endDay : 1,
-    endTime : "18:00",
-  }
+    scheduleId: 0,
+    name: "test",
+    startDay: 1,
+    startTime: "09:00",
+    endDay: 1,
+    endTime: "18:00",
+  },
 ];
 ---
 
@@ -26,7 +26,7 @@ const breakTimes: BreakTime[] = [
 
     {
       breakTimes.length > 0 ? (
-        <div class="mt-4 grid w-full grid-cols-[repeat(5,_1frpx)] grid-rows-auto rounded-md border">
+        <div class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(5,_1frpx)] rounded-md border">
           <div class="col-start-1 col-end-2 row-start-1 row-end-2">
             <p class="text-center font-medium">Name</p>
           </div>
@@ -63,13 +63,17 @@ const breakTimes: BreakTime[] = [
                   <p class="block text-center">{item.name}</p>
                 </div>
                 <div class={rows + "col-start-2 col-end-3"}>
-                  <p class="block text-center">{DateHandler.getDayOfTheWeek(item.startDay) + " - " + item.startTime}</p>
+                  <p class="block text-center">
+                    {DateHandler.getDayOfTheWeek(item.startDay) +
+                      " - " +
+                      item.startTime}
+                  </p>
                 </div>
                 <div class={rows + "col-start-3 col-end-4"}>
-                  <p
-                    class="cursor-pointer text-center"
-                  >
-                    {DateHandler.getDayOfTheWeek(item.endDay) + " - " + item.endTime}
+                  <p class="cursor-pointer text-center">
+                    {DateHandler.getDayOfTheWeek(item.endDay) +
+                      " - " +
+                      item.endTime}
                   </p>
                 </div>
                 <div class={rows + "col-start-4 col-end-5 justify-self-center"}>

@@ -1,0 +1,163 @@
+<script lang="ts">
+  import { Schedule } from "../../models/schedule";
+  import { DateHandler } from "../../models/date_handler";
+  import { remove } from "../../models/APIAdapters/schedule/remove"
+  export let schedules: Schedule[];
+  export let token: string;
+  export let odontologistId: string
+
+  const getRow = (arg: number) => {
+    let rows = "";
+    if (arg === 0) {
+      rows = "row-start-2 row-end-3 ";
+    }
+    if (arg === 1) {
+      rows = "row-start-3 row-end-4 ";
+    }
+    if (arg === 2) {
+      rows = "row-start-4 row-end-5 ";
+    }
+    if (arg === 3) {
+      rows = "row-start-5 row-end-6 ";
+    }
+    if (arg === 4) {
+      rows = "row-start-6 row-end-7 ";
+    }
+    return rows;
+  };
+
+  const showModal = () => {
+    const modal = document.getElementById("modal") as HTMLDivElement;
+    isModalVisible = !isModalVisible;
+    if (isModalVisible) {
+      window.onclick = (event: any) => {
+        if (event.target == modal) {
+          isModalVisible = false;
+          window.onclick = null;
+        }
+      };
+    }
+  };
+
+  const submit = async () => {
+    await remove(scheduleToDelete.id, token);
+    window.location.replace(`/schedules?odontologistId=${odontologistId}`);
+  };
+  let isModalVisible = false;
+  let scheduleToDelete = new Schedule();
+</script>
+
+<a
+  class="mt-4 block w-1/6 cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500"
+  href="/schedules/add?odontologistId={odontologistId}">Add schedule</a
+>
+
+{#if schedules.length > 0}
+<div
+id="modal"
+style="background-color: rgba(0,0,0,0.4)"
+class="{isModalVisible
+  ? 'block'
+  : 'hidden'} fixed left-0 top-0 z-10 h-full w-full bg-gray-300"
+>
+<div class="relative">
+  <div
+    class="absolute left-1/2 top-1/2 grid h-[16rem] w-96 -translate-x-1/2 translate-y-1/2 grid-rows-3 rounded-md bg-white p-4"
+  >
+    <button
+      class="place-self-start justify-self-end text-4xl dark:text-white"
+      on:click={() => {
+        isModalVisible = false;
+        window.onclick = null;
+      }}>&#215;</button
+    >
+    <div>
+      <p class="text-center text-lg dark:text-white">
+        Are you sure that you want to delete {scheduleToDelete.name}
+      </p>
+    </div>
+    <div class="flex items-center justify-around">
+      <button
+        on:click={submit}
+        class="rounded-md border bg-rose-600 p-2 font-bold text-white transition-all hover:bg-rose-700 dark:border-neutral-900"
+        >Submit</button
+      >
+      <button
+        class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-600"
+        on:click={() => {
+          isModalVisible = false;
+          window.onclick = null;
+        }}>Cancel</button
+      >
+    </div>
+  </div>
+</div>
+</div>
+  <div
+    class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
+  >
+    <div class="col-start-1 col-end-2 row-start-1 row-end-2">
+      <p class="text-center font-medium">Name</p>
+    </div>
+    <div class="col-start-2 col-end-3 row-start-1 row-end-2">
+      <p class="text-center font-medium">Start</p>
+    </div>
+    <div class="col-start-3 col-end-4 row-start-1 row-end-2">
+      <p class="text-center font-medium">End</p>
+    </div>
+    <div class="col-start-4 col-end-5 row-start-1 row-end-2">
+      <p class="text-center font-medium">Break Times</p>
+    </div>
+    <div class="col-start-5 col-end-7 row-start-1 row-end-2">
+      <p class="text-center font-medium">Actions</p>
+    </div>
+
+    {#each schedules as item, index}
+      <div class={getRow(index) + "col-start-1 col-end-2"}>
+        <p class="block text-center">{item.name}</p>
+      </div>
+      <div class={getRow(index) + "col-start-2 col-end-3"}>
+        <p class="block text-center">
+          {DateHandler.getDayOfTheWeek(item.startDay) + " - " + item.startTime}
+        </p>
+      </div>
+      <div class={getRow(index) + "col-start-3 col-end-4"}>
+        <p class="cursor-pointer text-center">
+          {DateHandler.getDayOfTheWeek(item.endDay) + " - " + item.endTime}
+        </p>
+      </div>
+      <div class={getRow(index) + "col-start-4 col-end-5 justify-self-center"}>
+        <a
+          href={`/break_times/${item.id}`}
+          class="cursor-pointer text-center hover:underline"
+        >
+          details
+        </a>
+      </div>
+      <div class={getRow(index) + "col-start-5 col-end-6 justify-self-center"}>
+        <a
+          href={`/schedules/edit/${item.id}`}
+          class="cursor-pointer text-center hover:underline"
+        >
+          edit
+        </a>
+      </div>
+      <div
+        class={getRow(index) +
+          "col-start-6 col-end-7 justify-self-center hover:underline"}
+      >
+      <button
+      on:click={() => {
+        scheduleToDelete = item;
+        showModal();
+      }}
+      class="cursor-pointer text-center">delete</button
+    >
+      </div>
+    {/each}
+  </div>
+{:else}
+  <div class="mt-4">
+    <p class="text-center text-3xl">No schedules registered.</p>
+  </div>
+{/if}
