@@ -3,13 +3,17 @@
   import { Status } from "../../../models/enums";
   import { add } from "../../../models/APIAdapters/break_time/add";
 
+  export let scheduleId: number;
+  export let token: string;
+
   const breakTime: BreakTime = new BreakTime();
+  breakTime.scheduleId = scheduleId;
   let status: Status = Status.NONE;
   const sendForm = async () => {
-    await add(breakTime);
+    await add(breakTime, token);
     status = Status.SUCCESS;
     setTimeout(() => {
-      window.location.replace("/break_times/");
+      window.location.replace(`/break_times?scheduleId=${scheduleId}`);
     }, 2000);
   };
 </script>
@@ -26,30 +30,45 @@
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
     <label class="font-medium" for="StartDay"> Start day: </label>
-    <input
+    <select
       class="mt-2 rounded border-2 border-black"
       name="StartDay"
-      type="number"
       bind:value={breakTime.startDay}
-    />
+    >
+    <option value={0}>Sunday</option>
+    <option value={1}>Monday</option>
+    <option value={2}>Tuesday</option>
+    <option value={3}>Wednesday</option>
+    <option value={4}>Thursday</option>
+    <option value={5}>Friday</option>
+    <option value={6}>Saturday</option>
+    </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="StartTime"> Start day: </label>
+    <label class="font-medium" for="StartTime"> Start time: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="StartTime"
       type="time"
+      step="1"
       bind:value={breakTime.startTime}
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="StartDay"> End day: </label>
-    <input
+    <label class="font-medium" for="EndDay"> End day: </label>
+    <select
       class="mt-2 rounded border-2 border-black"
       name="EndDay"
-      type="number"
       bind:value={breakTime.endDay}
-    />
+    >
+    <option value={0}>Sunday</option>
+    <option value={1}>Monday</option>
+    <option value={2}>Tuesday</option>
+    <option value={3}>Wednesday</option>
+    <option value={4}>Thursday</option>
+    <option value={5}>Friday</option>
+    <option value={6}>Saturday</option>
+    </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
     <label class="font-medium" for="StartTime"> End time: </label>
@@ -57,6 +76,7 @@
       class="mt-2 rounded border-2 border-black"
       name="EndTime"
       type="time"
+      step="1"
       bind:value={breakTime.endTime}
     />
   </div>

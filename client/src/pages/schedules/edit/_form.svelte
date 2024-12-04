@@ -7,13 +7,13 @@
   export let token: string;
   let status: Status = Status.NONE;
   const sendForm = async () => {
-    console.log(schedule)
     await edit(schedule, token);
     status = Status.SUCCESS;
     setTimeout(() => {
-      window.location.replace("/schedules/");
+      window.location.replace(`/schedules?odontologistId=${schedule.odontologistId}`);
     }, 2000);
   };
+  let name = schedule.odontologist === undefined? "": schedule.odontologist.name
 </script>
 
 {#if status === Status.NONE}
@@ -24,7 +24,7 @@
     name="OdontologistName"
     type="text"
     disabled={true}
-    bind:value={schedule.odontologist.name}
+    bind:value={name}
   />
 </div>
   <div class="mt-4 flex w-1/4 flex-col">
@@ -41,7 +41,6 @@
     <select
       class="mt-2 rounded border-2 border-black bg-white"
       name="StartDay"
-      type="number"
       bind:value={schedule.startDay}
     >
     <option value={0}>Sunday</option>
@@ -68,7 +67,6 @@
     <select
       class="mt-2 rounded border-2 border-black bg-white"
       name="EndDay"
-      type="number"
       bind:value={schedule.endDay}
     >
     <option value={0}>Sunday</option>

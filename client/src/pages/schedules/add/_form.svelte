@@ -33,7 +33,6 @@
     <select
       class="mt-2 rounded border-2 border-black"
       name="StartDay"
-      type="number"
       bind:value={schedule.startDay}
     >
     <option value={0}>Sunday</option>
@@ -60,9 +59,7 @@
     <select
       class="mt-2 rounded border-2 border-black"
       name="EndDay"
-      type="number"
       bind:value={schedule.endDay}
-      on:change={console.log(schedule)}
     >
     <option value={0}>Sunday</option>
     <option value={1}>Monday</option>

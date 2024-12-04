@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Schedule } from "../../models/schedule";
+  import { BreakTime } from "../../models/break_time";
   import { DateHandler } from "../../models/date_handler";
-  import { remove } from "../../models/APIAdapters/schedule/remove"
-  export let schedules: Schedule[];
+  import { remove } from "../../models/APIAdapters/break_time/remove"
+  export let breakTimes: BreakTime[];
   export let token: string;
-  export let odontologistId: string
+  export let scheduleId: string
 
   const getRow = (arg: number) => {
     let rows = "";
@@ -40,19 +40,19 @@
   };
 
   const submit = async () => {
-    await remove(scheduleToDelete.id, token);
-    window.location.replace(`/schedules?odontologistId=${odontologistId}`);
+    await remove(breakTimeToDelete.id, token);
+    window.location.replace(`/break_times?scheduleId=${scheduleId}`);
   };
   let isModalVisible = false;
-  let scheduleToDelete = new Schedule();
+  let breakTimeToDelete = new BreakTime();
 </script>
 
 <a
   class="mt-4 block w-1/6 cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500"
-  href="/schedules/add?odontologistId={odontologistId}">Add schedule</a
+  href="/break_times/add?scheduleId={scheduleId}">Add break time</a
 >
 
-{#if schedules.length > 0}
+{#if breakTimes.length > 0}
 <div
 id="modal"
 style="background-color: rgba(0,0,0,0.4)"
@@ -73,7 +73,7 @@ class="{isModalVisible
     >
     <div>
       <p class="text-center text-lg dark:text-white">
-        Are you sure that you want to delete {scheduleToDelete.name}
+        Are you sure that you want to delete {breakTimeToDelete.name}
       </p>
     </div>
     <div class="flex items-center justify-around">
@@ -94,7 +94,7 @@ class="{isModalVisible
 </div>
 </div>
   <div
-    class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
+    class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(5,_1fr)] rounded-md border"
   >
     <div class="col-start-1 col-end-2 row-start-1 row-end-2">
       <p class="text-center font-medium">Name</p>
@@ -105,14 +105,11 @@ class="{isModalVisible
     <div class="col-start-3 col-end-4 row-start-1 row-end-2">
       <p class="text-center font-medium">End</p>
     </div>
-    <div class="col-start-4 col-end-5 row-start-1 row-end-2">
-      <p class="text-center font-medium">Break Times</p>
-    </div>
-    <div class="col-start-5 col-end-7 row-start-1 row-end-2">
+    <div class="col-start-4 col-end-6 row-start-1 row-end-2">
       <p class="text-center font-medium">Actions</p>
     </div>
 
-    {#each schedules as item, index}
+    {#each breakTimes as item, index}
       <div class={getRow(index) + "col-start-1 col-end-2"}>
         <p class="block text-center">{item.name}</p>
       </div>
@@ -128,15 +125,7 @@ class="{isModalVisible
       </div>
       <div class={getRow(index) + "col-start-4 col-end-5 justify-self-center"}>
         <a
-          href={`/break_times?scheduleId=${item.id}`}
-          class="cursor-pointer text-center hover:underline"
-        >
-          details
-        </a>
-      </div>
-      <div class={getRow(index) + "col-start-5 col-end-6 justify-self-center"}>
-        <a
-          href={`/schedules/edit/${item.id}`}
+          href={`/break_times/edit/${item.id}`}
           class="cursor-pointer text-center hover:underline"
         >
           edit
@@ -148,7 +137,7 @@ class="{isModalVisible
       >
       <button
       on:click={() => {
-        scheduleToDelete = item;
+        breakTimeToDelete = item;
         showModal();
       }}
       class="cursor-pointer text-center">delete</button
@@ -158,6 +147,6 @@ class="{isModalVisible
   </div>
 {:else}
   <div class="mt-4">
-    <p class="text-center text-3xl">No schedules registered.</p>
+    <p class="text-center text-3xl">No break times registered.</p>
   </div>
 {/if}

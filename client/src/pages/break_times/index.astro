@@ -1,0 +1,30 @@
+---
+import MainLayout, { jwtDetails } from "../../layouts/main.astro";
+import Table from "./_table.svelte";
+import Padding from "../../layouts/padding.astro";
+import { BreakTime } from "../../models/break_time";
+
+
+const authorization = Astro.cookies.get("Authorization")?.value ?? "";
+const options = {
+  headers: {
+    "content-type": "application/json",
+    authorization: authorization,
+  },
+  method: "GET",
+};
+
+const response = await fetch(
+  `${process.env.SERVER}/api/v1/breakTimes`,
+  options,
+);
+
+const breakTimes: BreakTime[] = await response.json();
+const scheduleId = Astro.url.searchParams.get("scheduleId")?? ""
+---
+
+<MainLayout>
+  <Padding>
+    <Table breakTimes={breakTimes} token={jwtDetails.getToken()} scheduleId={scheduleId} client:load />
+  </Padding>
+</MainLayout>
