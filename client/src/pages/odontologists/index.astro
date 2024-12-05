@@ -3,6 +3,15 @@ import MainLayout, { jwtDetails } from "../../layouts/main.astro";
 import Padding from "../../layouts/padding.astro";
 import Table from "./_table.svelte";
 import { Odontologist } from "../../models/odontologist";
+import { Role } from "../../models/enums";
+
+if (!jwtDetails.isVerified()) {
+  return Astro.redirect("/not_verified");
+}
+
+if (jwtDetails.getRole() === Role.NONE) {
+  return Astro.redirect("/sign_in");
+}
 
 const authorization = Astro.cookies.get("Authorization")?.value ?? "";
 const options = {
@@ -12,12 +21,18 @@ const options = {
   },
   method: "GET",
 };
+
 const response = await fetch(
   `${process.env.SERVER}/api/v1/odontologists`,
   options,
 );
 
-const odontologists: Odontologist[] = await response.json();
+let odontologists: Odontologist[] = await response.json();
+if (jwtDetails.getRole() === Role.ODONTOLOGIST) {
+  odontologists = odontologists.filter(
+    (item) => item.id === parseInt(jwtDetails.getId()),
+  );
+}
 ---
 
 <MainLayout>

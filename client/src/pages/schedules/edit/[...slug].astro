@@ -1,8 +1,17 @@
 ---
 import MainLayout, { jwtDetails } from "../../../layouts/main.astro";
 import Padding from "../../../layouts/padding.astro";
+import { Role } from "../../../models/enums";
 import type { Schedule } from "../../../models/schedule";
 import Form from "./_form.svelte";
+
+if (!jwtDetails.isVerified()) {
+  return Astro.redirect("/not_verified");
+}
+
+if (jwtDetails.getRole() === Role.NONE) {
+  return Astro.redirect("/sign_in");
+}
 
 const authorization = Astro.cookies.get("Authorization")?.value ?? "";
 const options = {

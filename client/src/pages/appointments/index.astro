@@ -3,6 +3,15 @@ import MainLayout, { jwtDetails } from "../../layouts/main.astro";
 import Table from "./_table.svelte";
 import Padding from "../../layouts/padding.astro";
 import { Appointment } from "../../models/appointment";
+import { Role } from "../../models/enums";
+
+if (!jwtDetails.isVerified()) {
+  return Astro.redirect("/not_verified");
+}
+
+if (jwtDetails.getRole() === Role.NONE) {
+  return Astro.redirect("/sign_in");
+}
 
 const authorization = Astro.cookies.get("Authorization")?.value ?? "";
 const options = {

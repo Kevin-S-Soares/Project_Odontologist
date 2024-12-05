@@ -73,7 +73,7 @@ export class JWTDetails {
   }
 
   public isVerified() {
-    return this._verified === "";
+    return !(this._verified === "");
   }
 
   public getId() {
