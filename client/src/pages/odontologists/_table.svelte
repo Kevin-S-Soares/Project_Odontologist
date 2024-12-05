@@ -62,14 +62,14 @@
         class="absolute left-1/2 top-1/2 grid h-[16rem] w-96 -translate-x-1/2 translate-y-1/2 grid-rows-3 rounded-md bg-white p-4"
       >
         <button
-          class="place-self-start justify-self-end text-4xl dark:text-white"
+          class="place-self-start justify-self-end text-4xl"
           on:click={() => {
             isModalVisible = false;
             window.onclick = null;
           }}>&#215;</button
         >
         <div>
-          <p class="text-center text-lg dark:text-white">
+          <p class="text-center text-lg">
             Are you sure that you want to delete {odontologistToDelete.name}
           </p>
         </div>
@@ -80,7 +80,7 @@
             >Submit</button
           >
           <button
-            class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-600"
+            class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:hover:bg-neutral-600"
             on:click={() => {
               isModalVisible = false;
               window.onclick = null;
@@ -94,32 +94,32 @@
     class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
   >
     <div class="col-start-1 col-end-2 row-start-1 row-end-2">
-      <p class="text-center font-medium">Name</p>
+      <p class="text-center font-medium dark:text-white">Name</p>
     </div>
     <div class="col-start-2 col-end-3 row-start-1 row-end-2">
-      <p class="text-center font-medium">Phone</p>
+      <p class="text-center font-medium dark:text-white">Phone</p>
     </div>
     <div class="col-start-3 col-end-4 row-start-1 row-end-2">
-      <p class="text-center font-medium">Email</p>
+      <p class="text-center font-medium dark:text-white">Email</p>
     </div>
     <div class="col-start-4 col-end-5 row-start-1 row-end-2">
-      <p class="text-center font-medium">Schedules</p>
+      <p class="text-center font-medium dark:text-white">Schedules</p>
     </div>
     <div class="col-start-5 col-end-7 row-start-1 row-end-2">
-      <p class="text-center font-medium">Actions</p>
+      <p class="text-center font-medium dark:text-white">Actions</p>
     </div>
 
     {#each odontologists as item, index}
       <div class={getRow(index) + "col-start-1 col-end-2"}>
-        <p class="block text-center">{item.name}</p>
+        <p class="block text-center dark:text-white">{item.name}</p>
       </div>
       <div class={getRow(index) + "col-start-2 col-end-3"}>
-        <p class="block text-center">{item.phone}</p>
+        <p class="block text-center dark:text-white">{item.phone}</p>
       </div>
       <div class={getRow(index) + "col-start-3 col-end-4 justify-self-center"}>
         <a
           href={`mailto:${item.email}`}
-          class="cursor-pointer text-center underline"
+          class="cursor-pointer text-center underline dark:text-white"
         >
           {item.email}
         </a>
@@ -127,7 +127,7 @@
       <div class={getRow(index) + "col-start-4 col-end-5 justify-self-center"}>
         <a
           href={`/schedules?odontologistId=${item.id}`}
-          class="cursor-pointer text-center hover:underline"
+          class="cursor-pointer text-center hover:underline dark:text-white"
         >
           details
         </a>
@@ -135,14 +135,14 @@
       <div class={getRow(index) + "col-start-5 col-end-6 justify-self-center"}>
         <a
           href={`/odontologists/edit/${item.id}`}
-          class="cursor-pointer text-center hover:underline"
+          class="cursor-pointer text-center hover:underline dark:text-white"
         >
           edit
         </a>
       </div>
       <div
         class={getRow(index) +
-          "col-start-6 col-end-7 justify-self-center hover:underline"}
+          "col-start-6 col-end-7 justify-self-center hover:underline dark:text-white"}
       >
         <button
           on:click={() => {
@@ -156,6 +156,8 @@
   </div>
 {:else}
   <div class="mt-4">
-    <p class="text-center text-3xl dark:text-white">No odontologists registered.</p>
+    <p class="text-center text-3xl dark:text-white">
+      No odontologists registered.
+    </p>
   </div>
 {/if}

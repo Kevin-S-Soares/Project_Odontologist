@@ -54,7 +54,9 @@
 {/if}
 {#if status === Status.SUCCESS}
   <div class="mt-4">
-    <p class="text-center text-xl dark:text-white">Odontologist added successfully!</p>
+    <p class="text-center text-xl dark:text-white">
+      Odontologist added successfully!
+    </p>
     <p class="text-center text-xl dark:text-white">Returning to index.</p>
   </div>
 {/if}

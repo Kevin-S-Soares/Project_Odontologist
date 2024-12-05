@@ -17,7 +17,7 @@
 
 {#if status === Status.NONE}
   <div class="flex w-1/4 flex-col">
-    <label class="font-medium" for="Name"> Name: </label>
+    <label class="font-medium dark:text-white" for="Name"> Name: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="Name"
@@ -26,7 +26,7 @@
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="Phone"> Phone: </label>
+    <label class="font-medium dark:text-white" for="Phone"> Phone: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="Phone"
@@ -35,7 +35,7 @@
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="Email"> Email: </label>
+    <label class="font-medium dark:text-white" for="Email"> Email: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="Email"
@@ -53,7 +53,9 @@
 {/if}
 {#if status === Status.SUCCESS}
   <div class="mt-4">
-    <p class="text-center text-xl">Odontologist edited successfully!</p>
-    <p class="text-center text-xl">Returning to index.</p>
+    <p class="text-center text-xl dark:text-white">
+      Odontologist edited successfully!
+    </p>
+    <p class="text-center text-xl dark:text-white">Returning to index.</p>
   </div>
 {/if}

@@ -14,12 +14,12 @@ export const POST: APIRoute = async ({ request }) => {
     }),
     method: "POST",
   };
-  console.log(options.body)
+  console.log(options.body);
   const body = await fetch(
     `${process.env.SERVER ?? ""}/api/v1/odontologist`,
     options,
   );
-  console.log(body)
+  console.log(body);
   return new Response(body.ok ? JSON.stringify(await body.text()) : "", {
     status: body.status,
   });
