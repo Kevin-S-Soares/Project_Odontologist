@@ -16,11 +16,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var query = _context.Users.FirstOrDefault(item => item.Email == request.Email);
         if (query is not null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Email already registered."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Email already registered.");
         }
 
         var user = new User()
@@ -50,21 +47,15 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while creating user: {e.Message}."
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while creating user: {e.Message}.");
         }
 
         await _emailService.ConfirmRegisterAsync(user, storage);
 
         user.Password = "";
-        return new()
-        {
-            StatusCode = StatusCodes.Status201Created,
-            Data = user
-        };
+        return new(statusCode: StatusCodes.Status201Created,
+            data: user);
     }
 
     public async Task<ServiceResponse<bool>> VerifyRegistrationAsync(ClientHashOperation request)
@@ -75,11 +66,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             && request.Operation == Operation.REGISTER_ACCOUNT);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Invalid hash, operation or user id."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage:"Invalid hash, operation or user id.");
         }
 
         var user = _context.Users.First(item => item.Id == request.UserId);
@@ -92,17 +80,11 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while verifying registration: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while verifying registration: {e.Message}");
         }
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public ServiceResponse<IEnumerable<User>> GetAll(string? name)
@@ -110,18 +92,13 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var requester = _authService.GetRequester();
         if (requester is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = "User not found."
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: "User not found.");
         }
         if (requester.Role == Role.GUEST)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Data = [.. _context.Users.Select(item => new User
+            return new(statusCode: StatusCodes.Status200OK,
+                data: [.. _context.Users.Select(item => new User
             {
                 Id = item.Id,
                 Name = "",
@@ -133,24 +110,17 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                 CreatedAt = item.CreatedAt,
                 VerifiedAt = item.VerifiedAt,
                 Role = item.Role
-            })]
-            };
+            })]);
         }
         if (requester.Role == Role.ADMIN)
         {
             var aux = string.IsNullOrWhiteSpace(name) ? ".*" : name.ToUpper();
             var match = (User user) => Regex.Match(user.NormalizedName, aux).Success;
-            return new()
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Data = [.. _context.Users.ToArray().Where(item => match(item))]
-            };
+            return new(statusCode: StatusCodes.Status200OK,
+                data: [.. _context.Users.ToArray().Where(item => match(item))]);
         }
-        return new()
-        {
-            StatusCode = StatusCodes.Status403Forbidden,
-            ErrorMessage = "Not authorized."
-        };
+        return new(statusCode: StatusCodes.Status403Forbidden,
+            errorMessage: "Not authorized.");
     }
 
     public async Task<ServiceResponse<bool>> RemoveByIdAsync(Guid id)
@@ -158,11 +128,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var query = _context.Users.FirstOrDefault(item => item.Id == id);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = "User not found."
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: "User not found.");
         }
 
 
@@ -173,18 +140,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = $"Something went wrong while removing user: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: $"Something went wrong while removing user: {e.Message}");
         }
 
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public async Task<ServiceResponse<string>> AuthenticateAsync(ClientAuthentication request)
@@ -192,21 +153,15 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var query = _context.Users.FirstOrDefault(item => item.Email == request.Email);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Email or password is wrong."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Email or password is wrong.");
         }
 
         var condition = BCrypt.Net.BCrypt.Verify(request.Password, query.Password);
         if (condition is false)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Password or password is wrong."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Password or password is wrong.");
         }
 
         query.LastLogin = DateTime.Now;
@@ -217,18 +172,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while authenticating user: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while authenticating user: {e.Message}");
         }
 
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = CreateJWT(query)
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data:CreateJWT(query));
     }
 
     public async Task<ServiceResponse<bool>> ForgetPasswordAsync(string email)
@@ -237,11 +186,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Invalid email."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Invalid email.");
         }
 
         var operation = _context.HashStorage.FirstOrDefault(item =>
@@ -251,11 +197,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var condition = operation is not null && DateTime.Now.Subtract(operation.CreatedAt).Minutes < 15;
         if (condition is true)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Wait 15 minutes to request a new password change."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Wait 15 minutes to request a new password change.");
         }
         var hashStorage = new HashStorage
         {
@@ -271,19 +214,13 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while forgetting password: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while forgetting password: {e.Message}");
         }
 
         await _emailService.ForgetPasswordAsync(user: query, hashStorage);
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public async Task<ServiceResponse<bool>> ResetPasswordAsync(ClientResetPassword request)
@@ -294,11 +231,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             && request.Operation == Operation.RESET_PASSWORD);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Invalid hash, operation or user id."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Invalid hash, operation or user id.");
         }
 
         var user = _context.Users.First(item => item.Id == request.UserId);
@@ -311,17 +245,11 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while verifying registration: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while verifying registration: {e.Message}");
         }
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public async Task<ServiceResponse<bool>> ChangePasswordAsync(string request)
@@ -329,20 +257,14 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var user = _authService.GetRequester();
         if (user is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Id does not exist."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Id does not exist.");
         }
         var query = _context.Users.FirstOrDefault(item => item.Id == user.Id);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Id does not exist."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Id does not exist.");
         }
         query.Password = BCrypt.Net.BCrypt.HashPassword(request);
         try
@@ -352,18 +274,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while changing password: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while changing password: {e.Message}");
         }
 
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
 
     }
 
@@ -372,18 +288,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var query = _context.Users.FirstOrDefault(item => item.Id == guid);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = "User not found."
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: "User not found.");
         }
 
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = query
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: query);
     }
 
 
@@ -392,17 +302,11 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var requester = _authService.GetRequester();
         if (requester is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = "Requester does not exist."
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: "Requester does not exist.");
         }
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = requester
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: requester);
     }
 
     public ServiceResponse<IEnumerable<User>> GetOtherUsers(string? name)
@@ -410,28 +314,20 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var requester = _authService.GetRequester();
         if (requester is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = "Requester does not exist."
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: "Requester does not exist.");
         }
         if (requester.Role == Role.ADMIN)
         {
             var aux = string.IsNullOrWhiteSpace(name) ? ".*" : name.ToUpper();
             var match = (User user) => Regex.Match(user.NormalizedName, aux).Success;
-            return new()
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Data = [.. _context.Users.ToArray().Where(item => item.Id != requester.Id && match(item))]
-            };
+            return new(statusCode: StatusCodes.Status200OK,
+                data: [.. _context.Users.ToArray().Where(item => item.Id != requester.Id && match(item))]);
         }
         if (requester.Role == Role.GUEST)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status200OK,
-                Data = [ .. _context.Users.Where( item => item.Id != requester.Id ).Select( item => new User()
+            return new(statusCode: StatusCodes.Status200OK,
+                data: [ .. _context.Users.Where( item => item.Id != requester.Id ).Select( item => new User()
                 {
                     Id = item.Id,
                     Name = "",
@@ -443,14 +339,10 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                     LastLogin = item.LastLogin,
                     VerifiedAt = item.VerifiedAt,
                     Role = item.Role
-                }) ]
-            };
+                }) ]);
         }
-        return new()
-        {
-            StatusCode = StatusCodes.Status403Forbidden,
-            ErrorMessage = "Not authorized."
-        };
+        return new(statusCode: StatusCodes.Status403Forbidden,
+            errorMessage: "Not authorized.");
     }
 
     public async Task<ServiceResponse<bool>> UpdateUserAsync(ClientUpdateUser request)
@@ -458,38 +350,26 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var requester = _authService.GetRequester();
         if (requester is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = "Requester does not exist."
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: "Requester does not exist.");
         }
         var query = _context.Users.FirstOrDefault(item => item.Id == request.Id);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status404NotFound,
-                ErrorMessage = "User does not exist."
-            };
+            return new(statusCode: StatusCodes.Status404NotFound,
+                errorMessage: "User does not exist.");
         }
 
         if (requester.Role != Role.ADMIN && requester.Id != request.Id)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status403Forbidden,
-                ErrorMessage = "Not authorized."
-            };
+            return new(statusCode: StatusCodes.Status403Forbidden,
+                errorMessage: "Not authorized.");
         }
 
         if (request.Role == Role.ADMIN && requester.Role != Role.ADMIN)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status400BadRequest,
-                ErrorMessage = "Cannot change role to administrator without being administrator."
-            };
+            return new(statusCode: StatusCodes.Status400BadRequest,
+                errorMessage: "Cannot change role to administrator without being administrator.");
         }
 
         query.Name = request.Name;
@@ -504,18 +384,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while updating user: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while updating user: {e.Message}");
         }
 
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public async Task<ServiceResponse<bool>> ChangeEmailAsync(string email)
@@ -523,11 +397,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var requester = _authService.GetRequester();
         if (requester is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Requester does not exist."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Requester does not exist.");
         }
 
         var operation = _context.HashStorage.FirstOrDefault(item =>
@@ -537,11 +408,8 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var condition = operation is not null && DateTime.Now.Subtract(operation.CreatedAt).Minutes < 15;
         if (condition is true)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Wait 15 minutes to request a new email change."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Wait 15 minutes to request a new email change.");
         }
         var hashStorage = new HashStorage
         {
@@ -558,19 +426,13 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while forgetting password: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while forgetting password: {e.Message}");
         }
 
         await _emailService.ConfirmEmailAsync(user: requester, email, hashStorage);
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public async Task<ServiceResponse<bool>> ConfirmEmailChangeAsync(ClientHashOperation request)
@@ -581,21 +443,15 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             && request.Operation == Operation.CHANGE_EMAIL);
         if (query is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Invalid hash, operation or user id."
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Invalid hash, operation or user id.");
         }
 
         var user = _context.Users.First(item => item.Id == request.UserId);
         if (query.Details is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = "Something went wrong while confirming new email: Details are null."
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: "Something went wrong while confirming new email: Details are null.");
         }
         user.Email = query.Details;
         try
@@ -606,17 +462,11 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch (Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while verifying registration: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while verifying registration: {e.Message}");
         }
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Data = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public async Task<ServiceResponse<bool>> ResetGuestAsync()
@@ -642,17 +492,11 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
                 }
                 catch(Exception e)
                 {
-                    return new()
-                    {
-                        StatusCode = StatusCodes.Status500InternalServerError,
-                        ErrorMessage = $"Something went wrong while resetting guest: {e.Message}"
-                    };
+                    return new(statusCode: StatusCodes.Status500InternalServerError,
+                        errorMessage: $"Something went wrong while resetting guest: {e.Message}");
                 }
-                return new() 
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    Value = true
-                };
+                return new(statusCode: StatusCodes.Status200OK,
+                    data: true);
         }
 
         guest.Name = "Guest";
@@ -670,18 +514,12 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         }
         catch(Exception e)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status500InternalServerError,
-                ErrorMessage = $"Something went wrong while resetting guest: {e.Message}"
-            };
+            return new(statusCode: StatusCodes.Status500InternalServerError,
+                errorMessage: $"Something went wrong while resetting guest: {e.Message}");
         }
 
-        return new() 
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Value = true
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: true);
     }
 
     public ServiceResponse<string> RefreshToken()
@@ -689,35 +527,23 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         var expirationDate = _authService.GetExpirationDate();
         if(expirationDate is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status400BadRequest,
-                ErrorMessage = "Corrupted token!"
-            };
+            return new(statusCode: StatusCodes.Status400BadRequest,
+                errorMessage: "Corrupted token!");
         }
         if(DateTime.Now > expirationDate)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status409Conflict,
-                ErrorMessage = "Token expired!"
-            };
+            return new(statusCode: StatusCodes.Status409Conflict,
+                errorMessage: "Token expired!");
         }
         var user = _authService.GetRequester();
         if(user is null)
         {
-            return new()
-            {
-                StatusCode = StatusCodes.Status400BadRequest,
-                ErrorMessage = "Corrupted token!"
-            };
+            return new(statusCode: StatusCodes.Status400BadRequest,
+                errorMessage: "Corrupted token!");
         }
         var token = CreateJWT(user);
-        return new()
-        {
-            StatusCode = StatusCodes.Status200OK,
-            Value = token
-        };
+        return new(statusCode: StatusCodes.Status200OK,
+            data: token);
     }
 
     private string GenerateNonRepetitiveHash()
