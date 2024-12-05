@@ -70,7 +70,7 @@
         >
         <div>
           <p class="text-center text-lg">
-            Are you sure that you want to delete {odontologistToDelete.name}
+            Are you sure that you want to delete {odontologistToDelete.name}?
           </p>
         </div>
         <div class="flex items-center justify-around">

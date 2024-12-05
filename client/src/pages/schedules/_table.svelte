@@ -72,8 +72,8 @@
           }}>&#215;</button
         >
         <div>
-          <p class="text-center text-lg dark:text-white">
-            Are you sure that you want to delete {scheduleToDelete.name}
+          <p class="text-center text-lg">
+            Are you sure that you want to delete {scheduleToDelete.name}?
           </p>
         </div>
         <div class="flex items-center justify-around">
@@ -83,7 +83,7 @@
             >Submit</button
           >
           <button
-            class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:text-white dark:hover:bg-neutral-600"
+            class="rounded-md border p-2 font-medium transition-all hover:bg-gray-100 dark:border-neutral-900 dark:hover:bg-neutral-600"
             on:click={() => {
               isModalVisible = false;
               window.onclick = null;
@@ -97,39 +97,39 @@
     class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
   >
     <div class="col-start-1 col-end-2 row-start-1 row-end-2">
-      <p class="text-center font-medium">Name</p>
+      <p class="text-center font-medium dark:text-white">Name</p>
     </div>
     <div class="col-start-2 col-end-3 row-start-1 row-end-2">
-      <p class="text-center font-medium">Start</p>
+      <p class="text-center font-medium dark:text-white">Start</p>
     </div>
     <div class="col-start-3 col-end-4 row-start-1 row-end-2">
-      <p class="text-center font-medium">End</p>
+      <p class="text-center font-medium dark:text-white">End</p>
     </div>
     <div class="col-start-4 col-end-5 row-start-1 row-end-2">
-      <p class="text-center font-medium">Break Times</p>
+      <p class="text-center font-medium dark:text-white">Break Times</p>
     </div>
     <div class="col-start-5 col-end-7 row-start-1 row-end-2">
-      <p class="text-center font-medium">Actions</p>
+      <p class="text-center font-medium dark:text-white">Actions</p>
     </div>
 
     {#each schedules as item, index}
       <div class={getRow(index) + "col-start-1 col-end-2"}>
-        <p class="block text-center">{item.name}</p>
+        <p class="block text-center dark:text-white">{item.name}</p>
       </div>
       <div class={getRow(index) + "col-start-2 col-end-3"}>
-        <p class="block text-center">
+        <p class="block text-center dark:text-white">
           {DateHandler.getDayOfTheWeek(item.startDay) + " - " + item.startTime}
         </p>
       </div>
       <div class={getRow(index) + "col-start-3 col-end-4"}>
-        <p class="cursor-pointer text-center">
+        <p class="block text-center dark:text-white">
           {DateHandler.getDayOfTheWeek(item.endDay) + " - " + item.endTime}
         </p>
       </div>
       <div class={getRow(index) + "col-start-4 col-end-5 justify-self-center"}>
         <a
           href={`/break_times?scheduleId=${item.id}`}
-          class="cursor-pointer text-center hover:underline"
+          class="cursor-pointer text-center hover:underline dark:text-white"
         >
           details
         </a>
@@ -137,14 +137,14 @@
       <div class={getRow(index) + "col-start-5 col-end-6 justify-self-center"}>
         <a
           href={`/schedules/edit/${item.id}`}
-          class="cursor-pointer text-center hover:underline"
+          class="cursor-pointer text-center hover:underline dark:text-white"
         >
           edit
         </a>
       </div>
       <div
         class={getRow(index) +
-          "col-start-6 col-end-7 justify-self-center hover:underline"}
+          "col-start-6 col-end-7 justify-self-center hover:underline dark:text-white"}
       >
         <button
           on:click={() => {
@@ -158,6 +158,6 @@
   </div>
 {:else}
   <div class="mt-4">
-    <p class="text-center text-3xl">No schedules registered.</p>
+    <p class="text-center text-3xl dark:text-white">No schedules registered.</p>
   </div>
 {/if}

@@ -37,7 +37,7 @@
 
 {#if status === Status.NONE}
   <div class="flex w-1/4 flex-col">
-    <label class="font-medium" for="OdontologistName">
+    <label class="font-medium dark:text-white" for="OdontologistName">
       Odontologist name:
     </label>
     <select
@@ -52,7 +52,9 @@
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="ScheduleName"> Schedule name: </label>
+    <label class="font-medium dark:text-white" for="ScheduleName">
+      Schedule name:
+    </label>
     <select
       class="mt-2 rounded border-2 border-black bg-white"
       bind:value={appointment.scheduleId}
@@ -63,7 +65,7 @@
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="Start"> Start: </label>
+    <label class="font-medium dark:text-white" for="Start"> Start: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="Start"
@@ -73,7 +75,7 @@
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="End"> End: </label>
+    <label class="font-medium dark:text-white" for="End"> End: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="End"
@@ -83,7 +85,9 @@
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="PatientName"> Patient name: </label>
+    <label class="font-medium dark:text-white" for="PatientName">
+      Patient name:
+    </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="PatientName"
@@ -92,7 +96,9 @@
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="Description"> Description: </label>
+    <label class="font-medium dark:text-white" for="Description">
+      Description:
+    </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="Description"
@@ -109,7 +115,9 @@
 {/if}
 {#if status === Status.SUCCESS}
   <div class="mt-4">
-    <p class="text-center text-xl">Appointment edited successfully!</p>
-    <p class="text-center text-xl">Returning to index.</p>
+    <p class="text-center text-xl dark:text-white">
+      Appointment edited successfully!
+    </p>
+    <p class="text-center text-xl dark:text-white">Returning to index.</p>
   </div>
 {/if}

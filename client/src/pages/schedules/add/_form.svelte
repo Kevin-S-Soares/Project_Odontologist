@@ -20,7 +20,7 @@
 
 {#if status === Status.NONE}
   <div class="flex w-1/4 flex-col">
-    <label class="font-medium" for="Name"> Name: </label>
+    <label class="font-medium dark:text-white" for="Name"> Name: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="Name"
@@ -29,7 +29,9 @@
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="StartDay"> Start day: </label>
+    <label class="font-medium dark:text-white" for="StartDay">
+      Start day:
+    </label>
     <select
       class="mt-2 rounded border-2 border-black"
       name="StartDay"
@@ -45,7 +47,9 @@
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="StartTime"> Start time: </label>
+    <label class="font-medium dark:text-white" for="StartTime">
+      Start time:
+    </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="StartTime"
@@ -55,7 +59,7 @@
     />
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="EndDay"> End day: </label>
+    <label class="font-medium dark:text-white" for="EndDay"> End day: </label>
     <select
       class="mt-2 rounded border-2 border-black"
       name="EndDay"
@@ -71,7 +75,7 @@
     </select>
   </div>
   <div class="mt-4 flex w-1/4 flex-col">
-    <label class="font-medium" for="EndTime"> End time: </label>
+    <label class="font-medium dark:text-white" for="EndTime"> End time: </label>
     <input
       class="mt-2 rounded border-2 border-black"
       name="EndTime"
@@ -90,7 +94,9 @@
 {/if}
 {#if status === Status.SUCCESS}
   <div class="mt-4">
-    <p class="text-center text-xl">Schedule added successfully!</p>
-    <p class="text-center text-xl">Returning to index.</p>
+    <p class="text-center text-xl dark:text-white">
+      Schedule added successfully!
+    </p>
+    <p class="text-center text-xl dark:text-white">Returning to index.</p>
   </div>
 {/if}
