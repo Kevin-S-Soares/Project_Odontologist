@@ -36,7 +36,7 @@
 </script>
 
 {#if status === Status.NONE}
-  <div class="flex w-1/4 flex-col">
+  <div class="flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="OdontologistName">
       Odontologist name:
     </label>
@@ -51,7 +51,7 @@
       {/each}
     </select>
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="ScheduleName">
       Schedule name:
     </label>
@@ -64,7 +64,7 @@
       {/each}
     </select>
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="Start"> Start: </label>
     <input
       class="mt-2 rounded border-2 border-black"
@@ -74,7 +74,7 @@
       bind:value={appointment.start}
     />
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="End"> End: </label>
     <input
       class="mt-2 rounded border-2 border-black"
@@ -84,7 +84,7 @@
       bind:value={appointment.end}
     />
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="PatientName">
       Patient name:
     </label>
@@ -95,7 +95,7 @@
       bind:value={appointment.patientName}
     />
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="Description">
       Description:
     </label>

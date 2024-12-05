@@ -19,7 +19,7 @@
 </script>
 
 {#if status === Status.NONE}
-  <div class="flex w-1/4 flex-col">
+  <div class="flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="Name"> Name: </label>
     <input
       class="mt-2 rounded border-2 border-black"
@@ -28,7 +28,7 @@
       bind:value={schedule.name}
     />
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="StartDay">
       Start day:
     </label>
@@ -46,7 +46,7 @@
       <option value={6}>Saturday</option>
     </select>
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="StartTime">
       Start time:
     </label>
@@ -58,7 +58,7 @@
       bind:value={schedule.startTime}
     />
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="EndDay"> End day: </label>
     <select
       class="mt-2 rounded border-2 border-black"
@@ -74,7 +74,7 @@
       <option value={6}>Saturday</option>
     </select>
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="EndTime"> End time: </label>
     <input
       class="mt-2 rounded border-2 border-black"

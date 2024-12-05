@@ -45,7 +45,7 @@
 </script>
 
 <a
-  class="mt-4 block w-1/6 cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500"
+  class="mt-4 line-clamp-1 inline-block cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500 md:w-1/6 dark:border dark:border-neutral-900"
   href="/odontologists/add">Add odontologist</a
 >
 
@@ -59,7 +59,7 @@
   >
     <div class="relative">
       <div
-        class="absolute left-1/2 top-1/2 grid h-[16rem] w-96 -translate-x-1/2 translate-y-1/2 grid-rows-3 rounded-md bg-white p-4"
+        class="absolute left-1/2 top-1/2 grid h-[16rem] w-96 -translate-x-1/2 translate-y-1/2 grid-rows-3 gap-x-2 rounded-md bg-white p-4"
       >
         <button
           class="place-self-start justify-self-end text-4xl"
@@ -91,7 +91,7 @@
     </div>
   </div>
   <div
-    class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
+    class="grid-rows-auto mt-4 grid w-full grid-cols-[10rem_12rem_10rem_10rem_10rem_10rem] overflow-x-scroll rounded-md border p-4 md:grid-cols-[repeat(6,_1fr)] dark:border-neutral-900"
   >
     <div class="col-start-1 col-end-2 row-start-1 row-end-2">
       <p class="text-center font-medium dark:text-white">Name</p>
@@ -111,10 +111,14 @@
 
     {#each odontologists as item, index}
       <div class={getRow(index) + "col-start-1 col-end-2"}>
-        <p class="block text-center dark:text-white">{item.name}</p>
+        <p class="block text-center dark:text-white">
+          {item.name}
+        </p>
       </div>
       <div class={getRow(index) + "col-start-2 col-end-3"}>
-        <p class="block text-center dark:text-white">{item.phone}</p>
+        <p class="block text-center dark:text-white">
+          {item.phone}
+        </p>
       </div>
       <div class={getRow(index) + "col-start-3 col-end-4 justify-self-center"}>
         <a

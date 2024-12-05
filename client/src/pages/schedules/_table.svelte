@@ -48,7 +48,7 @@
 </script>
 
 <a
-  class="mt-4 block w-1/6 cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500"
+  class="mt-4 line-clamp-1 inline-block cursor-pointer rounded-md bg-teal-400 px-1 py-3 text-center font-bold text-white transition-all hover:bg-teal-500 md:w-1/6 dark:border dark:border-neutral-900"
   href="/schedules/add?odontologistId={odontologistId}">Add schedule</a
 >
 
@@ -94,7 +94,7 @@
     </div>
   </div>
   <div
-    class="grid-rows-auto mt-4 grid w-full grid-cols-[repeat(6,_1fr)] rounded-md border"
+    class="grid-rows-auto mt-4 grid w-full grid-cols-[10rem_10rem_10rem_10rem_10rem_10rem] overflow-x-scroll rounded-md border p-4 md:grid-cols-[repeat(6,_1fr)] dark:border-neutral-900"
   >
     <div class="col-start-1 col-end-2 row-start-1 row-end-2">
       <p class="text-center font-medium dark:text-white">Name</p>

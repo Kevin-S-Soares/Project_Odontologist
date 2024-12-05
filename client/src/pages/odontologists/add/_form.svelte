@@ -17,7 +17,7 @@
 </script>
 
 {#if status === Status.NONE}
-  <div class="flex w-1/4 flex-col">
+  <div class="flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="Name"> Name: </label>
     <input
       class="mt-2 rounded border-2 border-black"
@@ -26,7 +26,7 @@
       bind:value={odontologist.name}
     />
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="Phone"> Phone: </label>
     <input
       class="mt-2 rounded border-2 border-black"
@@ -35,7 +35,7 @@
       bind:value={odontologist.phone}
     />
   </div>
-  <div class="mt-4 flex w-1/4 flex-col">
+  <div class="mt-4 flex w-48 flex-col lg:w-1/4">
     <label class="font-medium dark:text-white" for="Email"> Email: </label>
     <input
       class="mt-2 rounded border-2 border-black"
