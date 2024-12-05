@@ -156,6 +156,6 @@
   </div>
 {:else}
   <div class="mt-4">
-    <p class="text-center text-3xl">No odontologists registered.</p>
+    <p class="text-center text-3xl dark:text-white">No odontologists registered.</p>
   </div>
 {/if}

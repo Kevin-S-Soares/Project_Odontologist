@@ -27,7 +27,7 @@ jobs:
           dotnet-version: '8.0.x'
       - name: Building the server
         run: dotnet build 'server/Server'
-      - name: testing server
+      - name: Testing server
         run: dotnet test 'server/Tests'
   
   release:
