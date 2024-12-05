@@ -71,7 +71,8 @@
         >
         <div>
           <p class="text-center text-lg dark:text-white">
-            Are you sure that you want to delete {appointmentToDelete.patientName}'s appointment
+            Are you sure that you want to delete {appointmentToDelete.patientName}'s
+            appointment
           </p>
         </div>
         <div class="flex items-center justify-around">
@@ -125,11 +126,9 @@
         </p>
       </div>
       <div class={getRow(index) + "col-start-4 col-end-5"}>
-        <p
-          class="block text-center"
-        >
+        <p class="block text-center">
           {item.description}
-      </p>
+        </p>
       </div>
       <div class={getRow(index) + "col-start-5 col-end-6 justify-self-center"}>
         <a

@@ -1,6 +1,9 @@
 import { Appointment } from "../../appointment";
 
-export const edit = (arg: Appointment, token: string): Promise<Appointment | null> => {
+export const edit = (
+  arg: Appointment,
+  token: string,
+): Promise<Appointment | null> => {
   return new Promise<Appointment | null>(async (resolve) => {
     const options = {
       method: "PUT",

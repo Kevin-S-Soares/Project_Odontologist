@@ -46,7 +46,13 @@ const odontologists: Odontologist[] = await responseOdontologist.json();
 <MainLayout>
   <Padding>
     <div class="mt-4">
-      <Form schedules={schedules} odontologists={odontologists} appointment={appointment} token={jwtDetails.getToken()} client:load />
+      <Form
+        schedules={schedules}
+        odontologists={odontologists}
+        appointment={appointment}
+        token={jwtDetails.getToken()}
+        client:load
+      />
     </div>
   </Padding>
 </MainLayout>
