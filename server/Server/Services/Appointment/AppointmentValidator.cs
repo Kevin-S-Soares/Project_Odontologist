@@ -1,7 +1,7 @@
 ﻿using Server.Contexts;
 using Server.Models;
 
-namespace Server.Services.AppointmentService
+namespace Server.Services
 {
     public class AppointmentValidator
     {
@@ -110,12 +110,12 @@ namespace Server.Services.AppointmentService
             return _context.Appointments
                 .Where(x => x.Id != appointment.Id
                 && x.ScheduleId == appointment.ScheduleId
-                && ((x.Details.StartYear == appointment.Details.StartYear
-                && x.Details.StartMonth == appointment.Details.StartMonth
-                && x.Details.StartDay == appointment.Details.StartDay)
-                || (x.Details.EndYear == appointment.Details.EndYear
-                && x.Details.EndMonth == appointment.Details.EndMonth
-                && x.Details.EndDay == appointment.Details.EndDay)));
+                && ((x.Start.Year == appointment.Start.Year
+                && x.Start.Month == appointment.Start.Month
+                && x.Start.Day == appointment.Start.Day)
+                || (x.End.Year == appointment.End.Year
+                && x.End.Month == appointment.End.Month
+                && x.End.Day == appointment.End.Day)));
         }
     }
 }

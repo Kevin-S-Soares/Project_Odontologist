@@ -1,33 +1,40 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Server.Services
+namespace Server.Models
 {
     public class ServiceResponse<T> : ObjectResult
     {
         public ServiceResponse() : base(new()) { }
-         public ServiceResponse(T data, int statusCode) : base(data) { }
-        public ServiceResponse(string errorMessage, int statusCode) : base(errorMessage) { }
+
+        public ServiceResponse(T data, int statusCode) : base(data)
+        {
+            Data = data;
+            StatusCode = statusCode;
+        }
+
+        public ServiceResponse(string? errorMessage, int statusCode) : base(errorMessage)
+        {
+            ErrorMessage = errorMessage;
+            StatusCode = statusCode;
+        }
 
 
-        private T? _data;
-        public T? Data
+
+        public new object? Value
         {
-            get => _data;
+            get
+            {
+                return Data is null ? ErrorMessage : Data;
+            }
             set
             {
-                Value = value;
-                _data = value;
+                _value = value;
             }
         }
-        private string? _errorMessage;
-        public string? ErrorMessage
-        {
-            get => _errorMessage;
-            set
-            {
-                Value = value;
-                _errorMessage = value;
-            }
-        }
+
+        private object? _value;
+        public T? Data { get; set; }
+        public string? ErrorMessage { get; set; }
+
     }
 }

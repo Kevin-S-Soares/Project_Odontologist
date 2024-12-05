@@ -42,10 +42,10 @@
     Appointment contained, Appointment contains)
         {
             long startTicksContains, endTicksContains, startTicksContained, endTicksContained;
-            startTicksContains = contains.Details.StartTime.Ticks;
-            endTicksContains = contains.Details.EndTime.Ticks;
-            startTicksContained = contained.Details.StartTime.Ticks;
-            endTicksContained = contained.Details.EndTime.Ticks;
+            startTicksContains = contains.Start.Ticks;
+            endTicksContains = contains.End.Ticks;
+            startTicksContained = contained.Start.Ticks;
+            endTicksContained = contained.End.Ticks;
 
             bool condition1 = startTicksContains <= startTicksContained
                 && endTicksContains >= startTicksContained;
@@ -60,10 +60,10 @@
             Appointment contained, Appointment contains)
         {
             long startTicksContains, endTicksContains, startTicksContained, endTicksContained;
-            startTicksContains = contains.Details.StartTime.Ticks;
-            endTicksContains = contains.Details.EndTime.Ticks;
-            startTicksContained = contained.Details.StartTime.Ticks;
-            endTicksContained = contained.Details.EndTime.Ticks;
+            startTicksContains = contains.Start.Ticks;
+            endTicksContains = contains.End.Ticks;
+            startTicksContained = contained.Start.Ticks;
+            endTicksContained = contained.End.Ticks;
 
             bool condition1 = startTicksContains <= startTicksContained
                 && endTicksContains >= startTicksContained;

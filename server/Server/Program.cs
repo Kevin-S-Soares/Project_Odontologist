@@ -6,8 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Server.Contexts;
 using Server.Services;
-using Server.Services.AppointmentService;
-using Server.Services.BreakTimeService;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);

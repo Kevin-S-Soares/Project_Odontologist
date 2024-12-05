@@ -8,17 +8,18 @@ namespace Server.Models
         public long Id { get; set; }
         public long ScheduleId { get; set; }
         public Schedule? Schedule { get; set; }
-        public DetailedTime Details { get; set; } = new();
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
         public string PatientName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
 
-        public DayOfWeek GetStartDay() => Details.StartDayOfWeek;
+        public DayOfWeek GetStartDay() => Start.DayOfWeek;
 
-        public DayOfWeek GetEndDay() => Details.EndDayOfWeek;
+        public DayOfWeek GetEndDay() => End.DayOfWeek;
 
-        public TimeSpan GetStartTime() => Details.StartTime;
+        public TimeSpan GetStartTime() => Start.TimeOfDay;
 
-        public TimeSpan GetEndTime() => Details.EndTime;
+        public TimeSpan GetEndTime() => End.TimeOfDay;
 
         public override bool Equals(object? obj)
         {

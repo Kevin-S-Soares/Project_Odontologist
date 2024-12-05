@@ -1,7 +1,7 @@
 ﻿using Server.Contexts;
 using Server.Models;
 
-namespace Server.Services.BreakTimeService
+namespace Server.Services
 {
     public class BreakTimeValidator
     {

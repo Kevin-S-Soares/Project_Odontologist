@@ -1,7 +1,7 @@
 using Server.Contexts;
 using Server.Models;
 
-namespace Server.Services.AppointmentService
+namespace Server.Services
 {
     public class AppointmentService : IAppointmentService
     {
