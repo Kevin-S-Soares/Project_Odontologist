@@ -4,25 +4,25 @@ echo "updating and upgrading"
 sudo apt update -y && sudo apt upgrade -y
 
 var=$(which sqlite3)
-if [ $var != "/usr/bin/sqlite3" ] ; then
+if [[ $var != "/usr/bin/sqlite3" ]] ; then
     echo "installing sqlite3"
     sudo apt install sqlite3 -y
 fi
 
 var=$(which curl)
-if [ $var != "/usr/bin/curl" ] ; then
+if [[ $var != "/usr/bin/curl" ]] ; then
     echo "installing curl"
     sudo apt install curl -y
 fi
 
 var=$(which openssl)
-if [ $var != "/usr/bin/openssl" ] ; then
+if [[ $var != "/usr/bin/openssl" ]] ; then
     echo "installing openssl"
     sudo apt install openssl -y
 fi
 
 var=$(sudo which docker)
-if [ $var != "/usr/bin/docker" ] ; then
+if [[ $var != "/usr/bin/docker" ]] ; then
     echo "installing docker"
     sudo apt-get update -y
     sudo apt-get install ca-certificates curl gnupg -y
@@ -53,12 +53,12 @@ while [ 1 ] ; do
     fi
 done
 
-if [ "$isDomain" == "y" ]
+if [[ "$isDomain" == "y" ]]
 then
     read -p 'what is the domain: ' domain
     echo "CLIENT=\"$domain\"" >> .env
     var="which certbot"
-    if [ "$var" != "/usr/bin/certbot" ] ; then
+    if [[ "$var" != "/usr/bin/certbot" ]] ; then
         echo "installing /usr/bin/certbot"
         sudo snap install --classic certbot
     fi
