@@ -154,3 +154,43 @@ VALUES ('20241128115519_NewModels', '8.0.2');
 
 COMMIT;
 
+BEGIN TRANSACTION;
+
+DROP TABLE "DetailedTimes";
+
+DELETE FROM "Users"
+WHERE "Id" = '7E92CA74-FDC1-4913-854B-204E5E7CF3B5';
+SELECT changes();
+
+
+ALTER TABLE "Appointments" ADD "End" TEXT NOT NULL DEFAULT '0001-01-01 00:00:00';
+
+ALTER TABLE "Appointments" ADD "Start" TEXT NOT NULL DEFAULT '0001-01-01 00:00:00';
+
+INSERT INTO "Users" ("Id", "ContextId", "CreatedAt", "Email", "LastLogin", "Name", "NormalizedName", "Password", "ProfilePictureUrl", "Role", "VerifiedAt")
+VALUES ('E80C2912-AE43-48F3-B126-7617FCCC2E2C', NULL, '2024-12-04 17:49:05.7579434', 'guest@guest.com', '2024-12-04 17:49:05.7579469', 'Guest', 'GUEST', '$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq', '', 4, '2024-12-04 17:49:05.7579471');
+SELECT changes();
+
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20241204204906_RemovedDetailedTime', '8.0.2');
+
+COMMIT;
+
+BEGIN TRANSACTION;
+
+DELETE FROM "Users"
+WHERE "Id" = 'E80C2912-AE43-48F3-B126-7617FCCC2E2C';
+SELECT changes();
+
+
+INSERT INTO "Users" ("Id", "ContextId", "CreatedAt", "Email", "LastLogin", "Name", "NormalizedName", "Password", "ProfilePictureUrl", "Role", "VerifiedAt")
+VALUES ('BCB7916E-B3BA-4DA5-B757-3F57775093C0', NULL, '2025-01-25 19:20:42.2254483', 'guest@guest.com', '2025-01-25 19:20:42.2254514', 'Guest', 'GUEST', '$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq', '', 4, '2025-01-25 19:20:42.2254516');
+SELECT changes();
+
+
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250125222042_EditedModels', '8.0.2');
+
+COMMIT;
+
