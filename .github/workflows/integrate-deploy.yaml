@@ -46,7 +46,7 @@ jobs:
         host: ${{ env.HOST }}
         username: ${{ env.USER }}
         port: ${{ env.PORT }}
-        key: ${{ env.KEY }}
+        password: ${{ env.PASSWORD }}
         command_timeout: 10m
         script: |
           cd Project_Odontologist
