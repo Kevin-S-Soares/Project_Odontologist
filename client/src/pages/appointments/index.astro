@@ -26,7 +26,7 @@ const response = await fetch(
   `${process.env.SERVER}/api/v1/appointments`,
   options,
 );
-
+console.log(response)
 const appointments: Appointment[] = await response.json();
 ---
 
