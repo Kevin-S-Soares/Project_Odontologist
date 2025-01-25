@@ -38,7 +38,7 @@ jobs:
       HOST: ${{ secrets.HOST }}
       USER: ${{ secrets.USER }}
       PORT: ${{ secrets.PORT }}
-      KEY: ${{ secrets.KEY }}
+      PASSWORD: ${{ secrets.PASSWORD }}
     steps:
     - name: executing remote ssh
       uses: appleboy/ssh-action@v1.0.3
