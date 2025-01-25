@@ -21,12 +21,13 @@ const options = {
   },
   method: "GET",
 };
-
+console.log("fetch")
 const response = await fetch(
   `${process.env.SERVER}/api/v1/appointments`,
   options,
 );
-
+console.log("response")
+console.log(response)
 
 const appointments: Appointment[] = await response.json();
 console.log("appoinments")
