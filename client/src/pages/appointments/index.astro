@@ -1,9 +1,9 @@
 ---
 import MainLayout, { jwtDetails } from "../../layouts/main.astro";
-import Table from "./_table.svelte";
 import Padding from "../../layouts/padding.astro";
-import { Appointment } from "../../models/appointment";
+import Table from "./_table.svelte";
 import { Role } from "../../models/enums";
+import type { Appointment } from "../../models/appointment";
 
 if (!jwtDetails.isVerified()) {
   return Astro.redirect("/not_verified");
@@ -21,18 +21,13 @@ const options = {
   },
   method: "GET",
 };
-console.log("fetch")
+
 const response = await fetch(
   `${process.env.SERVER}/api/v1/appointments`,
   options,
 );
-console.log("response")
-console.log(response)
-console.log("text")
-console.log(await response.text())
-const appointments: Appointment[] = await response.json();
-console.log("appoinments")
-console.log(appointments)
+
+let appointments: Appointment[] = await response.json();
 ---
 
 <MainLayout>
