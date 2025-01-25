@@ -28,7 +28,8 @@ const response = await fetch(
 );
 console.log("response")
 console.log(response)
-
+console.log("text")
+console.log(await response.text())
 const appointments: Appointment[] = await response.json();
 console.log("appoinments")
 console.log(appointments)
