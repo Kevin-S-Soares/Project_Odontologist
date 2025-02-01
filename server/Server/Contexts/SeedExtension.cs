@@ -10,7 +10,6 @@ namespace Server.Contexts
             modelBuilder.Entity<User>().HasData(
                 new User()
                 {
-                    Id = Guid.NewGuid(),
                     Name = "Guest",
                     NormalizedName = "GUEST",
                     Email = "guest@guest.com",

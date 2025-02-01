@@ -11,8 +11,8 @@ using Server.Contexts;
 namespace Server.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20241204204906_RemovedDetailedTime")]
-    partial class RemovedDetailedTime
+    [Migration("20250201033348_Setup")]
+    partial class Setup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,9 +84,9 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.HashStorage", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -101,8 +101,8 @@ namespace Server.Migrations
                     b.Property<int>("Operation")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -170,9 +170,9 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<long?>("ContextId")
                         .HasColumnType("INTEGER");
@@ -216,16 +216,16 @@ namespace Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("e80c2912-ae43-48f3-b126-7617fccc2e2c"),
-                            CreatedAt = new DateTime(2024, 12, 4, 17, 49, 5, 757, DateTimeKind.Local).AddTicks(9434),
+                            Id = 1L,
+                            CreatedAt = new DateTime(2025, 2, 1, 0, 33, 47, 601, DateTimeKind.Local).AddTicks(5971),
                             Email = "guest@guest.com",
-                            LastLogin = new DateTime(2024, 12, 4, 17, 49, 5, 757, DateTimeKind.Local).AddTicks(9469),
+                            LastLogin = new DateTime(2025, 2, 1, 0, 33, 47, 601, DateTimeKind.Local).AddTicks(6011),
                             Name = "Guest",
                             NormalizedName = "GUEST",
                             Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq",
                             ProfilePictureUrl = "",
                             Role = 4,
-                            VerifiedAt = new DateTime(2024, 12, 4, 17, 49, 5, 757, DateTimeKind.Local).AddTicks(9471)
+                            VerifiedAt = new DateTime(2025, 2, 1, 0, 33, 47, 601, DateTimeKind.Local).AddTicks(6013)
                         });
                 });
 

@@ -123,7 +123,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
             errorMessage: "Not authorized.");
     }
 
-    public async Task<ServiceResponse<bool>> RemoveByIdAsync(Guid id)
+    public async Task<ServiceResponse<bool>> RemoveByIdAsync(long id)
     {
         var query = _context.Users.FirstOrDefault(item => item.Id == id);
         if (query is null)
@@ -283,7 +283,7 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
 
     }
 
-    public ServiceResponse<User> GetUserById(Guid guid)
+    public ServiceResponse<User> GetUserById(long guid)
     {
         var query = _context.Users.FirstOrDefault(item => item.Id == guid);
         if (query is null)
@@ -476,7 +476,6 @@ public class UserService(ApplicationContext _context, IEmailService _emailServic
         {
                 _context.Users.Add(new User()
                 {
-                    Id = Guid.NewGuid(),
                     Name = "Guest",
                     NormalizedName = "GUEST",
                     Email = "guest@guest.com",

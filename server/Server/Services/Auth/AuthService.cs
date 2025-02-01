@@ -8,10 +8,10 @@ public class AuthService (ApplicationContext _context, IHttpContextAccessor _htt
 {
     public User? GetRequester()
     {
-        Guid result = Guid.Empty;
+        long result = 0;
         if (_httpContextAccessor.HttpContext is not null)
         {
-            _ = Guid.TryParse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out result);
+            _ = long.TryParse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out result);
         }
         return _context.Users.FirstOrDefault(search => search.Id == result);
     }

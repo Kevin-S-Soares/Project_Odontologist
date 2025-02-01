@@ -2,7 +2,7 @@ namespace Server.Models;
 
 public class User
 {
-    public Guid Id { get; set; }
+    public long Id { get; set; } = 1L;
     public string Name { get; set; } = string.Empty;
     public string NormalizedName { get; set; } = string.Empty;
     public string ProfilePictureUrl { get; set; } = string.Empty;
@@ -14,4 +14,3 @@ public class User
     public Role Role { get; set; }
     public long? ContextId { get; set; }
 }
-

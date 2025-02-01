@@ -11,8 +11,8 @@ public class UserController(IUserService _service) : ControllerBase
     [HttpPost, Route("/api/v1/user")]
     public async Task<ActionResult> CreateAsync(ClientRegisterUser user) => await _service.CreateAsync(user);
 
-    [HttpDelete, Route("/api/v1/user/{guid}"), Authorize]
-    public async Task<ActionResult> RemoveById(Guid guid) => await _service.RemoveByIdAsync(guid);
+    [HttpDelete, Route("/api/v1/user/{id}"), Authorize]
+    public async Task<ActionResult> RemoveById(long id) => await _service.RemoveByIdAsync(id);
 
     [HttpPost, Route("/api/v1/user/authenticate")]
     public async Task<ActionResult> AuthenticateAsync(ClientAuthentication request) => await _service.AuthenticateAsync(request);
@@ -29,8 +29,8 @@ public class UserController(IUserService _service) : ControllerBase
     [HttpPost, Route("/api/v1/user/change_password"), Authorize]
     public async Task<ActionResult> ChangePasswordAsync(string password) => await _service.ChangePasswordAsync(password);
 
-    [HttpGet, Route("/api/v1/user/{guid}"), Authorize]
-    public ActionResult GetUserById(Guid guid) => _service.GetUserById(guid);
+    [HttpGet, Route("/api/v1/user/{id}"), Authorize]
+    public ActionResult GetUserById(long id) => _service.GetUserById(id);
 
     [HttpGet, Route("api/v1/user/me"), Authorize]
     public ActionResult GetCurrentUser() => _service.GetCurrentUser();

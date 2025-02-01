@@ -81,9 +81,9 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.HashStorage", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
@@ -98,8 +98,8 @@ namespace Server.Migrations
                     b.Property<int>("Operation")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("TEXT");
+                    b.Property<long>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -167,9 +167,9 @@ namespace Server.Migrations
 
             modelBuilder.Entity("Server.Models.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<long?>("ContextId")
                         .HasColumnType("INTEGER");
@@ -213,16 +213,16 @@ namespace Server.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("bcb7916e-b3ba-4da5-b757-3f57775093c0"),
-                            CreatedAt = new DateTime(2025, 1, 25, 19, 20, 42, 225, DateTimeKind.Local).AddTicks(4483),
+                            Id = 1L,
+                            CreatedAt = new DateTime(2025, 2, 1, 0, 33, 47, 601, DateTimeKind.Local).AddTicks(5971),
                             Email = "guest@guest.com",
-                            LastLogin = new DateTime(2025, 1, 25, 19, 20, 42, 225, DateTimeKind.Local).AddTicks(4514),
+                            LastLogin = new DateTime(2025, 2, 1, 0, 33, 47, 601, DateTimeKind.Local).AddTicks(6011),
                             Name = "Guest",
                             NormalizedName = "GUEST",
                             Password = "$2a$11$K4CjmGjTWwjpQTjyw/bmouNMUtwtpzgjPOVFIPAazaVHI9YgAc1Lq",
                             ProfilePictureUrl = "",
                             Role = 4,
-                            VerifiedAt = new DateTime(2025, 1, 25, 19, 20, 42, 225, DateTimeKind.Local).AddTicks(4516)
+                            VerifiedAt = new DateTime(2025, 2, 1, 0, 33, 47, 601, DateTimeKind.Local).AddTicks(6013)
                         });
                 });
 
