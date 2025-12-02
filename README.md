@@ -1,4 +1,5 @@
 🦷 Control Panel – Sistema de Gerenciamento de Consultas
+
 Aplicação completa para gestão de consultas odontológicas, com verificação automática de conflitos, autenticação segura e deploy utilizando Docker.
 
 ---
